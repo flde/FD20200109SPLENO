@@ -1,0 +1,67 @@
+{
+  "user": [
+    {
+      "firstName": "Florian",
+      "lastName": "Deckert",
+      "role": "PhD",
+      "username": "fdeckert",
+      "userId": "10846"
+    }
+  ],
+  "date": [
+    {
+      "date": "2020-09-01",
+      "description": "10x data analysis "
+    }
+  ],
+  "group": [
+    {
+      "firstName": "Sylvia",
+      "lastName": "Knapp ",
+      "groupId": "lab_knapp"
+    }
+  ],
+  "project": "FD20200109SPLENO",
+  "description": "Mouse spleen single cell data analysis ",
+  "method": [
+    {
+      "name": "scRNA-seq",
+      "definedBy": "https://www.ebi.ac.uk/efo/",
+      "id": "EFO0008995"
+    }
+  ],
+  "quality": "high",
+  "rawOrProcessed": "both",
+  "numberOfSamples": null,
+  "publication": [],
+  "software": [],
+  "ethicalApprovalCode": [],
+  "labJournal": [
+    {
+      "firstName": "Florian",
+      "lastName": "Deckert",
+      "labJournal": "1 page 103"
+    }
+  ],
+  "typeOfData": [
+    "10x"
+  ],
+  "organism": [],
+  "endDate": "",
+  "keywords": "",
+  "wetlabProtocol": [],
+  "scriptsLocation": [],
+  "cellLineStrain": [],
+  "organTissueType": [],
+  "instrument": [],
+  "database": [],
+  "externalOrInternal": "internal",
+  "projectCode": "FD20200109SPLENO",
+  "externalCollaborators": [],
+  "resultsIn": [],
+  "resultsFrom": [],
+  "additionalInformation": [],
+  "metadataLocation": "",
+  "metadataSpecificationVersion": "1.0.0",
+  "schema": "http://metadata.int.cemm.at/1.0.0/cemm_metadata_schema.json"
+}
