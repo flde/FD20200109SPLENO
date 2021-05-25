@@ -1,0 +1,61 @@
+{
+  "user": [
+    {
+      "firstName": "Daniele",
+      "lastName": "Barreca",
+      "role": "bioinformatician",
+      "username": "dbarreca",
+      "userId": "10681"
+    }
+  ],
+  "date": [
+    {
+      "date": "2019-11-12",
+      "description": "project start"
+    }
+  ],
+  "group": [
+    {
+      "firstName": "BiomedicalSequencing",
+      "lastName": "Facility",
+      "groupId": "lab_bsf"
+    }
+  ],
+  "project": "BSA_0355_SM01_10x_SPLENO",
+  "description": "10X samples from Thea Gorki",
+  "method": [
+    {
+      "name": "10X 3' v3 sequencing",
+      "definedBy": "http://www.ebi.ac.uk/efo/EFO_0009922",
+      "id": "EFO:0009922"
+    }
+  ],
+  "quality": "high",
+  "rawOrProcessed": "processed",
+  "numberOfSamples": 8,
+  "publication": [],
+  "software": [],
+  "ethicalApprovalCode": [],
+  "labJournal": [],
+  "typeOfData": [
+    "10X scRNA-seq V3"
+  ],
+  "organism": [],
+  "endDate": "",
+  "keywords": "",
+  "wetlabProtocol": [],
+  "scriptsLocation": [],
+  "cellLineStrain": [],
+  "organTissueType": [],
+  "instrument": [],
+  "database": [],
+  "externalOrInternal": "internal",
+  "projectCode": "BSA_0355_SM01_10x_SPLENO",
+  "externalCollaborators": [],
+  "resultsIn": [],
+  "resultsFrom": [],
+  "additionalInformation": [],
+  "metadataLocation": "/scratch/lab_bsf/projects/BSA_0355_SM01_10x_SPLENO/cemm_metadata.json",
+  "metadataSpecificationVersion": "1.0.0",
+  "schema": "https://biomedical-sequencing.at/facility-metadata/1.0.0/cemm_metadata_schema.json"
+}
