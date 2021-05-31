@@ -119,7 +119,7 @@ integration <- list(
   
 )
 
-saveRDS(integration, "integration.rds")
+saveRDS(integration, "data/seurat_object/sct_int.rds")
 
 ```
 
