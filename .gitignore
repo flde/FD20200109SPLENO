@@ -1,4 +1,6 @@
 
+data/seurat_object/so_raw.rds
+data/seurat_object/so_qc.rds
 data/BSA_0355_SM01_10x_SPLENO/OUT/SUMMARY/M8_control_Mac_transcriptome.html
 data/BSA_0355_SM01_10x_SPLENO/OUT/SUMMARY/M6_control_Prog_transcriptome.html
 data/BSA_0355_SM01_10x_SPLENO/OUT/SUMMARY/M6_control_Mac_transcriptome.html
@@ -376,5 +378,3 @@ data/BSA_0355_SM01_10x_SPLENO/JOBS/M2_CpG_Mac_transcriptome.a8aaf54a52ea497063f1
 data/BSA_0355_SM01_10x_SPLENO/JOBS/M1_CpG_Prog_transcriptome.dca5fd4ed907867e53e1544a80193f63.sh
 data/BSA_0355_SM01_10x_SPLENO/JOBS/M1_CpG_Mac_transcriptome.e395a2b0362550ed7be2b88ad963f4e4.sh
 data/BSA_0355_SM01_10x_SPLENO/OUT/SUMMARY/M8_control_Prog_transcriptome.html
-data/seurat_object/so_raw.rds
-data/seurat_object/so_qc.rds
