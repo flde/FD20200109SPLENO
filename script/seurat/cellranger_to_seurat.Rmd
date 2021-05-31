@@ -1,0 +1,193 @@
+---
+title: "BSF cell ranger output to Seurat Object"
+author: "Florian Deckert"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output: html_document
+---
+
+Compute seurat objects with bsf meta data for faster loading during downstream analysis. 
+
+```{r setup, include = FALSE}
+
+# Set knitr chunk 
+knitr::opts_chunk$set(
+  
+	echo      = FALSE,
+	message   = FALSE,
+	warning   = FALSE,
+	cache     = FALSE,
+	out.width = "100%",
+	progress  = FALSE,
+	results   = "hide"
+	
+	)
+
+# Set knitr global 
+
+knitr::opts_knit$set(root.dir = gsub("/script/seurat", "", getwd()))
+
+```
+
+```{r load source files}
+
+# None 
+
+```
+
+```{r load libraries}
+
+library(Seurat)
+library(dplyr)
+
+```
+
+```{r global parameter}
+
+# Seurat parameters 
+min_cells    <- 3 # Filter out features which are only present in less than min_cells cells - default 3
+min_features <- 1 # Filter out cells which have fewer than min_features features - default 200
+
+# Directories
+bsf_dir <- "data/BSA_0355_SM01_10x_SPLENO/"
+out_dir <- "data/seurat_object/"
+
+# Files
+so_file <- "so.rds"
+
+```
+
+# Parameter settings
+
+## Filter options
+min number of cells a feature must be present:  **`r min_cells`**  
+min number of features detected in a cell:  **`r min_features`**  
+
+## Directories 
+BSF directory with count table and meta data: **`r bsf_dir`**  
+Output directory to save Seurat Objects: **`r out_dir`**  
+
+## File names 
+Output file name: **`r so_file`**  
+
+## Info 
+Single cell 3' v3 10x project BSA_0501_SK_RG_LEUKO with libraries W0069_1_2_3_4_L4877, W0069_5_6_7_8_L4876. CellRanger 5.0.1 with mm10-2020-A transcriptome. 
+
+# Create meta file 
+
+```{r meta data}
+
+list.files(paste0(bsf_dir, "OUT/COUNT"), full.names = TRUE)
+
+meta <- data.frame(
+  
+  cnt_path = list.files(paste0(bsf_dir, "OUT/COUNT"), full.names = TRUE), 
+  tissue = rep(c("Myeloid", "Progenitor"), 4), 
+  treatment = rep(c("CpG", "NaCl"), each = 4), 
+  replicate = rep(c("Rep1", "Rep1", "Rep2", "Rep2"), 2), 
+  sample_name = paste0(rep(c("Myeloid", "Progenitor"), 4), "_", 
+                       rep(c("CpG", "NaCl"), each = 4), "_", 
+                       replicate = rep(c("Rep1", "Rep1", "Rep2", "Rep2"), 2))
+  
+)
+
+```
+
+# Import count matrix as Seurat object
+
+```{r import count matrices}
+
+import_cnt <- function(sample_meta, cnt_type){
+  
+  print(paste("import:", paste0(sample_meta$cnt_path, "/", cnt_type)))
+  
+  # Read 10x data in as sparse matrix (sm)
+  sm_10x <- Read10X(data.dir = paste0(sample_meta$cnt_path, "/", cnt_type))
+  
+  # Transform sparse matrix to seurat object (so)
+  so_10x <- CreateSeuratObject(counts = sm_10x, min.cells = min_cells, min.features = min_features)
+  
+  # Add meta data 
+  so_10x$sample_name <- sample_meta$sample_name
+  so_10x$tissue <- sample_meta$tissue
+  so_10x$treatment <- sample_meta$treatment
+  
+  so_10x$orig.ident <- NULL
+  so_10x <- SetIdent(so_10x, value = "sample_name")
+  
+  return(so_10x)
+  
+}
+
+so_cnt <- lapply(split(meta, f = meta$cnt_path), import_cnt, cnt_type = "filtered_feature_bc_matrix")
+so_cnt_raw <- lapply(split(meta, f = meta$cnt_path), import_cnt, cnt_type = "raw_feature_bc_matrix")
+
+# Merge Seurat objects 
+so_cnt <- merge(x = so_cnt[[1]], y = so_cnt[2:length(so_cnt)])
+so_cnt_raw <- merge(x = so_cnt_raw[[1]], y = so_cnt_raw[2:length(so_cnt_raw)])
+
+```
+
+# Annotate cellRanger classification and barcode rank 
+
+```{r CellRanger info}
+
+so_cnt_raw$cellranger_class <- ifelse(colnames(so_cnt_raw) %in% colnames(so_cnt), "Cell", "Background")
+
+## Barcode rank for UMI and Feature count
+nCount_RNA_rank <- so_cnt_raw@meta.data %>%
+  mutate(cell_id = rownames(.)) %>% 
+  arrange(sample_name, desc(nCount_RNA)) %>%
+  group_by(sample_name) %>%
+  mutate(nCount_RNA_rank = row_number()) %>%
+  ungroup() %>% data.frame() %>% dplyr::select(cell_id, nCount_RNA_rank)
+rownames(nCount_RNA_rank) <- nCount_RNA_rank$cell_id
+
+so_cnt_raw <- AddMetaData(so_cnt_raw, nCount_RNA_rank)
+
+```
+
+# Log normalize data 
+
+```{r log normalize}
+
+so_cnt_raw <- NormalizeData(
+    object               = so_cnt_raw, 
+    assay                = "RNA", 
+    normalization.method = "LogNormalize", 
+    scale.factor         = 10000
+    )
+
+```
+
+# Compute feature content
+
+```{r feature percentage}
+
+# Compute MT content 
+mt_genes <- rownames(so_cnt_raw)[grep("^mt-", rownames(so_cnt_raw))]
+so_cnt_raw[["pMt_RNA"]] <- PercentageFeatureSet(so_cnt_raw, features = mt_genes)
+
+# Compute Hemoglobin content 
+hb_genes <- rownames(so_cnt_raw)[grep("Hba-|Hbb-|Hbq1b|Hbq1a", rownames(so_cnt_raw))]
+so_cnt_raw[["pHb_RNA"]] <- PercentageFeatureSet(so_cnt_raw, features = hb_genes)
+
+# Compute Ribosomal content
+rb_genes <- rownames(so_cnt_raw)[grep("^Rpl|^Rps|^Rbs", rownames(so_cnt_raw))]
+so_cnt_raw[["pRpl_RNA"]] <- PercentageFeatureSet(so_cnt_raw, features = rb_genes)
+
+```
+
+# Save output file
+
+```{r save seurat object}
+
+saveRDS(so_cnt_raw, file = paste0(out_dir, "so_raw.rds"))
+
+```
+
+```{r session info}
+
+sessionInfo()
+
+```
+

@@ -1,0 +1,152 @@
+---
+title: "SingleR annotation"
+author: "Florian Deckert"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output: html_document
+---
+
+```{r setup, include = FALSE}
+
+# Set knitr chunk 
+knitr::opts_chunk$set(
+  
+	echo      = FALSE,
+	message   = FALSE,
+	warning   = FALSE,
+	cache     = FALSE,
+	out.width = "100%",
+	progress  = FALSE,
+	results   = "hide"
+	
+	)
+
+# Set knitr global 
+
+knitr::opts_knit$set(root.dir = gsub("/script/seurat", "", getwd()))
+
+
+```
+
+```{r allocate memory}
+
+memory.limit(size = 4 * 32676)
+
+```
+
+```{r load libraries}
+
+library(Seurat)
+
+library(dplyr)
+
+library(ggplot2)
+library(RColorBrewer)
+library(patchwork)
+
+```
+
+```{r load source files}
+
+# Plotting Theme
+source("plotting_global.R")
+
+```
+
+```{r global parameter}
+
+# Parameter 
+
+# Plotting Theme
+theme_set(theme_global_set()) # From project global source()
+
+```
+
+```{r files}
+
+so_file <- "data/seurat_object/so_qc.rds"
+
+```
+
+# Parameter settings
+
+### File names 
+Import Seurat object: **`r so_file`**  
+
+```{r import seurat objects}
+
+so <- readRDS(so_file)
+
+```
+
+# Annotate cells with SingleR
+
+```{r load celldex Immgen reference}
+
+library(celldex)
+ref <- ImmGenData(ensembl = FALSE)
+
+```
+
+```{r so to single cell experiment}
+
+sce <- as.SingleCellExperiment(so, assay = "RNA")
+
+```
+
+SingleR identifies marker genes from the reference and uses them to compute assignment scores (based on the Spearman correlation across markers) for each cell in the test dataset against each label in the reference. The label with the highest score is the assigned to the test cell, possibly with further fine-tuning to resolve closely related labels. 
+
+first.labels: Labels before fine-tuning
+labels: Labels after fine-tuning
+pruning: labels after pruning 
+
+```{r SingleR predict main lable}
+
+library(SingleR)
+label_main <- SingleR(test = sce, ref = ref, labels = ref$label.main, assay.type.test = "logcounts", de.method = "classic")
+label_fine <- SingleR(test = sce, ref = ref, labels = ref$label.fine, assay.type.test = "logcounts", de.method = "classic")
+
+```
+
+```{r}
+
+label_main_meta <- as.data.frame(label_main) %>% dplyr::select(pruned.labels, tuning.scores.first) %>% dplyr::rename(main_labels = pruned.labels, main_delta_score = tuning.scores.first)
+so <- AddMetaData(so, label_main_meta)
+so$main_labels <- factor(so$main_labels, levels = names(so_color$main_labels))
+
+label_fine_meta <- as.data.frame(label_fine) %>% dplyr::select(pruned.labels, tuning.scores.first) %>% dplyr::rename(fine_labels = pruned.labels, fine_delta_score = tuning.scores.first)
+so <- AddMetaData(so, label_fine_meta)
+# so$fine_labels <- factor(so$main_labels, levels = names(so_color$main_labels))
+
+```
+
+# Dim plot 
+
+```{r, fig.width=9, fig.height=6}
+
+source("plotting_global.R")
+reduction <- "rna_umap_nno"
+dplot_1 <- DimPlot(so, reduction = reduction, group.by = "rna_snn_res.0.8", label = TRUE) & theme(aspect.ratio = 1, legend.position = "none")
+dplot_2 <- DimPlot(so, reduction = reduction, group.by = "main_labels", label = FALSE) & 
+  theme(aspect.ratio = 1, legend.position = "bottom") & 
+  scale_color_manual(values = so_color$main_labels, na.value = "dark gray") & 
+  guides(color = guide_legend(ncol = 3, override.aes = list(size = 3)))
+
+dplot_1 + dplot_2
+
+```
+
+# Save output 
+
+```{r}
+
+saveRDS(so, so_file)
+
+```
+
+# Session info
+
+```{r session info, results="markup"}
+
+sessionInfo()
+
+```
