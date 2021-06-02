@@ -7,5 +7,4 @@
 #SBATCH -o %x.out
 #SBATCH -e %x.err
 
-module load Pandoc
-R -e "rmarkdown::render('norm_clust.Rmd',output_file='norm_clust.html')"
+jupyter nbconvert --to html --execute sct_int.r.ipynb
