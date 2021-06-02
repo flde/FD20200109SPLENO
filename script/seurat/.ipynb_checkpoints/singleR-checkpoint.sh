@@ -3,7 +3,7 @@
 #SBATCH --partition=shortq
 #SBATCH --qos=shortq
 #SBATCH --mem=200G
-#SBATCH --job-name cellranger_to_seurat
+#SBATCH --job-name singleR
 #SBATCH -o %x.out
 #SBATCH -e %x.err
 
