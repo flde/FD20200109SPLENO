@@ -90,7 +90,7 @@ so <- SplitObject(so, split.by = "sample_name")
 
 ```{r}
 
-variable_features_n <- 3000
+variable_features_n <- 2000
 vars_to_regress <- c("pMt_RNA")
 so <- lapply(so, SCTransform, variable.features.n = variable_features_n, vars.to.regress = vars_to_regress)
 
@@ -100,10 +100,10 @@ so <- lapply(so, SCTransform, variable.features.n = variable_features_n, vars.to
 
 ```{r}
 
-anchor_features <- SelectIntegrationFeatures(so, nfeatures = 3000)
+anchor_features <- SelectIntegrationFeatures(so, nfeatures = 2000)
 so <- PrepSCTIntegration(so, anchor.features = anchor_features)
 anchorset <- FindIntegrationAnchors(so, normalization.method = "SCT", anchor.features = anchor_features)
-so_int_sct <- IntegrateData(anchorset = anchorset, normalization.method = "SCT", new.assay.name = "INT")
+so_sct_int <- IntegrateData(anchorset = anchorset, normalization.method = "SCT", new.assay.name = "INT")
 
 ```
 
@@ -111,15 +111,15 @@ so_int_sct <- IntegrateData(anchorset = anchorset, normalization.method = "SCT",
 
 ```{r}
 
-integration <- list(
+so_sct_int <- list(
   
   anchor_features = anchor_features, 
   anchorset = anchorset, 
-  so_int_sct = so_int_sct
+  so_sct_int = so_sct_int
   
 )
 
-saveRDS(integration, "data/seurat_object/sct_int.rds")
+saveRDS(so_sct_int, "data/seurat_object/so_sct_int.rds")
 
 ```
 
