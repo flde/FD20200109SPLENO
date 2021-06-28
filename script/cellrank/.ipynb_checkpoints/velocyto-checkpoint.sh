@@ -28,6 +28,6 @@ sample_dir=${sample_dir[$SLURM_ARRAY_TASK_ID]}
 
 barcode_tsv=$''$sample_dir'/filtered_feature_bc_matrix/barcodes.qc.tsv'
 barcode_bam=$''$sample_dir'/possorted_genome_bam.bam'
-loom_file=$'qc'
+loom_file=$'velocyto'
 
 velocyto run -l "ValidatedIntrons10X" -@ 10 --samtools-memory 100 -b $barcode_tsv -o $sample_dir -e $loom_file -m $mask_gtf $barcode_bam $ref_gtf
