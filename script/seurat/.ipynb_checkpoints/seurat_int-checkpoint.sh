@@ -3,7 +3,7 @@
 #SBATCH --partition=shortq
 #SBATCH --qos=shortq
 #SBATCH --mem=200G
-#SBATCH --job-name sct_int
+#SBATCH --job-name seurat_int
 #SBATCH -o %x.out
 #SBATCH -e %x.err
 

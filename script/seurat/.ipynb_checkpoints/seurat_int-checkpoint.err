@@ -37,13 +37,91 @@
 0%   10   20   30   40   50   60   70   80   90   100%
 [----|----|----|----|----|----|----|----|----|----|
 **************************************************|
-0%   10   20   30   40   50   60   70   80   90   100%
-[----|----|----|----|----|----|----|----|----|----|
-**************************************************|
-0%   10   20   30   40   50   60   70   80   90   100%
-[----|----|----|----|----|----|----|----|----|----|
-**************************************************|
-0%   10   20   30   40   50   60   70   80   90   100%
-[----|----|----|----|----|----|----|----|----|----|
-**************************************************|
-[NbConvertApp] Writing 2327759 bytes to seurat_int.r.html
+Traceback (most recent call last):
+  File "/home/fdeckert/bin/miniconda3/bin/jupyter-nbconvert", line 11, in <module>
+    sys.exit(main())
+  File "/home/fdeckert/bin/miniconda3/lib/python3.8/site-packages/jupyter_core/application.py", line 254, in launch_instance
+    return super(JupyterApp, cls).launch_instance(argv=argv, **kwargs)
+  File "/home/fdeckert/bin/miniconda3/lib/python3.8/site-packages/traitlets/config/application.py", line 845, in launch_instance
+    app.start()
+  File "/home/fdeckert/bin/miniconda3/lib/python3.8/site-packages/nbconvert/nbconvertapp.py", line 350, in start
+    self.convert_notebooks()
+  File "/home/fdeckert/bin/miniconda3/lib/python3.8/site-packages/nbconvert/nbconvertapp.py", line 524, in convert_notebooks
+    self.convert_single_notebook(notebook_filename)
+  File "/home/fdeckert/bin/miniconda3/lib/python3.8/site-packages/nbconvert/nbconvertapp.py", line 489, in convert_single_notebook
+    output, resources = self.export_single_notebook(notebook_filename, resources, input_buffer=input_buffer)
+  File "/home/fdeckert/bin/miniconda3/lib/python3.8/site-packages/nbconvert/nbconvertapp.py", line 418, in export_single_notebook
+    output, resources = self.exporter.from_filename(notebook_filename, resources=resources)
+  File "/home/fdeckert/bin/miniconda3/lib/python3.8/site-packages/nbconvert/exporters/exporter.py", line 181, in from_filename
+    return self.from_file(f, resources=resources, **kw)
+  File "/home/fdeckert/bin/miniconda3/lib/python3.8/site-packages/nbconvert/exporters/exporter.py", line 199, in from_file
+    return self.from_notebook_node(nbformat.read(file_stream, as_version=4), resources=resources, **kw)
+  File "/home/fdeckert/bin/miniconda3/lib/python3.8/site-packages/nbconvert/exporters/html.py", line 119, in from_notebook_node
+    return super().from_notebook_node(nb, resources, **kw)
+  File "/home/fdeckert/bin/miniconda3/lib/python3.8/site-packages/nbconvert/exporters/templateexporter.py", line 369, in from_notebook_node
+    nb_copy, resources = super().from_notebook_node(nb, resources, **kw)
+  File "/home/fdeckert/bin/miniconda3/lib/python3.8/site-packages/nbconvert/exporters/exporter.py", line 143, in from_notebook_node
+    nb_copy, resources = self._preprocess(nb_copy, resources)
+  File "/home/fdeckert/bin/miniconda3/lib/python3.8/site-packages/nbconvert/exporters/exporter.py", line 318, in _preprocess
+    nbc, resc = preprocessor(nbc, resc)
+  File "/home/fdeckert/bin/miniconda3/lib/python3.8/site-packages/nbconvert/preprocessors/base.py", line 47, in __call__
+    return self.preprocess(nb, resources)
+  File "/home/fdeckert/bin/miniconda3/lib/python3.8/site-packages/nbconvert/preprocessors/execute.py", line 79, in preprocess
+    self.execute()
+  File "/home/fdeckert/bin/miniconda3/lib/python3.8/site-packages/nbclient/util.py", line 74, in wrapped
+    return just_run(coro(*args, **kwargs))
+  File "/home/fdeckert/bin/miniconda3/lib/python3.8/site-packages/nbclient/util.py", line 53, in just_run
+    return loop.run_until_complete(coro)
+  File "/home/fdeckert/bin/miniconda3/lib/python3.8/asyncio/base_events.py", line 616, in run_until_complete
+    return future.result()
+  File "/home/fdeckert/bin/miniconda3/lib/python3.8/site-packages/nbclient/client.py", line 553, in async_execute
+    await self.async_execute_cell(
+  File "/home/fdeckert/bin/miniconda3/lib/python3.8/site-packages/nbconvert/preprocessors/execute.py", line 123, in async_execute_cell
+    cell, resources = self.preprocess_cell(cell, self.resources, cell_index)
+  File "/home/fdeckert/bin/miniconda3/lib/python3.8/site-packages/nbconvert/preprocessors/execute.py", line 146, in preprocess_cell
+    cell = run_sync(NotebookClient.async_execute_cell)(self, cell, index, store_history=self.store_history)
+  File "/home/fdeckert/bin/miniconda3/lib/python3.8/site-packages/nbclient/util.py", line 74, in wrapped
+    return just_run(coro(*args, **kwargs))
+  File "/home/fdeckert/bin/miniconda3/lib/python3.8/site-packages/nbclient/util.py", line 53, in just_run
+    return loop.run_until_complete(coro)
+  File "/home/fdeckert/bin/miniconda3/lib/python3.8/site-packages/nest_asyncio.py", line 70, in run_until_complete
+    return f.result()
+  File "/home/fdeckert/bin/miniconda3/lib/python3.8/asyncio/futures.py", line 178, in result
+    raise self._exception
+  File "/home/fdeckert/bin/miniconda3/lib/python3.8/asyncio/tasks.py", line 280, in __step
+    result = coro.send(None)
+  File "/home/fdeckert/bin/miniconda3/lib/python3.8/site-packages/nbclient/client.py", line 857, in async_execute_cell
+    self._check_raise_for_error(cell, exec_reply)
+  File "/home/fdeckert/bin/miniconda3/lib/python3.8/site-packages/nbclient/client.py", line 760, in _check_raise_for_error
+    raise CellExecutionError.from_cell_and_msg(cell, exec_reply_content)
+nbclient.exceptions.CellExecutionError: An error occurred while executing the following cell:
+------------------
+source("bib/seurat_function.R")
+so_sct_int <- dim_clust(
+    # Seurat 
+    so = so_sct_int, 
+    assay = "INT",
+    # PCA features
+    blacklist_genes = NULL, 
+    # Dim reduction
+    dims_pca  = 30,  # Default 20 - RunPCA dims
+    dims_umap = 30,  # Default NULL - RunUMAP dims 
+    dims_tsne = 20,  # Default 1:5
+    min_dist  = 0.3,  # Default 0.3  - RunUMAP dmin.ist - controls how tightly the embedding
+    # Cluster 
+    dims_cluster = 30,  # Default 1:10 - FindNeighbors dims  
+    cluster_res  = 0.8 # Default 0.8 - FindClusters resoluton - above(below) 1.0 to obtain larger(smaller) number of communities)
+)
+
+# Reset main_labels factor level 
+so_sct_int$main_labels = factor(so_sct_int$main_labels, levels = names(so_color$main_labels))
+------------------
+
+Error in file(filename, "r", encoding = encoding): cannot open the connection
+Traceback:
+
+1. source("bib/seurat_function.R")
+2. file(filename, "r", encoding = encoding)
+ERROR: Error in file(filename, "r", encoding = encoding): cannot open the connection
+
+

@@ -14271,6 +14271,8 @@ a.anchor-link {
 <span class="kn">import</span> <span class="nn">scanpy</span> <span class="k">as</span> <span class="nn">sc</span>
 
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">scipy</span>
 
 <span class="kn">import</span> <span class="nn">os</span>
 
@@ -14288,7 +14290,7 @@ a.anchor-link {
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[2]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">os</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="s2">&quot;/research/peer/fdeckert/FD20200109SPLENO&quot;</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">os</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="s1">&#39;/research/peer/fdeckert/FD20200109SPLENO&#39;</span><span class="p">)</span>
 </pre></div>
 
      </div>
@@ -14296,53 +14298,27 @@ a.anchor-link {
 </div>
 </div>
 
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[3]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">adata</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">read_h5ad</span><span class="p">(</span><span class="s2">&quot;data/h5ad_object/h5ad_qc.h5ad&quot;</span><span class="p">)</span>
-
-<span class="c1"># Create scale layer from .X</span>
-<span class="n">adata</span><span class="o">.</span><span class="n">layers</span><span class="p">[</span><span class="s1">&#39;scale.data&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">adata</span><span class="o">.</span><span class="n">X</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span> <span class="c1"># numpy.ndarray</span>
-
-<span class="c1"># Get count data from raw</span>
-<span class="n">adata</span><span class="o">.</span><span class="n">layers</span><span class="p">[</span><span class="s1">&#39;counts&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">adata</span><span class="o">.</span><span class="n">raw</span><span class="p">[:,</span> <span class="n">adata</span><span class="o">.</span><span class="n">raw</span><span class="o">.</span><span class="n">var_names</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">adata</span><span class="o">.</span><span class="n">var_names</span><span class="p">)]</span><span class="o">.</span><span class="n">X</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-<span class="n">adata</span><span class="o">.</span><span class="n">X</span> <span class="o">=</span> <span class="n">adata</span><span class="o">.</span><span class="n">layers</span><span class="p">[</span><span class="s1">&#39;counts&#39;</span><span class="p">]</span>
-
-<span class="c1"># Normalize and log1p for count data in new layer data</span>
-<span class="n">adata</span><span class="o">.</span><span class="n">layers</span><span class="p">[</span><span class="s1">&#39;data&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">pp</span><span class="o">.</span><span class="n">normalize_total</span><span class="p">(</span><span class="n">adata</span><span class="p">,</span> <span class="n">target_sum</span><span class="o">=</span><span class="mf">1e4</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">False</span><span class="p">)[</span><span class="s1">&#39;X&#39;</span><span class="p">]</span>
-<span class="n">adata</span><span class="o">.</span><span class="n">layers</span><span class="p">[</span><span class="s1">&#39;data&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">pp</span><span class="o">.</span><span class="n">log1p</span><span class="p">(</span><span class="n">adata</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">X</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Create anndata from count mtx wit var_names </span>
+<span class="n">adata</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">read_mtx</span><span class="p">(</span><span class="s1">&#39;data/object/components/slots/seurat_counts.mtx&#39;</span><span class="p">)</span>
+<span class="n">adata</span><span class="o">.</span><span class="n">var_names</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_table</span><span class="p">(</span><span class="s1">&#39;data/object/components/slots/seurat_counts_genes.csv&#39;</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">index</span>
+<span class="c1"># Add obs from meta_data</span>
+<span class="n">adata</span><span class="o">.</span><span class="n">obs</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;data/object/components/meta_data/seurat_meta.csv&#39;</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="c1"># Subset by variable features </span>
+<span class="n">variable_features</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;data/object/components/variable_features/seurat_variable_features.csv&#39;</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">index</span>
+<span class="n">adata</span> <span class="o">=</span> <span class="n">adata</span><span class="p">[:,</span> <span class="n">variable_features</span><span class="p">]</span>
+<span class="c1"># Set layers</span>
+<span class="n">adata</span><span class="o">.</span><span class="n">layers</span><span class="p">[</span><span class="s1">&#39;counts&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">adata</span><span class="o">.</span><span class="n">X</span>
 </pre></div>
 
      </div>
 </div>
 </div>
-</div>
-
-<div class="jp-Cell-outputWrapper">
-
-
-<div class="jp-OutputArea jp-Cell-outputArea">
-
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-
-
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr">
-<pre>/home/fdeckert/bin/miniconda3/envs/p.3.9.4-FD20200109SPLENO/lib/python3.9/site-packages/anndata/compat/__init__.py:180: FutureWarning: Moving element from .uns[&#39;neighbors&#39;][&#39;distances&#39;] to .obsp[&#39;distances&#39;].
-
-This is where adjacency matrices should go now.
-  warn(
-</pre>
-</div>
-</div>
-
-</div>
-
 </div>
 
 </div>
@@ -14359,16 +14335,16 @@ This is where adjacency matrices should go now.
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">adata</span> <span class="o">=</span> <span class="n">scvi</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">setup_anndata</span><span class="p">(</span>
     <span class="n">adata</span><span class="p">,</span>
     <span class="n">layer</span><span class="o">=</span><span class="s1">&#39;counts&#39;</span><span class="p">,</span> 
-    <span class="n">continuous_covariate_keys</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;nCount_RNA&quot;</span><span class="p">,</span> <span class="s2">&quot;pMt_RNA&quot;</span><span class="p">,</span> <span class="s2">&quot;msCC_diff_RNA&quot;</span><span class="p">],</span> 
-    <span class="n">copy</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">continuous_covariate_keys</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;pMt_RNA&#39;</span><span class="p">,</span> <span class="s1">&#39;msCC_diff_RNA&#39;</span><span class="p">],</span> 
+    <span class="n">copy</span><span class="o">=</span><span class="kc">True</span>
 <span class="p">)</span>
 
 <span class="n">adata_batch</span> <span class="o">=</span> <span class="n">scvi</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">setup_anndata</span><span class="p">(</span>
     <span class="n">adata</span><span class="p">,</span>
-    <span class="n">batch_key</span> <span class="o">=</span> <span class="s1">&#39;sample_name&#39;</span><span class="p">,</span> 
     <span class="n">layer</span><span class="o">=</span><span class="s1">&#39;counts&#39;</span><span class="p">,</span> 
-    <span class="n">continuous_covariate_keys</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;nCount_RNA&quot;</span><span class="p">,</span> <span class="s2">&quot;pMt_RNA&quot;</span><span class="p">,</span> <span class="s2">&quot;msCC_diff_RNA&quot;</span><span class="p">],</span> 
-    <span class="n">copy</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">categorical_covariate_keys</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;treatment&#39;</span><span class="p">],</span> 
+    <span class="n">continuous_covariate_keys</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;pMt_RNA&#39;</span><span class="p">,</span> <span class="s1">&#39;msCC_diff_RNA&#39;</span><span class="p">],</span> 
+    <span class="n">copy</span><span class="o">=</span><span class="kc">True</span>
 <span class="p">)</span>
 </pre></div>
 
@@ -14394,15 +14370,15 @@ This is where adjacency matrices should go now.
 <span class="ansi-blue-fg">INFO    </span> Using data from adata.layers<span class="ansi-bold">[</span><span class="ansi-green-fg">&#34;counts&#34;</span><span class="ansi-bold">]</span>                                              
 <span class="ansi-blue-fg">INFO    </span> Computing library size prior per batch                                              
 <span class="ansi-blue-fg">INFO    </span> Successfully registered anndata object containing <span class="ansi-cyan-intense-fg ansi-bold">22290</span> cells, <span class="ansi-cyan-intense-fg ansi-bold">2000</span> vars, <span class="ansi-cyan-intense-fg ansi-bold">1</span> batches,
-         <span class="ansi-cyan-intense-fg ansi-bold">1</span> labels, and <span class="ansi-cyan-intense-fg ansi-bold">0</span> proteins. Also registered <span class="ansi-cyan-intense-fg ansi-bold">0</span> extra categorical covariates and <span class="ansi-cyan-intense-fg ansi-bold">3</span> extra
+         <span class="ansi-cyan-intense-fg ansi-bold">1</span> labels, and <span class="ansi-cyan-intense-fg ansi-bold">0</span> proteins. Also registered <span class="ansi-cyan-intense-fg ansi-bold">0</span> extra categorical covariates and <span class="ansi-cyan-intense-fg ansi-bold">2</span> extra
          continuous covariates.                                                              
 <span class="ansi-blue-fg">INFO    </span> Please do not further modify adata until model is trained.                          
-<span class="ansi-blue-fg">INFO    </span> Using batches from adata.obs<span class="ansi-bold">[</span><span class="ansi-green-fg">&#34;sample_name&#34;</span><span class="ansi-bold">]</span>                                         
+<span class="ansi-blue-fg">INFO    </span> No batch_key inputted, assuming all cells are same batch                            
 <span class="ansi-blue-fg">INFO    </span> No label_key inputted, assuming all cells have same label                           
 <span class="ansi-blue-fg">INFO    </span> Using data from adata.layers<span class="ansi-bold">[</span><span class="ansi-green-fg">&#34;counts&#34;</span><span class="ansi-bold">]</span>                                              
 <span class="ansi-blue-fg">INFO    </span> Computing library size prior per batch                                              
-<span class="ansi-blue-fg">INFO    </span> Successfully registered anndata object containing <span class="ansi-cyan-intense-fg ansi-bold">22290</span> cells, <span class="ansi-cyan-intense-fg ansi-bold">2000</span> vars, <span class="ansi-cyan-intense-fg ansi-bold">8</span> batches,
-         <span class="ansi-cyan-intense-fg ansi-bold">1</span> labels, and <span class="ansi-cyan-intense-fg ansi-bold">0</span> proteins. Also registered <span class="ansi-cyan-intense-fg ansi-bold">0</span> extra categorical covariates and <span class="ansi-cyan-intense-fg ansi-bold">3</span> extra
+<span class="ansi-blue-fg">INFO    </span> Successfully registered anndata object containing <span class="ansi-cyan-intense-fg ansi-bold">22290</span> cells, <span class="ansi-cyan-intense-fg ansi-bold">2000</span> vars, <span class="ansi-cyan-intense-fg ansi-bold">1</span> batches,
+         <span class="ansi-cyan-intense-fg ansi-bold">1</span> labels, and <span class="ansi-cyan-intense-fg ansi-bold">0</span> proteins. Also registered <span class="ansi-cyan-intense-fg ansi-bold">1</span> extra categorical covariates and <span class="ansi-cyan-intense-fg ansi-bold">2</span> extra
          continuous covariates.                                                              
 <span class="ansi-blue-fg">INFO    </span> Please do not further modify adata until model is trained.                          
 </pre>
@@ -14474,7 +14450,7 @@ Set SLURM handle signals.
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>Epoch 359/359: 100%|██████████| 359/359 [1:01:13&lt;00:00, 10.23s/it, loss=581, v_num=1]</pre>
+<pre>Epoch 359/359: 100%|██████████| 359/359 [59:41&lt;00:00,  9.98s/it, loss=571, v_num=1]</pre>
 </div>
 </div>
 
@@ -14500,7 +14476,7 @@ Set SLURM handle signals.
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
 <pre>
-Epoch 359/359: 100%|██████████| 359/359 [1:01:05&lt;00:00, 10.21s/it, loss=578, v_num=1]
+Epoch 359/359: 100%|██████████| 359/359 [58:16&lt;00:00,  9.74s/it, loss=578, v_num=1]
 </pre>
 </div>
 </div>
@@ -14515,8 +14491,8 @@ Epoch 359/359: 100%|██████████| 359/359 [1:01:05&lt;00:00, 1
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[7]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">model</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s2">&quot;data/scvi/model/&quot;</span><span class="p">)</span>
-<span class="n">model_batch</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s2">&quot;data/scvi/model_batch/&quot;</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">model</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s1">&#39;data/scvi/model/&#39;</span><span class="p">,</span> <span class="n">overwrite</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+<span class="n">model_batch</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s1">&#39;data/scvi/model_batch/&#39;</span><span class="p">,</span> <span class="n">overwrite</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
 </pre></div>
 
      </div>
@@ -14530,7 +14506,8 @@ Epoch 359/359: 100%|██████████| 359/359 [1:01:05&lt;00:00, 1
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[8]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># model = scvi.model.SCVI.load(&quot;model_all/&quot;, adata, use_gpu=False)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># model = scvi.model.SCVI.load(&#39;data/scvi/model/&#39;, adata, use_gpu=False)</span>
+<span class="c1"># model_batch = scvi.model.SCVI.load(&#39;data/scvi/model_batch/&#39;, adata_batch, use_gpu=False)</span>
 </pre></div>
 
      </div>
@@ -14541,7 +14518,7 @@ Epoch 359/359: 100%|██████████| 359/359 [1:01:05&lt;00:00, 1
 </div>
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h1 id="Obtaining-model-outputs">Obtaining model outputs<a class="anchor-link" href="#Obtaining-model-outputs">&#182;</a></h1>
+<h1 id="Update-anndata-object-with-scvi-results">Update anndata object with scvi results<a class="anchor-link" href="#Update-anndata-object-with-scvi-results">&#182;</a></h1>
 </div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
@@ -14549,8 +14526,9 @@ Epoch 359/359: 100%|██████████| 359/359 [1:01:05&lt;00:00, 1
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[9]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># latent = model.get_latent_representation()</span>
-<span class="c1"># adata.obsm[&quot;X_scVI&quot;] = latent</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># scvi normalized counts </span>
+<span class="n">adata</span><span class="o">.</span><span class="n">layers</span><span class="p">[</span><span class="s1">&#39;scvi.data&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">get_normalized_expression</span><span class="p">(</span><span class="n">library_size</span><span class="o">=</span><span class="mf">10e4</span><span class="p">)</span>
+<span class="n">adata_batch</span><span class="o">.</span><span class="n">layers</span><span class="p">[</span><span class="s1">&#39;scvibatch.data&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">get_normalized_expression</span><span class="p">(</span><span class="n">library_size</span><span class="o">=</span><span class="mf">10e4</span><span class="p">)</span>
 </pre></div>
 
      </div>
@@ -14564,9 +14542,8 @@ Epoch 359/359: 100%|██████████| 359/359 [1:01:05&lt;00:00, 1
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[10]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># use scVI latent space for UMAP generation</span>
-<span class="c1"># sc.pp.neighbors(adata, use_rep=&quot;X_scVI&quot;)</span>
-<span class="c1"># sc.tl.umap(adata, min_dist=0.3)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">adata</span><span class="o">.</span><span class="n">obsm</span><span class="p">[</span><span class="s1">&#39;X_scVI&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">get_latent_representation</span><span class="p">()</span>
+<span class="n">adata_batch</span><span class="o">.</span><span class="n">obsm</span><span class="p">[</span><span class="s1">&#39;X_scVIbatch&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">model_batch</span><span class="o">.</span><span class="n">get_latent_representation</span><span class="p">()</span>
 </pre></div>
 
      </div>
@@ -14574,17 +14551,25 @@ Epoch 359/359: 100%|██████████| 359/359 [1:01:05&lt;00:00, 1
 </div>
 </div>
 
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h1 id="Store-results">Store results<a class="anchor-link" href="#Store-results">&#182;</a></h1>
+</div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[11]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># sc.pl.umap(</span>
-<span class="c1">#     adata,</span>
-<span class="c1">#     color=[&quot;tissue&quot;],</span>
-<span class="c1">#     frameon=False</span>
-<span class="c1"># )</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">scipy</span><span class="o">.</span><span class="n">sparse</span><span class="o">.</span><span class="n">save_npz</span><span class="p">(</span><span class="s1">&#39;data/object/components/slots/scvi_data.npz&#39;</span><span class="p">,</span> <span class="n">scipy</span><span class="o">.</span><span class="n">sparse</span><span class="o">.</span><span class="n">csc_matrix</span><span class="p">(</span><span class="n">adata</span><span class="o">.</span><span class="n">layers</span><span class="p">[</span><span class="s1">&#39;scvi.data&#39;</span><span class="p">]))</span>
+<span class="n">scipy</span><span class="o">.</span><span class="n">sparse</span><span class="o">.</span><span class="n">save_npz</span><span class="p">(</span><span class="s1">&#39;data/object/components/slots/scvibatch_data.npz&#39;</span><span class="p">,</span> <span class="n">scipy</span><span class="o">.</span><span class="n">sparse</span><span class="o">.</span><span class="n">csc_matrix</span><span class="p">(</span><span class="n">adata_batch</span><span class="o">.</span><span class="n">layers</span><span class="p">[</span><span class="s1">&#39;scvibatch.data&#39;</span><span class="p">]))</span>
+
+<span class="n">adata</span><span class="o">.</span><span class="n">obs_names</span><span class="o">.</span><span class="n">to_series</span><span class="p">()</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s1">&#39;data/object/components/slots/scvi_data_cellid.txt&#39;</span><span class="p">)</span>
+<span class="n">adata_batch</span><span class="o">.</span><span class="n">obs_names</span><span class="o">.</span><span class="n">to_series</span><span class="p">()</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s1">&#39;data/object/components/slots/scvibatch_data_cellid.txt&#39;</span><span class="p">)</span>
+
+<span class="n">adata</span><span class="o">.</span><span class="n">var_names</span><span class="o">.</span><span class="n">to_series</span><span class="p">()</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s1">&#39;data/object/components/slots/scvi_data_genes.txt&#39;</span><span class="p">)</span>
+<span class="n">adata_batch</span><span class="o">.</span><span class="n">var_names</span><span class="o">.</span><span class="n">to_series</span><span class="p">()</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s1">&#39;data/object/components/slots/scvibatch_data_genes.txt&#39;</span><span class="p">)</span>
 </pre></div>
 
      </div>
@@ -14598,12 +14583,14 @@ Epoch 359/359: 100%|██████████| 359/359 [1:01:05&lt;00:00, 1
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[12]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># sc.pl.umap(</span>
-<span class="c1">#     adata,</span>
-<span class="c1">#     color=[&quot;donor&quot;, &quot;cell_source&quot;],</span>
-<span class="c1">#     ncols=2,</span>
-<span class="c1">#     frameon=False,</span>
-<span class="c1"># )</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">savetxt</span><span class="p">(</span><span class="s1">&#39;data/object/components/reductions/scvi_latent.txt&#39;</span><span class="p">,</span> <span class="n">adata</span><span class="o">.</span><span class="n">obsm</span><span class="p">[</span><span class="s1">&#39;X_scVI&#39;</span><span class="p">])</span>
+<span class="n">np</span><span class="o">.</span><span class="n">savetxt</span><span class="p">(</span><span class="s1">&#39;data/object/components/reductions/scvibatch_latent.txt&#39;</span><span class="p">,</span> <span class="n">adata_batch</span><span class="o">.</span><span class="n">obsm</span><span class="p">[</span><span class="s1">&#39;X_scVIbatch&#39;</span><span class="p">])</span>
+
+<span class="n">adata</span><span class="o">.</span><span class="n">obs_names</span><span class="o">.</span><span class="n">to_series</span><span class="p">()</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s1">&#39;data/object/components/reductions/scvi_latent_cellid.txt&#39;</span><span class="p">)</span>
+<span class="n">adata_batch</span><span class="o">.</span><span class="n">obs_names</span><span class="o">.</span><span class="n">to_series</span><span class="p">()</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s1">&#39;data/object/components/reductions/scvibatch_latent_cellid.txt&#39;</span><span class="p">)</span>
+
+<span class="n">adata</span><span class="o">.</span><span class="n">var_names</span><span class="o">.</span><span class="n">to_series</span><span class="p">()</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s1">&#39;data/object/components/reductions/scvi_latent_genes.txt&#39;</span><span class="p">)</span>
+<span class="n">adata_batch</span><span class="o">.</span><span class="n">var_names</span><span class="o">.</span><span class="n">to_series</span><span class="p">()</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s1">&#39;data/object/components/reductions/scvibatch_latent_genes.txt&#39;</span><span class="p">)</span>
 </pre></div>
 
      </div>
