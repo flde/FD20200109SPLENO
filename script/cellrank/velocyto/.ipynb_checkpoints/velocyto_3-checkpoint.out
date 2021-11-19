@@ -1,0 +1,41 @@
+2021-11-17 11:08:14,452 - DEBUG - Using logic: ValidatedIntrons10X
+2021-11-17 11:08:14,465 - INFO - Read 7809 cell barcodes from /research/peer/fdeckert/FD20200109SPLENO/data/BSA_0355_SM01_10x_SPLENO/OUT/COUNT/M2_CpG_Prog_transcriptome/filtered_feature_bc_matrix/barcodes.tsv.gz
+2021-11-17 11:08:14,466 - DEBUG - Example of barcode: AAACCCAAGCGTTCAT and cell_id: velocyto:AAACCCAAGCGTTCAT-1
+2021-11-17 11:08:14,478 - DEBUG - Peeking into /research/peer/fdeckert/FD20200109SPLENO/data/BSA_0355_SM01_10x_SPLENO/OUT/COUNT/M2_CpG_Prog_transcriptome/possorted_genome_bam.bam
+2021-11-17 11:08:14,495 - WARNING - Not found cell and umi barcode in entry 4 of the bam file
+2021-11-17 11:08:14,496 - WARNING - Not found cell and umi barcode in entry 97 of the bam file
+2021-11-17 11:08:14,496 - WARNING - Not found cell and umi barcode in entry 194 of the bam file
+2021-11-17 11:08:14,496 - WARNING - Not found cell and umi barcode in entry 198 of the bam file
+2021-11-17 11:08:14,496 - WARNING - Not found cell and umi barcode in entry 207 of the bam file
+2021-11-17 11:08:14,497 - WARNING - Not found cell and umi barcode in entry 239 of the bam file
+2021-11-17 11:08:14,497 - WARNING - Not found cell and umi barcode in entry 256 of the bam file
+2021-11-17 11:08:14,497 - WARNING - Not found cell and umi barcode in entry 257 of the bam file
+2021-11-17 11:08:14,497 - WARNING - Not found cell and umi barcode in entry 271 of the bam file
+2021-11-17 11:08:14,498 - WARNING - Not found cell and umi barcode in entry 320 of the bam file
+2021-11-17 11:08:14,498 - WARNING - Not found cell and umi barcode in entry 362 of the bam file
+2021-11-17 11:08:14,498 - WARNING - Not found cell and umi barcode in entry 363 of the bam file
+2021-11-17 11:08:14,498 - WARNING - Not found cell and umi barcode in entry 364 of the bam file
+2021-11-17 11:08:14,498 - WARNING - Not found cell and umi barcode in entry 387 of the bam file
+2021-11-17 11:08:14,498 - WARNING - Not found cell and umi barcode in entry 394 of the bam file
+2021-11-17 11:08:14,498 - WARNING - Not found cell and umi barcode in entry 395 of the bam file
+2021-11-17 11:08:14,499 - WARNING - Not found cell and umi barcode in entry 442 of the bam file
+2021-11-17 11:08:14,499 - WARNING - Not found cell and umi barcode in entry 443 of the bam file
+2021-11-17 11:08:14,499 - WARNING - Not found cell and umi barcode in entry 449 of the bam file
+2021-11-17 11:08:14,499 - WARNING - Not found cell and umi barcode in entry 463 of the bam file
+2021-11-17 11:08:14,499 - WARNING - Not found cell and umi barcode in entry 488 of the bam file
+2021-11-17 11:08:14,500 - WARNING - Not found cell and umi barcode in entry 536 of the bam file
+2021-11-17 11:08:14,500 - WARNING - Not found cell and umi barcode in entry 539 of the bam file
+2021-11-17 11:08:14,500 - WARNING - Not found cell and umi barcode in entry 540 of the bam file
+2021-11-17 11:08:14,500 - WARNING - Not found cell and umi barcode in entry 643 of the bam file
+2021-11-17 11:08:14,500 - WARNING - Not found cell and umi barcode in entry 646 of the bam file
+2021-11-17 11:08:14,501 - WARNING - Not found cell and umi barcode in entry 649 of the bam file
+2021-11-17 11:08:14,501 - WARNING - Not found cell and umi barcode in entry 656 of the bam file
+2021-11-17 11:08:14,501 - WARNING - Not found cell and umi barcode in entry 658 of the bam file
+2021-11-17 11:08:14,501 - WARNING - Not found cell and umi barcode in entry 665 of the bam file
+2021-11-17 11:08:14,501 - WARNING - Not found cell and umi barcode in entry 701 of the bam file
+2021-11-17 11:08:14,502 - WARNING - Not found cell and umi barcode in entry 772 of the bam file
+2021-11-17 11:08:14,502 - WARNING - Not found cell and umi barcode in entry 786 of the bam file
+2021-11-17 11:08:14,502 - WARNING - Not found cell and umi barcode in entry 787 of the bam file
+2021-11-17 11:08:14,503 - WARNING - Not found cell and umi barcode in entry 1031 of the bam file
+2021-11-17 11:08:14,506 - WARNING - The file /research/peer/fdeckert/FD20200109SPLENO/data/BSA_0355_SM01_10x_SPLENO/OUT/COUNT/M2_CpG_Prog_transcriptome/cellsorted_possorted_genome_bam.bam already exists. The sorting step will be skipped and the existing file will be used.
+2021-11-17 11:08:14,506 - INFO - Load the annotation from /research/peer/fdeckert/FD20200109SPLENO/data/mm10/cellranger/mm10-2020-A_build/gencode.vM23.primary_assembly.annotation.gtf.filtered

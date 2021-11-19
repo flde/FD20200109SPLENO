@@ -1,0 +1,9 @@
+[NbConvertApp] Converting notebook raceid_progenitor_1.r.ipynb to html
+[NbConvertApp] Executing notebook with kernel: r.4.1.0-fd20200109spleno
+slurmstepd: error: _is_a_lwp: open() /proc/17428/status failed: No such file or directory
+Warning messages:
+1: In doTryCatch(return(expr), name, parentenv, handler) :
+  display list redraw incomplete
+2: In doTryCatch(return(expr), name, parentenv, handler) :
+  display list redraw incomplete
+[NbConvertApp] Writing 3601724 bytes to raceid_progenitor_1.r.html

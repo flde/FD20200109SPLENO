@@ -1,0 +1,7 @@
+[NbConvertApp] Converting notebook cellranger_to_seurat.r.ipynb to html
+[NbConvertApp] Executing notebook with kernel: r.4.1.0-fd20200109spleno
+Performing log-normalization
+0%   10   20   30   40   50   60   70   80   90   100%
+[----|----|----|----|----|----|----|----|----|----|
+**************************************************|
+[NbConvertApp] Writing 602306 bytes to cellranger_to_seurat.r.html

@@ -1,0 +1,120 @@
+[NbConvertApp] Converting notebook raceid.r.ipynb to html
+[NbConvertApp] Executing notebook with kernel: r.4.1.0-fd20200109spleno
+Traceback (most recent call last):
+  File "/home/fdeckert/bin/miniconda3/bin/jupyter-nbconvert", line 11, in <module>
+    sys.exit(main())
+  File "/home/fdeckert/bin/miniconda3/lib/python3.8/site-packages/jupyter_core/application.py", line 254, in launch_instance
+    return super(JupyterApp, cls).launch_instance(argv=argv, **kwargs)
+  File "/home/fdeckert/bin/miniconda3/lib/python3.8/site-packages/traitlets/config/application.py", line 845, in launch_instance
+    app.start()
+  File "/home/fdeckert/bin/miniconda3/lib/python3.8/site-packages/nbconvert/nbconvertapp.py", line 350, in start
+    self.convert_notebooks()
+  File "/home/fdeckert/bin/miniconda3/lib/python3.8/site-packages/nbconvert/nbconvertapp.py", line 524, in convert_notebooks
+    self.convert_single_notebook(notebook_filename)
+  File "/home/fdeckert/bin/miniconda3/lib/python3.8/site-packages/nbconvert/nbconvertapp.py", line 489, in convert_single_notebook
+    output, resources = self.export_single_notebook(notebook_filename, resources, input_buffer=input_buffer)
+  File "/home/fdeckert/bin/miniconda3/lib/python3.8/site-packages/nbconvert/nbconvertapp.py", line 418, in export_single_notebook
+    output, resources = self.exporter.from_filename(notebook_filename, resources=resources)
+  File "/home/fdeckert/bin/miniconda3/lib/python3.8/site-packages/nbconvert/exporters/exporter.py", line 181, in from_filename
+    return self.from_file(f, resources=resources, **kw)
+  File "/home/fdeckert/bin/miniconda3/lib/python3.8/site-packages/nbconvert/exporters/exporter.py", line 199, in from_file
+    return self.from_notebook_node(nbformat.read(file_stream, as_version=4), resources=resources, **kw)
+  File "/home/fdeckert/bin/miniconda3/lib/python3.8/site-packages/nbconvert/exporters/html.py", line 119, in from_notebook_node
+    return super().from_notebook_node(nb, resources, **kw)
+  File "/home/fdeckert/bin/miniconda3/lib/python3.8/site-packages/nbconvert/exporters/templateexporter.py", line 369, in from_notebook_node
+    nb_copy, resources = super().from_notebook_node(nb, resources, **kw)
+  File "/home/fdeckert/bin/miniconda3/lib/python3.8/site-packages/nbconvert/exporters/exporter.py", line 143, in from_notebook_node
+    nb_copy, resources = self._preprocess(nb_copy, resources)
+  File "/home/fdeckert/bin/miniconda3/lib/python3.8/site-packages/nbconvert/exporters/exporter.py", line 318, in _preprocess
+    nbc, resc = preprocessor(nbc, resc)
+  File "/home/fdeckert/bin/miniconda3/lib/python3.8/site-packages/nbconvert/preprocessors/base.py", line 47, in __call__
+    return self.preprocess(nb, resources)
+  File "/home/fdeckert/bin/miniconda3/lib/python3.8/site-packages/nbconvert/preprocessors/execute.py", line 79, in preprocess
+    self.execute()
+  File "/home/fdeckert/bin/miniconda3/lib/python3.8/site-packages/nbclient/util.py", line 74, in wrapped
+    return just_run(coro(*args, **kwargs))
+  File "/home/fdeckert/bin/miniconda3/lib/python3.8/site-packages/nbclient/util.py", line 53, in just_run
+    return loop.run_until_complete(coro)
+  File "/home/fdeckert/bin/miniconda3/lib/python3.8/asyncio/base_events.py", line 616, in run_until_complete
+    return future.result()
+  File "/home/fdeckert/bin/miniconda3/lib/python3.8/site-packages/nbclient/client.py", line 553, in async_execute
+    await self.async_execute_cell(
+  File "/home/fdeckert/bin/miniconda3/lib/python3.8/site-packages/nbconvert/preprocessors/execute.py", line 123, in async_execute_cell
+    cell, resources = self.preprocess_cell(cell, self.resources, cell_index)
+  File "/home/fdeckert/bin/miniconda3/lib/python3.8/site-packages/nbconvert/preprocessors/execute.py", line 146, in preprocess_cell
+    cell = run_sync(NotebookClient.async_execute_cell)(self, cell, index, store_history=self.store_history)
+  File "/home/fdeckert/bin/miniconda3/lib/python3.8/site-packages/nbclient/util.py", line 74, in wrapped
+    return just_run(coro(*args, **kwargs))
+  File "/home/fdeckert/bin/miniconda3/lib/python3.8/site-packages/nbclient/util.py", line 53, in just_run
+    return loop.run_until_complete(coro)
+  File "/home/fdeckert/bin/miniconda3/lib/python3.8/site-packages/nest_asyncio.py", line 70, in run_until_complete
+    return f.result()
+  File "/home/fdeckert/bin/miniconda3/lib/python3.8/asyncio/futures.py", line 178, in result
+    raise self._exception
+  File "/home/fdeckert/bin/miniconda3/lib/python3.8/asyncio/tasks.py", line 280, in __step
+    result = coro.send(None)
+  File "/home/fdeckert/bin/miniconda3/lib/python3.8/site-packages/nbclient/client.py", line 857, in async_execute_cell
+    self._check_raise_for_error(cell, exec_reply)
+  File "/home/fdeckert/bin/miniconda3/lib/python3.8/site-packages/nbclient/client.py", line 760, in _check_raise_for_error
+    raise CellExecutionError.from_cell_and_msg(cell, exec_reply_content)
+nbclient.exceptions.CellExecutionError: An error occurred while executing the following cell:
+------------------
+res_1   <- pruneKnn(expdata_1, large = TRUE, regNB = TRUE, regVar = so_1[["msCC_diff_RNA"]])
+cl_1    <- graphCluster(res_1, pvalue = 0.01)
+probs_1 <- transitionProbs(res_1, cl_1)
+
+res_2   <- pruneKnn(expdata_2, large = TRUE, regNB = TRUE, regVar = so_1[["msCC_diff_RNA"]])
+cl_2    <- graphCluster(res_2, pvalue = 0.01)
+probs_2 <- transitionProbs(res_2, cl_2)
+------------------
+
+Error in glm.fit(x = structure(numeric(0), .Dim = c(0L, 3L), .Dimnames = list(: object 'fit' not found
+Traceback:
+
+1. pruneKnn(expdata_2, large = TRUE, regNB = TRUE, regVar = so_1[["msCC_diff_RNA"]])
+2. compResiduals(expData[genes, ], batch = batch, regVar = regVar, 
+ .     span = span, no_cores = no_cores, ngenes = ngenes, seed = seed)
+3. glm(modelFormula, y, family = "poisson")
+4. eval(call(if (is.function(method)) "method" else method, x = X, 
+ .     y = Y, weights = weights, start = start, etastart = etastart, 
+ .     mustart = mustart, offset = offset, family = family, control = control, 
+ .     intercept = attr(mt, "intercept") > 0L, singular.ok = singular.ok))
+5. eval(call(if (is.function(method)) "method" else method, x = X, 
+ .     y = Y, weights = weights, start = start, etastart = etastart, 
+ .     mustart = mustart, offset = offset, family = family, control = control, 
+ .     intercept = attr(mt, "intercept") > 0L, singular.ok = singular.ok))
+6. glm.fit(x = structure(numeric(0), .Dim = c(0L, 3L), .Dimnames = list(
+ .     NULL, c("(Intercept)", "beta", "msCC_diff_RNA")), assign = 0:2), 
+ .     y = integer(0), weights = NULL, start = NULL, etastart = NULL, 
+ .     mustart = NULL, offset = NULL, family = structure(list(family = "poisson", 
+ .         link = "log", linkfun = function (mu) 
+ .         log(mu), linkinv = function (eta) 
+ .         pmax(exp(eta), .Machine$double.eps), variance = function (mu) 
+ .         mu, dev.resids = function (y, mu, wt) 
+ .         {
+ .             r <- mu * wt
+ .             p <- which(y > 0)
+ .             r[p] <- (wt * (y * log(y/mu) - (y - mu)))[p]
+ .             2 * r
+ .         }, aic = function (y, n, mu, wt, dev) 
+ .         -2 * sum(dpois(y, mu, log = TRUE) * wt), mu.eta = function (eta) 
+ .         pmax(exp(eta), .Machine$double.eps), initialize = expression(
+ .             {
+ .                 if (any(y < 0)) 
+ .                   stop("negative values not allowed for the 'Poisson' family")
+ .                 n <- rep.int(1, nobs)
+ .                 mustart <- y + 0.1
+ .             }), validmu = function (mu) 
+ .         all(is.finite(mu)) && all(mu > 0), valideta = function (eta) 
+ .         TRUE, simulate = function (object, nsim) 
+ .         {
+ .             wts <- object$prior.weights
+ .             if (any(wts != 1)) 
+ .                 warning("ignoring prior weights")
+ .             ftd <- fitted(object)
+ .             rpois(nsim * length(ftd), ftd)
+ .         }), class = "family"), control = list(epsilon = 1e-08, 
+ .         maxit = 25, trace = FALSE), intercept = TRUE, singular.ok = TRUE)
+ERROR: Error in glm.fit(x = structure(numeric(0), .Dim = c(0L, 3L), .Dimnames = list(: object 'fit' not found
+
+
