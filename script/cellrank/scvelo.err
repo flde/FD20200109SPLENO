@@ -1,13 +1,91 @@
 [NbConvertApp] Converting notebook scvelo.p.ipynb to html
-Numba: Attempted to fork from a non-main thread, the TBB library may be in an invalid state in the child process.
-Numba: Attempted to fork from a non-main thread, the TBB library may be in an invalid state in the child process.
-Numba: Attempted to fork from a non-main thread, the TBB library may be in an invalid state in the child process.
-Numba: Attempted to fork from a non-main thread, the TBB library may be in an invalid state in the child process.
-[0]PETSC ERROR: [0]PETSC ERROR: ------------------------------------------------------------------------
-[0]PETSC ERROR: Caught signal number 13 Broken Pipe: Likely while reading or writing to a socket
-[0]PETSC ERROR: Try option -start_in_debugger or -on_error_attach_debugger
-[0]PETSC ERROR: or see https://www.mcs.anl.gov/petsc/documentation/faq.html#valgrind
-[0]PETSC ERROR: or try http://valgrind.org on GNU/linux and Apple Mac OS X to find memory corruption errors
-[0]PETSC ERROR: configure using --with-debugging=yes, recompile, link, and run 
-[0]PETSC ERROR: to get more information on the crash.
-[NbConvertApp] Writing 4390859 bytes to scvelo.p.html
+Traceback (most recent call last):
+  File "/home/fdeckert/bin/miniconda3/bin/jupyter-nbconvert", line 11, in <module>
+    sys.exit(main())
+  File "/home/fdeckert/bin/miniconda3/lib/python3.8/site-packages/jupyter_core/application.py", line 264, in launch_instance
+    return super(JupyterApp, cls).launch_instance(argv=argv, **kwargs)
+  File "/home/fdeckert/bin/miniconda3/lib/python3.8/site-packages/traitlets/config/application.py", line 846, in launch_instance
+    app.start()
+  File "/home/fdeckert/bin/miniconda3/lib/python3.8/site-packages/nbconvert/nbconvertapp.py", line 346, in start
+    self.convert_notebooks()
+  File "/home/fdeckert/bin/miniconda3/lib/python3.8/site-packages/nbconvert/nbconvertapp.py", line 518, in convert_notebooks
+    self.convert_single_notebook(notebook_filename)
+  File "/home/fdeckert/bin/miniconda3/lib/python3.8/site-packages/nbconvert/nbconvertapp.py", line 483, in convert_single_notebook
+    output, resources = self.export_single_notebook(notebook_filename, resources, input_buffer=input_buffer)
+  File "/home/fdeckert/bin/miniconda3/lib/python3.8/site-packages/nbconvert/nbconvertapp.py", line 412, in export_single_notebook
+    output, resources = self.exporter.from_filename(notebook_filename, resources=resources)
+  File "/home/fdeckert/bin/miniconda3/lib/python3.8/site-packages/nbconvert/exporters/exporter.py", line 181, in from_filename
+    return self.from_file(f, resources=resources, **kw)
+  File "/home/fdeckert/bin/miniconda3/lib/python3.8/site-packages/nbconvert/exporters/exporter.py", line 199, in from_file
+    return self.from_notebook_node(nbformat.read(file_stream, as_version=4), resources=resources, **kw)
+  File "/home/fdeckert/bin/miniconda3/lib/python3.8/site-packages/nbconvert/exporters/html.py", line 129, in from_notebook_node
+    return super().from_notebook_node(nb, resources, **kw)
+  File "/home/fdeckert/bin/miniconda3/lib/python3.8/site-packages/nbconvert/exporters/templateexporter.py", line 374, in from_notebook_node
+    nb_copy, resources = super().from_notebook_node(nb, resources, **kw)
+  File "/home/fdeckert/bin/miniconda3/lib/python3.8/site-packages/nbconvert/exporters/exporter.py", line 143, in from_notebook_node
+    nb_copy, resources = self._preprocess(nb_copy, resources)
+  File "/home/fdeckert/bin/miniconda3/lib/python3.8/site-packages/nbconvert/exporters/exporter.py", line 318, in _preprocess
+    nbc, resc = preprocessor(nbc, resc)
+  File "/home/fdeckert/bin/miniconda3/lib/python3.8/site-packages/nbconvert/preprocessors/base.py", line 47, in __call__
+    return self.preprocess(nb, resources)
+  File "/home/fdeckert/bin/miniconda3/lib/python3.8/site-packages/nbconvert/preprocessors/execute.py", line 84, in preprocess
+    self.preprocess_cell(cell, resources, index)
+  File "/home/fdeckert/bin/miniconda3/lib/python3.8/site-packages/nbconvert/preprocessors/execute.py", line 105, in preprocess_cell
+    cell = self.execute_cell(cell, index, store_history=True)
+  File "/home/fdeckert/bin/miniconda3/lib/python3.8/site-packages/nbclient/util.py", line 74, in wrapped
+    return just_run(coro(*args, **kwargs))
+  File "/home/fdeckert/bin/miniconda3/lib/python3.8/site-packages/nbclient/util.py", line 53, in just_run
+    return loop.run_until_complete(coro)
+  File "/home/fdeckert/bin/miniconda3/lib/python3.8/asyncio/base_events.py", line 616, in run_until_complete
+    return future.result()
+  File "/home/fdeckert/bin/miniconda3/lib/python3.8/site-packages/nbclient/client.py", line 857, in async_execute_cell
+    self._check_raise_for_error(cell, exec_reply)
+  File "/home/fdeckert/bin/miniconda3/lib/python3.8/site-packages/nbclient/client.py", line 760, in _check_raise_for_error
+    raise CellExecutionError.from_cell_and_msg(cell, exec_reply_content)
+nbclient.exceptions.CellExecutionError: An error occurred while executing the following cell:
+------------------
+# adata_v_1.write('data/object/seurat_sct_nacl/scvelo.h5ad')
+# adata_v_2.write('data/object/seurat_sct_cpg/scvelo.h5ad')
+
+adata_v_1 = sc.read_h5ad('data/object/seurat_sct_nacl/scvelo.h5ad')
+adata_v_2 = sc.read_h5ad('data/object/seurat_sct_cpg/scvelo.h5ad')
+------------------
+
+[0;31m---------------------------------------------------------------------------[0m
+[0;31mOSError[0m                                   Traceback (most recent call last)
+[0;32m<ipython-input-29-6c8b9b7db354>[0m in [0;36m<module>[0;34m[0m
+[1;32m      2[0m [0;31m# adata_v_2.write('data/object/seurat_sct_cpg/scvelo.h5ad')[0m[0;34m[0m[0;34m[0m[0;34m[0m[0m
+[1;32m      3[0m [0;34m[0m[0m
+[0;32m----> 4[0;31m [0madata_v_1[0m [0;34m=[0m [0msc[0m[0;34m.[0m[0mread_h5ad[0m[0;34m([0m[0;34m'data/object/seurat_sct_nacl/scvelo.h5ad'[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m      5[0m [0madata_v_2[0m [0;34m=[0m [0msc[0m[0;34m.[0m[0mread_h5ad[0m[0;34m([0m[0;34m'data/object/seurat_sct_cpg/scvelo.h5ad'[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+
+[0;32m~/bin/miniconda3/envs/p.3.6.13-FD20200109SPLENO/lib/python3.6/site-packages/anndata/_io/h5ad.py[0m in [0;36mread_h5ad[0;34m(filename, backed, as_sparse, as_sparse_fmt, chunk_size)[0m
+[1;32m    406[0m     )
+[1;32m    407[0m [0;34m[0m[0m
+[0;32m--> 408[0;31m     [0;32mwith[0m [0mh5py[0m[0;34m.[0m[0mFile[0m[0;34m([0m[0mfilename[0m[0;34m,[0m [0;34m"r"[0m[0;34m)[0m [0;32mas[0m [0mf[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m    409[0m         [0md[0m [0;34m=[0m [0;34m{[0m[0;34m}[0m[0;34m[0m[0;34m[0m[0m
+[1;32m    410[0m         [0;32mfor[0m [0mk[0m [0;32min[0m [0mf[0m[0;34m.[0m[0mkeys[0m[0;34m([0m[0;34m)[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+
+[0;32m~/bin/miniconda3/envs/p.3.6.13-FD20200109SPLENO/lib/python3.6/site-packages/h5py/_hl/files.py[0m in [0;36m__init__[0;34m(self, name, mode, driver, libver, userblock_size, swmr, rdcc_nslots, rdcc_nbytes, rdcc_w0, track_order, fs_strategy, fs_persist, fs_threshold, **kwds)[0m
+[1;32m    425[0m                                fapl, fcpl=make_fcpl(track_order=track_order, fs_strategy=fs_strategy,
+[1;32m    426[0m                                fs_persist=fs_persist, fs_threshold=fs_threshold),
+[0;32m--> 427[0;31m                                swmr=swmr)
+[0m[1;32m    428[0m [0;34m[0m[0m
+[1;32m    429[0m             [0;32mif[0m [0misinstance[0m[0;34m([0m[0mlibver[0m[0;34m,[0m [0mtuple[0m[0;34m)[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+
+[0;32m~/bin/miniconda3/envs/p.3.6.13-FD20200109SPLENO/lib/python3.6/site-packages/h5py/_hl/files.py[0m in [0;36mmake_fid[0;34m(name, mode, userblock_size, fapl, fcpl, swmr)[0m
+[1;32m    188[0m         [0;32mif[0m [0mswmr[0m [0;32mand[0m [0mswmr_support[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+[1;32m    189[0m             [0mflags[0m [0;34m|=[0m [0mh5f[0m[0;34m.[0m[0mACC_SWMR_READ[0m[0;34m[0m[0;34m[0m[0m
+[0;32m--> 190[0;31m         [0mfid[0m [0;34m=[0m [0mh5f[0m[0;34m.[0m[0mopen[0m[0;34m([0m[0mname[0m[0;34m,[0m [0mflags[0m[0;34m,[0m [0mfapl[0m[0;34m=[0m[0mfapl[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m    191[0m     [0;32melif[0m [0mmode[0m [0;34m==[0m [0;34m'r+'[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+[1;32m    192[0m         [0mfid[0m [0;34m=[0m [0mh5f[0m[0;34m.[0m[0mopen[0m[0;34m([0m[0mname[0m[0;34m,[0m [0mh5f[0m[0;34m.[0m[0mACC_RDWR[0m[0;34m,[0m [0mfapl[0m[0;34m=[0m[0mfapl[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+
+[0;32mh5py/_objects.pyx[0m in [0;36mh5py._objects.with_phil.wrapper[0;34m()[0m
+
+[0;32mh5py/_objects.pyx[0m in [0;36mh5py._objects.with_phil.wrapper[0;34m()[0m
+
+[0;32mh5py/h5f.pyx[0m in [0;36mh5py.h5f.open[0;34m()[0m
+
+[0;31mOSError[0m: Unable to open file (unable to open file: name = 'data/object/seurat_sct_nacl/scvelo.h5ad', errno = 2, error message = 'No such file or directory', flags = 0, o_flags = 0)
+OSError: Unable to open file (unable to open file: name = 'data/object/seurat_sct_nacl/scvelo.h5ad', errno = 2, error message = 'No such file or directory', flags = 0, o_flags = 0)
+

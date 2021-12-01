@@ -1,12 +1,25 @@
+# Libraries 
 library_load <- suppressMessages(
     list(
         
+        # Data 
+        library(tidyverse), 
+        
+        # ComplexHeatmap
+        library(ComplexHeatmap), 
+        
         # Single R
         library(SingleCellExperiment),
-        library(SingleR)
+        library(SingleR), 
+        
+        # Colors 
+        library(viridis)
         
     )
 )
+
+# Settings 
+ht_opt$message = FALSE
 
 #####################
 ### SingleRSeurat ###
@@ -70,7 +83,7 @@ setMethod("SingleRSeurat", signature=c(so="Seurat", ref="SummarizedExperiment", 
 ### SingleRScoreHeatMap ###
 ###########################
 
-setGeneric("SingleRScoreHeatMap", valueClass=c("gtree"), def=function(singler_obj="Seurat", color="character", main="character", ...) {standardGeneric("SingleRScoreHeatMap")})
+setGeneric("SingleRScoreHeatMap", valueClass=c("gTree"), def=function(singler_obj="Seurat", color="character", main="character", ...) {standardGeneric("SingleRScoreHeatMap")})
 
 setMethod("SingleRScoreHeatMap", signature=c(singler_obj="DFrame", color="character", main="character"), definition=function(singler_obj, color, main) {
     

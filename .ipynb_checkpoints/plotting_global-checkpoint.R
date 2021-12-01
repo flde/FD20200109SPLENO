@@ -15,15 +15,15 @@ theme_global_set <- function() {
     plot.title = element_text(size = 16, face = "bold", margin = margin(t = 0, r = 0, b = 5, l = 0)), 
 #     plot.title = element_blank(), 
     
-    axis.title.y = element_text(size = 12, face = "bold", margin = margin(t = 2.5, r = 2.5, b = 2.5, l = 2.5), angle = 90, vjust = 2.5), 
-    axis.title.x = element_text(size = 12, face = "bold", margin = margin(t = 2.5, r = 2.5, b = 2.5, l = 2.5)),
-    axis.text = element_text(size = 10),
+    axis.title.y = element_text(size = 14, face = "bold", margin = margin(t = 5, r = 5, b = 5, l = 5), angle = 90, vjust = 2.5), 
+    axis.title.x = element_text(size = 14, face = "bold", margin = margin(t = 5, r = 5, b = 5, l = 5)),
+    axis.text = element_text(size = 12),
     
-    legend.text = element_text(size = 10), 
-    legend.title = element_text(size = 10, face = "bold"), 
+    legend.text = element_text(size = 12), 
+    legend.title = element_text(size = 12, face = "bold"), 
     legend.key = element_blank(), 
     
-    strip.text = element_text(size = 12, face = "bold", margin = margin(t = 2.5, r = 2.5, b = 2.5, l = 2.5)), 
+    strip.text = element_text(size = 14, face = "bold", margin = margin(t = 2.5, r = 2.5, b = 2.5, l = 2.5)), 
     strip.background = element_blank(),
   
   )

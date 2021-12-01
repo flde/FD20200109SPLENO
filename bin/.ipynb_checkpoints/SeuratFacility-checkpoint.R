@@ -1,7 +1,8 @@
 library_load <- suppressMessages(
     list(
         # Seurat 
-        library(Seurat)
+        library(Seurat), 
+        library(Matrix)
     )
 )
 
@@ -257,7 +258,7 @@ setMethod("WriteAssayData", signature=c(so="Seurat", dir="character"), definitio
             error=function(err) {
                 
                 # Remove slot output dir 
-                unlink(path, recurstive=TRUE)
+                unlink(path, recursive=TRUE)
                 
                 message(paste("Could not write", assay, slot))
                 message(head(err))
