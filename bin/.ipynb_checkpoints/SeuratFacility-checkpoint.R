@@ -1,8 +1,13 @@
 library_load <- suppressMessages(
+    
     list(
+        
         # Seurat 
         library(Seurat), 
+        
+        # Matrix
         library(Matrix)
+        
     )
 )
 
@@ -228,7 +233,7 @@ setGeneric("WriteAssayData", valueClass=c("NULL", "character"), def=function(so=
 
 setMethod("WriteAssayData", signature=c(so="Seurat", dir="character"), definition=function(so, dir) {
     
-    message(paste("Writing assay data for the slots:", paste(names(so@assays), collapse = ", ")))
+    message(paste("Writing assay data for the assays:", paste(names(so@assays), collapse = ", ")))
     
     # Create assay directory 
     dir.create(paste0(dir, "assay"), showWarnings=FALSE)
@@ -247,10 +252,14 @@ setMethod("WriteAssayData", signature=c(so="Seurat", dir="character"), definitio
                     # Create slot directory
                     dir.create(path, recursive=TRUE, showWarnings=FALSE)
                     
+                    # Get matrix 
+                    mat <- GetAssayData(so, assay=assay, slot=slot)
+                    if(!class(mat)=="dgCMatrix") {mat <- as(mat, "dgCMatrix")}
+                    
                     # Write slot data
-                    writeMM(t(GetAssayData(so, slot = "counts")), paste0(path, "/matrix.mtx"))
-                    write.table(rownames(GetAssayData(so, slot = "counts")), row.names=FALSE, paste0(path, "/genes.csv"))
-                    write.table(colnames(GetAssayData(so, slot = "counts")), row.names=FALSE, paste0(path, "/cellid.csv"))
+                    writeMM(t(mat), paste0(path, "/matrix.mtx"))
+                    write.table(rownames(mat), row.names=FALSE, paste0(path, "/genes.csv"))
+                    write.table(colnames(mat), row.names=FALSE, paste0(path, "/cellid.csv"))
                     write.csv(VariableFeatures(so), row.names=FALSE, paste0(path, "/variable_features.csv"))
                     
                 }, 

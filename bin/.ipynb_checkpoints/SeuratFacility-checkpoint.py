@@ -18,10 +18,6 @@ def dir2adata(path, assay, slot):
     # Add obs from meta_data
     adata.obs = pd.read_csv(path+'meta/meta.csv', index_col=0)
     
-#     # Subset by variable features 
-#     variable_features = pd.read_csv(path+'assay/'+assay+'/'+slot+'/'+'variable_features.csv', index_col=0).index
-#     adata = adata[:, variable_features]
-    
     # Set layers
     adata.layers['counts'] = adata.X
     

@@ -107,7 +107,7 @@ box_plot_qc <- function(so, y, fill, ylab, ymin, ymax=NULL) {
 ########################
 ### deg_volcano_plot ###
 ########################
-deg_volcano_plot <- function(deg, log2_thold = 1, adjpvalue_thold = 0.05, title = "Volcano plot") {
+deg_volcano_plot <- function(deg, log2_thold = 1, adjpvalue_thold = 0.05, title = NULL) {
     
     #' Volcano plot from Seurat FindMarker differently expressed genes output data frame 
     #' 
@@ -115,6 +115,12 @@ deg_volcano_plot <- function(deg, log2_thold = 1, adjpvalue_thold = 0.05, title 
     #' @log2_thold log2 threshold 
     #' @adjpvalue_thold Adjusted p-value threshold 
     #' @title Plot title 
+    
+    # Set title 
+    if(is.null(title)) {title <- paste("Cluster", deg$cluster[1])}
+    
+    # Set rownames to genes
+    if("gene" %in% colnames(deg)) {rownames(deg) <- deg$gene}
     
     # Annotate entries significance by log2_thold and adjpvalue_thold
     deg$p_val_adj <- ifelse(deg$p_val_adj == 0, .Machine$double.xmin, deg$p_val_adj)
@@ -139,7 +145,8 @@ deg_volcano_plot <- function(deg, log2_thold = 1, adjpvalue_thold = 0.05, title 
     
     pos_labels <- c(pos_labels_log2FC, pos_labels_p_val_adj)
     neg_labels <- c(neg_labels_log2FC, neg_labels_p_val_adj)
-
+    
+    # Set labels 
     deg$label <- ifelse(rownames(deg) %in% c(pos_labels, neg_labels), rownames(deg), NA)
     
     # Plot
@@ -150,7 +157,8 @@ deg_volcano_plot <- function(deg, log2_thold = 1, adjpvalue_thold = 0.05, title 
         geom_vline(aes(xintercept = -log2_thold, color = "black", linetype = "longdash")) +
         geom_hline(aes(yintercept = -log10(adjpvalue_thold), color = "black", linetype = "longdash")) + 
         geom_label_repel(segment.color = "grey50", force = 10, force_pull = 1, max.overlaps = getOption("ggrepel.max.overlaps", default = 100)) + 
-        xlim(-max(abs(deg$avg_log2FC)), max(abs(deg$avg_log2FC))) +  ylim(-20, 350) +
+        xlim(-max(abs(deg$avg_log2FC)), max(abs(deg$avg_log2FC))) +  
+#         ylim(-20, 350) +
         ggtitle(title) + xlab("average log2FC") + ylab("-log10(adj. p-value)") + 
         scale_colour_manual(values = color) + 
 
@@ -276,29 +284,29 @@ dplot_1 <- function(so, reduction="umap", cluster) {
 
 fplot_1 <- function(so, reduction="umap") {
     
-    fplot_1 <- FeaturePlot(so, reduction = reduction, features = "nCount_RNA") & theme(aspect.ratio = 1) & ggtitle("UMI count")
+    fplot_1 <- FeaturePlot(so, reduction = reduction, order=TRUE, features = "nCount_RNA") & theme(aspect.ratio = 1) & ggtitle("UMI count")
     
-    fplot_2 <- FeaturePlot(so, reduction = reduction, features = "nFeature_RNA") & theme(aspect.ratio = 1) & ggtitle("Feature count")
+    fplot_2 <- FeaturePlot(so, reduction = reduction, order=TRUE, features = "nFeature_RNA") & theme(aspect.ratio = 1) & ggtitle("Feature count")
     
-    fplot_3 <- FeaturePlot(so, reduction = reduction, features = "pMt_RNA") & theme(aspect.ratio = 1) & ggtitle("Mt [%]")
+    fplot_3 <- FeaturePlot(so, reduction = reduction, order=TRUE, features = "pMt_RNA") & theme(aspect.ratio = 1) & ggtitle("Mt [%]")
     
-    fplot_4 <- FeaturePlot(so, reduction = reduction, features = "pHb_RNA") & theme(aspect.ratio = 1) & ggtitle("Hb [%]")
+    fplot_4 <- FeaturePlot(so, reduction = reduction, order=TRUE, features = "pHb_RNA") & theme(aspect.ratio = 1) & ggtitle("Hb [%]")
     
-    fplot_5 <- FeaturePlot(so, reduction = reduction, features = "pRp_RNA") & theme(aspect.ratio = 1) & ggtitle("Rp [%]")
+    fplot_5 <- FeaturePlot(so, reduction = reduction, order=TRUE, features = "pRp_RNA") & theme(aspect.ratio = 1) & ggtitle("Rp [%]")
     
-    fplot_6 <- FeaturePlot(so, reduction = reduction, features = "msMHCI_RNA1") & theme(aspect.ratio = 1) & ggtitle("MHC I")
+    fplot_6 <- FeaturePlot(so, reduction = reduction, order=TRUE, features = "msMHCI_RNA1") & theme(aspect.ratio = 1) & ggtitle("MHC I")
     
-    fplot_7 <- FeaturePlot(so, reduction = reduction, features = "msMHCII_RNA1") & theme(aspect.ratio = 1) & ggtitle("MHC II")
+    fplot_7 <- FeaturePlot(so, reduction = reduction, order=TRUE, features = "msMHCII_RNA1") & theme(aspect.ratio = 1) & ggtitle("MHC II")
     
-    fplot_8 <- FeaturePlot(so, reduction = reduction, features = "msTcr_RNA1") & theme(aspect.ratio = 1) & ggtitle("TCR")
+    fplot_8 <- FeaturePlot(so, reduction = reduction, order=TRUE, features = "msTcr_RNA1") & theme(aspect.ratio = 1) & ggtitle("TCR")
     
-    fplot_9 <- FeaturePlot(so, reduction = reduction, features = "msCd4_RNA1") & theme(aspect.ratio = 1) & ggtitle("CD4")
+    fplot_9 <- FeaturePlot(so, reduction = reduction, order=TRUE, features = "msCd4_RNA1") & theme(aspect.ratio = 1) & ggtitle("CD4")
     
-    fplot_10 <- FeaturePlot(so, reduction = reduction, features = "msCd8_RNA1") & theme(aspect.ratio = 1) & ggtitle("CD8")
+    fplot_10 <- FeaturePlot(so, reduction = reduction, order=TRUE, features = "msCd8_RNA1") & theme(aspect.ratio = 1) & ggtitle("CD8")
     
-    fplot_11 <- FeaturePlot(so, reduction = reduction, features = "msIgkc_RNA1") & theme(aspect.ratio = 1) & ggtitle("Igkc")
+    fplot_11 <- FeaturePlot(so, reduction = reduction, order=TRUE, features = "msIgkc_RNA1") & theme(aspect.ratio = 1) & ggtitle("Igkc")
     
-    fplot_12 <- FeaturePlot(so, reduction = reduction, features = "msIglc_RNA1") & theme(aspect.ratio = 1) & ggtitle("Iglc")
+    fplot_12 <- FeaturePlot(so, reduction = reduction, order=TRUE, features = "msIglc_RNA1") & theme(aspect.ratio = 1) & ggtitle("Iglc")
     
     # Combine plots 
     dplot <- fplot_1 + fplot_2 + fplot_3 + fplot_4 + fplot_5 + fplot_6 + fplot_7 + fplot_8 + fplot_9 + fplot_10 + fplot_11 + fplot_12 + plot_layout(ncol=4)
