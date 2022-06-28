@@ -1,0 +1,4 @@
+2021-06-08 12:29:57,644 - DEBUG - Using logic: ValidatedIntrons10X
+2021-06-08 12:29:57,650 - INFO - Read 2487 cell barcodes from /research/peer/fdeckert/FD20200109SPLENO/data/BSA_0355_SM01_10x_SPLENO/OUT/COUNT/M6_control_Mac_transcriptome/filtered_feature_bc_matrix/barcodes.qc.tsv
+2021-06-08 12:29:57,650 - DEBUG - Example of barcode: AAACCCACACCCAAGC and cell_id: qc:AAACCCACACCCAAGC-1_5
+2021-06-08 12:29:57,669 - DEBUG - Peeking into /research/peer/fdeckert/FD20200109SPLENO/data/BSA_0355_SM01_10x_SPLENO/OUT/COUNT/M6_control_Mac_transcriptome/possorted_genome_bam.bam

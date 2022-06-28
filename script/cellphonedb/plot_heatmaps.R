@@ -8,9 +8,9 @@ heatmaps_plot <- function(
     show_rownames=TRUE, 
     show_colnames=TRUE,    
     scale="none", 
-    cluster_cols=TRUE,
+    cluster_cols=FALSE,
     border_color="white", 
-    cluster_rows=TRUE, 
+    cluster_rows=FALSE, 
     fontsize_row=11,
     fontsize_col=11, 
     treeheight_row=0, 
@@ -116,6 +116,10 @@ heatmaps_plot <- function(
         all_sum <- cbind(names(all_sum), all_sum)
 
         col.heatmap <- colorRampPalette(c(col1,col2,col3 ))( 1000 )
+        
+#         order <- c("Ery (1)", "Ery (2)", "Ery (3)", "Ery (4)", "MDP", "MDP Ly6c-", "DC CD11b+ Ly6c+", "DC CD11b+ Esam+", "DC CD11b- Esam+", "DC CD11b- CD8+", "RPM")
+#         count_matrix <- count_matrix[order, order]
+        
         
         plot <- pheatmap(
             count_matrix, show_rownames=show_rownames, show_colnames=show_colnames, scale=scale, cluster_cols=cluster_cols,
