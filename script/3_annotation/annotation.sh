@@ -1,7 +1,7 @@
 #!/bin/bash
 
-#SBATCH --partition=shortq
-#SBATCH --qos=shortq
+#SBATCH --partition=mediumq
+#SBATCH --qos=mediumq
 #SBATCH --mem=200G
 #SBATCH --job-name annotation
 #SBATCH -o %x.out

@@ -1,0 +1,57 @@
+
+  {
+   "cell_type": "code",
+   "execution_count": 31,
+   "id": "32ef9936-e9c2-4d31-92b2-727a497992bc",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<style>\n",
+       ".list-inline {list-style: none; margin:0; padding: 0}\n",
+       ".list-inline>li {display: inline-block}\n",
+       ".list-inline>li:not(:last-child)::after {content: \"\\00b7\"; padding: 0 .5ex}\n",
+       "</style>\n",
+       "<ol class=list-inline><li>'statistics'</li><li>'parameter'</li><li>'llr.overall'</li><li>'knotnum'</li><li>'pseudotime'</li><li>'design'</li><li>'cellanno'</li><li>'expr'</li><li>'test.type'</li><li>'test.method'</li><li>'testvar'</li></ol>\n"
+      ],
+      "text/latex": [
+       "\\begin{enumerate*}\n",
+       "\\item 'statistics'\n",
+       "\\item 'parameter'\n",
+       "\\item 'llr.overall'\n",
+       "\\item 'knotnum'\n",
+       "\\item 'pseudotime'\n",
+       "\\item 'design'\n",
+       "\\item 'cellanno'\n",
+       "\\item 'expr'\n",
+       "\\item 'test.type'\n",
+       "\\item 'test.method'\n",
+       "\\item 'testvar'\n",
+       "\\end{enumerate*}\n"
+      ],
+      "text/markdown": [
+       "1. 'statistics'\n",
+       "2. 'parameter'\n",
+       "3. 'llr.overall'\n",
+       "4. 'knotnum'\n",
+       "5. 'pseudotime'\n",
+       "6. 'design'\n",
+       "7. 'cellanno'\n",
+       "8. 'expr'\n",
+       "9. 'test.type'\n",
+       "10. 'test.method'\n",
+       "11. 'testvar'\n",
+       "\n",
+       "\n"
+      ],
+      "text/plain": [
+       " [1] \"statistics\"  \"parameter\"   \"llr.overall\" \"knotnum\"     \"pseudotime\" \n",
+       " [6] \"design\"      \"cellanno\"    \"expr\"        \"test.type\"   \"test.method\"\n",
+       "[11] \"testvar\"    "
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    }
+   ]

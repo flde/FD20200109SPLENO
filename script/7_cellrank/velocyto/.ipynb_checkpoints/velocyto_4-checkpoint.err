@@ -1,0 +1,3 @@
+[W::hts_idx_load3] The index file is older than the data file: /research/peer/fdeckert/FD20200109SPLENO/data/BSA_0355_SM01_10x_SPLENO/OUT/COUNT/M6_control_Mac_transcriptome/possorted_genome_bam.bam.bai
+[W::hts_idx_load3] The index file is older than the data file: /research/peer/fdeckert/FD20200109SPLENO/data/BSA_0355_SM01_10x_SPLENO/OUT/COUNT/M6_control_Mac_transcriptome/possorted_genome_bam.bam.bai
+[E::idx_find_and_load] Could not retrieve index file for '/research/peer/fdeckert/FD20200109SPLENO/data/BSA_0355_SM01_10x_SPLENO/OUT/COUNT/M6_control_Mac_transcriptome/cellsorted_possorted_genome_bam.bam'
