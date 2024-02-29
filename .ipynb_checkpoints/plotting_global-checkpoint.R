@@ -1,3 +1,13 @@
+library_load <- suppressMessages(
+    
+    list(
+        
+        library(ggplot2)
+        
+    )
+    
+)
+
 ###############################
 ### Project global plotting ###
 ###############################
@@ -21,6 +31,7 @@ theme_global_set <- function(size_select=2) {
         panel.spacing=unit(0.2, "lines"),
 
         plot.title=element_text(size=size[3], face="plain", margin=margin(t=0, r=0, b=10, l=0), color="black"), 
+        plot.subtitle=element_text(size=size[2], face="plain", margin=margin(t=0, r=0, b=10, l=0), color="black"), 
     
         axis.title.y=element_text(size=size[2], face="plain", margin=margin(t=0, r=5, b=0, l=0), angle=90, color="black"), 
         axis.title.x=element_text(size=size[2], face="plain", margin=margin(t=5, r=0, b=0, l=0), color="black"),
@@ -32,13 +43,16 @@ theme_global_set <- function(size_select=2) {
       
         legend.key.height=unit(0.5, "cm"), 
         legend.key.width=unit(0.5, "cm"),
-        legend.key.size=unit(0.5, 'cm'),
+        legend.key.size=unit(0.5, "cm"),
       
         legend.title=element_text(size=size[2], face="plain", color="black"),
         legend.text=element_text(size=size[1], face="plain", color="black"), 
         legend.key=element_rect(fill = "transparent", colour = "transparent"), 
-    
-        strip.text=element_text(size=size[2], margin=margin(t=2, r=2, b=2, l=2), face="plain", color="black") 
+        
+        legend.text.align=0, 
+        
+        strip.text=element_text(size=size[2], margin=margin(t=2, r=2, b=2, l=2), face="plain", color="black"), 
+        strip.background=element_rect(fill="white", color="black", size=1)
     
     )
 

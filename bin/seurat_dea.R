@@ -1,42 +1,49 @@
+library_load <- suppressMessages(
+    
+    list(
+        
+        # Seurat 
+        library(Seurat), 
+        library(SeuratWrappers), 
+    
+        # CellChat 
+        library(CellChat), 
+        
+        # Data 
+        library(tidyverse), 
+        library(openxlsx),
+        
+        # Plotting 
+        library(ggrepel)
+        
+    )
+)
+
 ####################
 ### filter_genes ###
 ####################
-feature_select <- function(so, cnt_min=1, cell_min=5, ident_i=NULL, gene_filter=NULL) {
+feature_select <- function(so, cnt_min=3, cell_min=3) {
     
-    # Subset the count matrix if ident is present
-    if(!is.null(ident)) {
-        
-        so_tmp <- subset(so, idents=ident_i)
-        
-    } else {
-        
-        so_tmp <- so
-    }
+    # Create new Seurat object
+    cnt <- GetAssayData(so, assay="RNA", slot="counts")
+    data <- GetAssayData(so, assay="RNA", slot="data")
     
-    cnt <- GetAssayData(so_tmp, assay="RNA", slot="counts")
     cnt <- cnt[rowSums(cnt>=cnt_min)>=cell_min, ]
+    data <- cnt[rowSums(cnt>=cnt_min)>=cell_min, ]
+
+    so <- CreateSeuratObject(counts=cnt, meta.data=so@meta.data)
+    so <- SetAssayData(object=so, assay.type="RNA", new.data=data, slot="data")
     
-    if(!is.null(gene_filter)) {
-        
-        message(paste0("Filter genes: Found ", sum(rownames(cnt) %in% gene_filter), " of ", length(gene_filter)))
-        cnt <- cnt[rownames(cnt) %in% gene_filter, ]
-        
-    }
-    
-    
-    so_tmp <- CreateSeuratObject(counts=cnt, meta.data=so_tmp@meta.data)
-    so_tmp <- NormalizeData(so_tmp)
-    
-    
-    
-    return(so_tmp)
+    print(paste("Final number of genes after filtering:", nrow(so)))
+
+    return(so)
     
 }
 
 ###############
 ### dea_FUN ###
 ###############
-dea_seurat <- function(so, ident="seurat_clusters",  map=NULL, file=NULL, only_pos=TRUE, logfc_threshold=0, min_pct=0, conserved=FALSE, treatment=FALSE, grouping_var=NULL, compute=TRUE, test_use="wilcox", cnt_min=3, cell_min=3, gene_filter=NULL) {
+dea_seurat <- function(so, mode, file, ident,  map=NULL, grouping_var=NULL, ident_1=NULL, ident_2=NULL, only_pos=FALSE, logfc_threshold=0, min_pct=0, compute=TRUE, test_use="wilcox", cnt_min=0, cell_min=0) {
     
     # Load results only if compute FALSE
     if(!compute) {dea <- readRDS(paste0(file, ".rds")); return(dea)}
@@ -52,6 +59,12 @@ dea_seurat <- function(so, ident="seurat_clusters",  map=NULL, file=NULL, only_p
         
     }
     
+    # Set Ident for comparison 
+    so <- SetIdent(so, value=ident)
+    
+    # Normalize data 
+    so <- NormalizeData(so)
+    
     # DEA
     dea <- list()
     for(n in 1:nrow(map)) {
@@ -59,29 +72,44 @@ dea_seurat <- function(so, ident="seurat_clusters",  map=NULL, file=NULL, only_p
         # Select the column of map to split the Seurat object for DEA by ident 
         i <- map[, ident][n] 
         
-        if (conserved) {
+        # Conserved marker DEA
+        if (mode=="conserved") {
             
             message("Run DEA mode: Conserved")
-            so_tmp <- feature_select(so, ident=NULL, cnt_min=cnt_min, cell_min=cell_min, gene_filter=gene_filter)
-            so_tmp <- SetIdent(so_tmp, value=ident)
-            dea_result <- FindConservedMarkers(so_tmp, ident.1=i, logfc.threshold=logfc_threshold, min.pct=min_pct, grouping.var=grouping_var, only.pos=only_pos, subset.ident=NULL, test.use=test_use)
-        
-        # Treatment DEA
-        } else if (treatment) {
-            
-            message("Rund DEA mode: Treatment")
-            so_tmp <- feature_select(so, ident=i, cnt_min=cnt_min, cell_min=cell_min, gene_filter=gene_filter)
-            so_tmp <- SetIdent(so_tmp, value=grouping_var)
-            dea_result <- FindMarkers(so_tmp, ident.1="CpG", ident.2="NaCl", logfc.threshold=logfc_threshold, min.pct=min_pct, group.by=grouping_var, only.pos=only_pos, subset.ident=NULL, test.use=test_use)
+            so <- SetIdent(so, value=ident)
+            dea_result <- FindConservedMarkers(so, ident.1=i, logfc.threshold=logfc_threshold, min.pct=min_pct, grouping.var=grouping_var, only.pos=only_pos, subset.ident=NULL, test.use=test_use)
         
         # Marker DEA
-        } else {
+        } else if (mode=="marker") {
             
             message("Run DEA mode: Marker")
-            so_tmp <- feature_select(so, ident=NULL, cnt_min=cnt_min, cell_min=cell_min, gene_filter=gene_filter)
-            so_tmp <- SetIdent(so_tmp, value=ident)
-            dea_result <- FindMarkers(so_tmp, ident.1=i, logfc.threshold=logfc_threshold, min.pct=min_pct, group.by=grouping_var, only.pos=only_pos, subset.ident=NULL, test.use=test_use)
+            so <- SetIdent(so, value=ident)
+            dea_result <- RunPresto(so, ident.1=i, logfc.threshold=logfc_threshold, min.pct=min_pct, group.by=grouping_var, only.pos=only_pos, subset.ident=NULL, test.use=test_use)
+        
+        # Compare groups DEA
+        } else if (mode=="group") {
             
+            message(paste("Rund DEA mode: Compare for ident ", i))
+            so_tmp <- subset(so, idents=i)
+            so_tmp <- feature_select(so_tmp, cnt_min=cnt_min, cell_min=cell_min)
+            so_tmp <- SetIdent(so_tmp, value=grouping_var)
+            
+            dea_result <- FindMarkers(so_tmp, ident.1=ident_1, ident.2=ident_2, logfc.threshold=logfc_threshold, min.pct=min_pct, group.by=grouping_var, only.pos=only_pos, subset.ident=NULL, test.use=test_use)
+            
+            # Compute log2FC
+            data <- GetAssayData(so_tmp, assay="RNA", slot="data") %>% as.data.frame()
+
+            data_1 <- data[, so_tmp[[grouping_var]]==ident_1] %>% rowSums()
+            data_2 <- data[, so_tmp[[grouping_var]]==ident_2] %>% rowSums() 
+            
+            avg_log2FC <- log2(data_1/data_2)
+            avg_log2FC <- avg_log2FC[rownames(dea_result)]
+            
+            dea_result$avg_log2FC <- avg_log2FC
+            
+            # Compute p-value correction 
+            dea_result$p_val_adj <- p.adjust(dea_result$p_val, method="BH")
+        
         }
         
         # Annotate results 
@@ -92,7 +120,7 @@ dea_seurat <- function(so, ident="seurat_clusters",  map=NULL, file=NULL, only_p
             dea_result$ident <- i
 
             # Annotate transcription factors 
-            tf <- read.delim("data/annotation/animaltfdb3/Mus_musculus_TF.txt")
+            tf <- read.delim("/research/peer/fdeckert/reference/animaltfdb/Mus_musculus_TF.txt")
             dea_result$transcription_factor <- ifelse(dea_result$gene %in% tf$Symbol, TRUE, FALSE)
 
             # Annotate receptor and ligands 
@@ -113,14 +141,100 @@ dea_seurat <- function(so, ident="seurat_clusters",  map=NULL, file=NULL, only_p
     # Output
     if(!is.null(file)) {
         
-        write.xlsx(dea, paste0(file, ".xlsx"), colNames=TRUE)
-        saveRDS(dea, paste0(file, ".rds"))
+        saveRDS(dea, paste0(file, "_dea.rds"))
+        
+        dea_xlsx <- dea
+        names(dea_xlsx) <- gsub("\\.", "", make.names(names(dea_xlsx)))
+        write.xlsx(dea_xlsx, paste0(file, "_dea.xlsx"), colNames=TRUE)
         
     }
 
-      
     return(dea)
 
+}
+
+##############
+### vp_dea ###
+##############
+vp_dea <- function(dea, log2_thold=1, adjpvalue_thold=0.05, top_label=10, title=NULL, conserved=FALSE, y_offset=0, label_overlap_max=15) {
+
+    if(conserved) {
+        
+        dea <- dea %>% 
+            dplyr::filter(sign(NaCl_avg_log2FC)==sign(CpG_avg_log2FC)) %>% 
+            rowwise() %>% 
+            dplyr::mutate(avg_log2FC=mean(NaCl_avg_log2FC, CpG_avg_log2FC)) %>% 
+            dplyr::rename(p_val_adj=minimump_p_val) %>% 
+            as.data.frame()
+    }
+    
+    # Set rownames to genes
+    if("gene" %in% colnames(dea)) {rownames(dea) <- dea$gene}
+    
+    # Check Inf log2FC 
+    if(any(is.infinite(dea$avg_log2FC))) {
+        
+        print(dea[is.infinite(dea$avg_log2FC), ]$gene)
+        dea <- dea[!is.infinite(dea$avg_log2FC), ]
+        
+    }
+    
+    # Annotate entries significance by log2_thold and adjpvalue_thold
+    dea$p_val_adj <- ifelse(dea$p_val_adj == 0, .Machine$double.xmin, dea$p_val_adj)
+    dea$sig <- ifelse(abs(dea$avg_log2FC) >= log2_thold & -log10(dea$p_val_adj) >= -log10(adjpvalue_thold), "s", "ns")
+    
+    # Set color based on significance and direction of dea e.g. positive and negative 
+    dea$color <- ifelse(dea$sig == "s" & dea$avg_log2FC > 0, "s_pos", "ns")
+    dea$color <- ifelse(dea$sig == "s" & dea$avg_log2FC < 0, "s_neg", dea$color)
+    
+    color <- c(RColorBrewer::brewer.pal(8, "Set1")[1], "gray", "black", RColorBrewer::brewer.pal(8, "Set1")[2])
+    names(color) <- c("s_pos", "ns", "black", "s_neg")
+    
+    # Create labels based log2FC and p_val_adj
+    dea_pos <- dea[dea$avg_log2FC > 0 & dea$sig == "s", ]
+    dea_neg <- dea[dea$avg_log2FC < 0 & dea$sig == "s", ]
+
+    pos_labels_log2FC <- dea_pos[rev(order(dea_pos$avg_log2FC)), ][1:top_label, ] %>% rownames()
+    neg_labels_log2FC <- dea_neg[order(dea_neg$avg_log2FC), ][1:top_label, ] %>% rownames()
+    
+    pos_labels_p_val_adj <- dea_pos[order(dea_pos$p_val_adj), ][1:top_label, ] %>% rownames()
+    neg_labels_p_val_adj <- dea_neg[order(dea_neg$p_val_adj), ][1:top_label, ] %>% rownames()
+    
+    pos_labels <- c(pos_labels_log2FC, pos_labels_p_val_adj)
+    neg_labels <- c(neg_labels_log2FC, neg_labels_p_val_adj)
+    
+    # Set labels 
+    dea$label <- ifelse(rownames(dea) %in% c(pos_labels, neg_labels), rownames(dea), NA)
+
+    # Plot
+    volcano_plot <- ggplot(dea, aes(x=avg_log2FC, y=-log10(p_val_adj), fill=dea$color, label=label), alpha=1) + 
+    
+        geom_point(size=4, shape=21, color="white") + 
+        geom_vline(aes(xintercept=log2_thold), linetype="dotted", colour="black") +
+        geom_vline(aes(xintercept=-log2_thold), linetype="dotted", colour="black") +
+        geom_hline(aes(yintercept=-log10(adjpvalue_thold)), linetype="dotted", colour="black") +
+        geom_text_repel(segment.color="black", force=20, force_pull=1, max.overlaps=getOption("ggrepel.max.overlaps", default=label_overlap_max), size=5, alpha=1, guide="none", segment.size=0.1, color='black') + 
+        xlim(-max(abs(dea$avg_log2FC)), max(abs(dea$avg_log2FC))) +  
+        ylim(0, max(-log10(dea$p_val_adj))+y_offset) +
+        ggtitle(title) + xlab("average log2FC") + ylab("-log10(adj. p-value)") + 
+        scale_fill_manual(values=color) + 
+    
+        guides(
+            
+            color=guide_legend(order=1, title="Group", size=2, keywidth=0.75, keyheight=0.75), 
+            alpha="none"
+            
+        ) + 
+    
+    theme(
+        
+        legend.position="none", 
+        aspect.ratio=1
+        
+    )
+    
+    return(volcano_plot)
+    
 }
 
 ##############
@@ -390,77 +504,6 @@ dp_dea_treatment <- function(dea, so, type="receptor", group_by="cell_type_fine"
     
     return(dp)
 
-}
-##############
-### vp_dea ###
-##############
-vp_dea <- function(dea, log2_thold=1, adjpvalue_thold=0.05, top_label=10, title=NULL, conserved=FALSE) {
-
-    if(conserved) {
-        
-        dea <- dea %>% 
-            dplyr::filter(sign(NaCl_avg_log2FC)==sign(CpG_avg_log2FC)) %>% 
-            rowwise() %>% 
-            dplyr::mutate(avg_log2FC=mean(NaCl_avg_log2FC, CpG_avg_log2FC)) %>% 
-            dplyr::rename(p_val_adj=minimump_p_val) %>% 
-            as.data.frame()
-    }
-    
-    # Set rownames to genes
-    if("gene" %in% colnames(dea)) {rownames(dea) <- dea$gene}
-    
-    # Check Inf log2FC 
-    if(any(is.infinite(dea$avg_log2FC))) {
-        
-        print(dea[is.infinite(dea$avg_log2FC), ]$gene)
-        dea <- dea[!is.infinite(dea$avg_log2FC), ]
-        
-    }
-    
-    # Annotate entries significance by log2_thold and adjpvalue_thold
-    dea$p_val_adj <- ifelse(dea$p_val_adj == 0, .Machine$double.xmin, dea$p_val_adj)
-    dea$sig <- ifelse(abs(dea$avg_log2FC) >= log2_thold & -log10(dea$p_val_adj) >= -log10(adjpvalue_thold), "s", "ns")
-    
-    # Set color based on significance and direction of dea e.g. positive and negative 
-    dea$color <- ifelse(dea$sig == "s" & dea$avg_log2FC > 0, "s_pos", "ns")
-    dea$color <- ifelse(dea$sig == "s" & dea$avg_log2FC < 0, "s_neg", dea$color)
-    
-    color <- c(RColorBrewer::brewer.pal(8, "Set1")[1], "gray", "black", RColorBrewer::brewer.pal(8, "Set1")[2])
-    names(color) <- c("s_pos", "ns", "black", "s_neg")
-    
-    # Create labels based log2FC and p_val_adj
-    dea_pos <- dea[dea$avg_log2FC > 0 & dea$sig == "s", ]
-    dea_neg <- dea[dea$avg_log2FC < 0 & dea$sig == "s", ]
-
-    pos_labels_log2FC <- dea_pos[rev(order(dea_pos$avg_log2FC)), ][1:top_label, ] %>% rownames()
-    neg_labels_log2FC <- dea_neg[order(dea_neg$avg_log2FC), ][1:top_label, ] %>% rownames()
-    
-    pos_labels_p_val_adj <- dea_pos[order(dea_pos$p_val_adj), ][1:top_label, ] %>% rownames()
-    neg_labels_p_val_adj <- dea_neg[order(dea_neg$p_val_adj), ][1:top_label, ] %>% rownames()
-    
-    pos_labels <- c(pos_labels_log2FC, pos_labels_p_val_adj)
-    neg_labels <- c(neg_labels_log2FC, neg_labels_p_val_adj)
-    
-    # Set labels 
-    dea$label <- ifelse(rownames(dea) %in% c(pos_labels, neg_labels), rownames(dea), NA)
-    
-    # Plot
-    library(ggrepel, quietly=TRUE)    
-    volcano_plot <- ggplot(dea, aes(x=avg_log2FC, y=-log10(p_val_adj), colour=dea$color, label=label)) + 
-        geom_point(shape=16, size=1.5) + 
-        geom_vline(aes(xintercept=log2_thold), linetype="dotted", colour="black") +
-        geom_vline(aes(xintercept=-log2_thold), linetype="dotted", colour="black") +
-        geom_hline(aes(yintercept=-log10(adjpvalue_thold)), linetype="dotted", colour="black") +
-        geom_text_repel(segment.color="black", force=20, force_pull=1, max.overlaps=getOption("ggrepel.max.overlaps", default=100), size=3, alpha=1, guide="none", segment.size=0.1, color='black') + 
-        xlim(-max(abs(dea$avg_log2FC)), max(abs(dea$avg_log2FC))) + 
-        ylim(0, max(-log10(dea$p_val_adj))+max(-log10(dea$p_val_adj))*0.02) + 
-        ggtitle(title) + xlab("average log2FC") + ylab("-log10(adj. p-value)") + 
-        scale_colour_manual(values=color) + 
-
-        theme(aspect.ratio=1, legend.position="none")
-    
-    return(volcano_plot)
-    
 }
 
 ####################

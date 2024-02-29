@@ -1,30 +1,47 @@
-############################
-### GSEA from Seurat DEA ###
-############################
-gsea_from_dea <- function(dea, gene_sets, ident="ident") {
+####################
+### Library load ###
+####################
+library_load <- suppressMessages(
     
+    suppressWarnings(
+        
+        list(
+
+            library(msigdbr), 
+            library(fgsea)
+
+        )
+    )
+)
+
+#####################
+### GSEA from DEA ###
+#####################
+gsea_from_dea <- function(dea, gene_set, gene_name=NULL) {
+    
+    # Set gene names 
+    if(!is.null(gene_name)) {dea["gene_name"] <- dea[gene_name]}
+    
+    # Check format from DEA  
+    if(c("logFC") %in% colnames(dea)) {colnames(dea)[colnames(dea)=="logFC"] <- "avg_log2FC"}
+    if(c("adj.P.Val") %in% colnames(dea)) {colnames(dea)[colnames(dea)=="adj.P.Val"] <- "p_val_adj"}
+    
+    # Make ranks 
     dea$p_val_adj <- ifelse(dea$p_val_adj==0, min(dea$p_val_adj[dea$p_val_adj>0]), dea$p_val_adj)
     dea$sign_log_adj_p_values <- -log10(dea$p_val_adj) * sign(dea$avg_log2FC)
     
     ranks <- dea$sign_log_adj_p_values
-    names(ranks) <- dea$gene
+    names(ranks) <- dea$gene_name
     ranks <- ranks[order(ranks)]
     ranks <- rev(ranks)
     
-    # Retain only pathways with at least one DEA 
-    gene_sets_filter <- lapply(gene_sets, function(x) {sum(dea[dea$p_val_adj <= 0.05, ]$gene %in% x)>=1})
-    gene_sets <- gene_sets[unlist(gene_sets_filter)]
-    
-    # Filter gene set for genes intersect with the DEA gene list 
-    gene_sets <- lapply(gene_sets, function(x) {x[x %in% dea$gene]})
-    
-    # Filter gene sets by number of genes
-    gene_sets_filter <- lapply(gene_sets, function(x) {length(x)>=5})
-    gene_sets <- gene_sets[unlist(gene_sets_filter)]
+    # Retain only pathways that overlap with dea lsit
+    gene_set_filter <- lapply(gene_set, function(x) {sum(dea$gene %in% x)>=1})
+    gene_set <- gene_set[unlist(gene_set_filter)]
 
     gsea <- fgsea(
         
-        pathways=gene_sets,
+        pathways=gene_set,
         stats=ranks,
         nperm=100000, 
         minSize=5,
@@ -32,19 +49,21 @@ gsea_from_dea <- function(dea, gene_sets, ident="ident") {
         
     )
     
-    gsea$ident <- ident
-    
     return(gsea)
     
 }
 
-###############################
-### GSEA plot for treatment ###
-###############################
-gsea_plot <- function(gsea, pval_thr, pathway_suffix=NULL, top=20) {
+###########################
+### GSEA plot for group ###
+###########################
+gsea_plot <- function(gsea, pval_thr, title=NULL, color=c(RColorBrewer::brewer.pal(8, "Set1")[1], RColorBrewer::brewer.pal(8, "Set1")[2]), color_names=c("Pos", "Neg"), size_range=5, pathway_suffix=NULL, top=20) {
     
+    # Set GSEA data frame 
     gsea <- as.data.frame(gsea)
     gsea <- na.omit(gsea) 
+    
+    # Set color names 
+    color <- setNames(color, color_names)
     
     # Fix pathway names
     if(!is.null(pathway_suffix)) {gsea$pathway <- gsub(pathway_suffix, "", gsea$pathway)}
@@ -62,8 +81,8 @@ gsea_plot <- function(gsea, pval_thr, pathway_suffix=NULL, top=20) {
     gsea <- distinct(gsea)
     
     # Add color 
-    gsea$treatment <- ifelse(sign(gsea$ES)==1, "CpG", "NaCl")
-    gsea$treatment <- ifelse(gsea$pval<=pval_thr, gsea$treatment, NA)
+    gsea$color <- ifelse(sign(gsea$ES)==1, names(color)[1], names(color)[2])
+    gsea$color <- ifelse(gsea$pval<=pval_thr, gsea$color, NA)
 
     gsea$sign_log_pval_values <- -log10(gsea$pval) * sign(gsea$ES)
     
@@ -73,22 +92,34 @@ gsea_plot <- function(gsea, pval_thr, pathway_suffix=NULL, top=20) {
 
     x_max <- max(abs(gsea$sign_log_pval_values)) + 0.1
     if(x_max<abs(log10(pval_thr))) {x_max <- abs(log10(pval_thr)) + 0.1}
-
-    title <- gsea$ident[1]
     
-    plot <- ggplot(gsea, aes(x=abs(log10(pval))*sign(NES), y=pathway, title=title, size=abs(NES), color=treatment)) + 
-        geom_point() + 
-        ggtitle(title) + xlab("Signed -log10(pval)") + ylab("") +
-        xlim(-x_max, x_max) +
-        geom_vline(xintercept=abs(log10(pval_thr)), linetype="dashed") +
-        geom_vline(xintercept=-1*abs(log10(pval_thr)), linetype="dashed") +         
-        scale_color_manual(values=color$treatment, na.value="gray") +
-        scale_size(range=c(0, 2)) + 
+    # Plot 
+    plot <- ggplot(gsea, aes(x=sign_log_pval_values, y=pathway, color=color)) + 
+        
+        geom_vline(xintercept=-log10(pval_thr), linetype="dashed") + 
+        geom_vline(xintercept=log10(pval_thr), linetype="dashed") +
+    
+        geom_point(aes(size=abs(NES))) +
+
+        ggtitle(title) +
+        xlab("Signed -log10 adj. p-value") + ylab("") + 
+        xlim(-x_max, x_max) + 
+        scale_color_manual(values=color, na.value="black", drop=FALSE) +
+        scale_size(range=c(0, size_range)) + 
         guides(
-            color=guide_legend(order=1, size=2, keywidth=0.75, keyheight=0.75), 
+            
+            color=guide_legend(order=1, title="Group", size=2, keywidth=0.75, keyheight=0.75), 
             size=guide_legend(order=2, title="Abs. (NES)", keywidth=0.75, keyheight=0.75)
-        ) + 
-        theme(axis.text.y=element_text(size=4, hjust=1, vjust=0.5))
+            
+        ) +
+    
+        theme(
+            
+            legend.position="right", 
+            legend.justification="top", 
+            axis.text.y=element_text(hjust=1, vjust=0.5)
+            
+        )
     
     return(plot)
     
