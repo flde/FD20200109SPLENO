@@ -1,10 +1,59 @@
+###############
+### library ###
+###############
+
 library_load <- suppressMessages(
     
     list(
-        # Seurat 
-        library(patchwork)
+        
+        library(patchwork), 
+        library(viridis)
+        
     )
+    
 )
+
+######################
+### theme_set_text ###
+######################
+theme_set_text <- function(size_select=1) {
+    
+    size <- data.frame(
+    
+        size_1=c(16, 18, 20),
+        size_2=c(10, 12, 16),
+        size_3=c(8, 10, 12)
+        
+    )
+
+    size <- size[, size_select]
+    
+    library(ggplot2, quietly=TRUE)
+  
+    theme(
+        
+        panel.spacing=unit(0.2, "lines"),
+
+        plot.title=element_text(size=size[3], face="plain", margin=margin(t=0, r=0, b=10, l=0), color="black"), 
+    
+        axis.title.y=element_text(size=size[2], face="plain", margin=margin(t=0, r=5, b=0, l=0), angle=90, color="black"), 
+        axis.title.x=element_text(size=size[2], face="plain", margin=margin(t=5, r=0, b=0, l=0), color="black"),
+        axis.text.y=element_text(size=size[1], face="plain", margin=margin(t=0, r=2, b=0, l=0), color="black"),
+        axis.text.x=element_text(size=size[1], face="plain", margin=margin(t=2, r=0, b=0, l=0), color="black"),
+      
+        axis.ticks=element_line(color="black", size=unit(1/2.141959, "pt")), 
+        axis.line=element_line(color="black", size=unit(1/2.141959, "pt")), 
+      
+        legend.title=element_text(size=size[2], face="plain", color="black"),
+        legend.text=element_text(size=size[2], face="plain", color="black"), 
+        legend.key=element_rect(fill="transparent", colour="transparent"), 
+    
+        strip.text=element_text(size=size[2], margin=margin(t=2, r=2, b=2, l=2), face="plain", color="black") 
+    
+    ) 
+
+}
+
 
 ####################
 ### rank_plot_qc ###
@@ -110,26 +159,28 @@ dplot_theme <- theme(
     
     aspect.ratio=1, 
     legend.position="none",
-    axis.title=element_blank(),
-    axis.text=element_blank(),
+    axis.title.y=element_blank(), 
+    axis.title.x=element_blank(),
+    axis.text.y=element_blank(),
+    axis.text.x=element_blank(),
     axis.ticks=element_blank(),
     axis.line=element_blank(),
     panel.grid.major=element_blank(),
     panel.grid.minor=element_blank(),
     panel.border=element_blank(), 
-
     legend.key=element_blank()
 
-)
+) 
 
-dplot <- function(so, reduction="umap", group_by=NULL, split_by=NULL, label=FALSE, ncol=NULL, legend_position="right", pt_size=1, alpha=1, shape=16, stroke=0) {
+dplot <- function(so, reduction="umap", group_by=NULL, split_by=NULL, label=FALSE, label_size=16, label_box=FALSE, label_color="white", ncol=NULL, legend_position="right", pt_size=2, alpha=1, shape=16, stroke=0, size_select=1, na_color="grey50") {
     
-    dplot <- DimPlot(so, reduction=reduction, group.by=group_by, split.by=split_by, label=label, ncol=ncol, pt.size=pt_size, raster=FALSE) & dplot_theme
+    dplot <- DimPlot(so, reduction=reduction, group.by=group_by, split.by=split_by, label=label, label.size=label_size*5/14, label.box=label_box, label.color=label_color, ncol=ncol, pt.size=pt_size, raster=FALSE, na.value=na_color) & theme_set_text(size_select=size_select) & dplot_theme 
     if(legend_position!="none") {dplot <- dplot + theme(legend.position=legend_position)}
     dplot[[1]]$layers[[1]]$aes_params$alpha <- alpha
     dplot[[1]]$layers[[1]]$aes_params$shape <- shape
     
-    dplot <- dplot + guides(color=guide_legend(override.aes=list(alpha=1, size=3), ncol=ncol, keywidth=NULL, keyheight=NULL))
+    dplot <- dplot + guides(color=guide_legend(override.aes=list(alpha=1, size=4), ncol=ncol, keywidth=0, keyheight=0.75, default.unit="cm"))
+    
     
     return(dplot)
     
@@ -139,17 +190,21 @@ dplot <- function(so, reduction="umap", group_by=NULL, split_by=NULL, label=FALS
 ### fplot ###
 #############
 fplot_theme <- theme(
+    
     aspect.ratio=1,
-    axis.title=element_blank(),
-    axis.text=element_blank(),
+    axis.title.y=element_blank(), 
+    axis.title.x=element_blank(),
+    axis.text.y=element_blank(),
+    axis.text.x=element_blank(),
     axis.ticks=element_blank(),
     axis.line=element_blank(),
     panel.grid.major=element_blank(),
     panel.grid.minor=element_blank(),
     panel.border=element_blank()
+    
 )
 
-fplot <- function(so, subset=NULL, reduction="umap", features=NULL, legend_position="right", pt_size=1, alpha=1, shape=16, slot="scale.data", min_cutoff=NA) {
+fplot <- function(so, subset=NULL, reduction="umap", features=NULL, legend_position="right", pt_size=2, alpha=1, shape=16, slot="counts", min_cutoff=NA, size_select=1) {
     
     # Color bar limits 
     if(features %in% rownames(so)) {
@@ -157,9 +212,9 @@ fplot <- function(so, subset=NULL, reduction="umap", features=NULL, legend_posit
         color_bar_min <- min(GetAssayData(so, assay="RNA", slot=slot)[features, ])
         color_bar_max <- max(GetAssayData(so, assay="RNA", slot=slot)[features, ])
         
-        suppressMessages(if(slot=="counts") {color_bar_scale <- scale_color_viridis(option="F", limits = c(0, color_bar_max))})
-        suppressMessages(if(slot=="data") {color_bar_scale <- scale_color_viridis(option="F", limits = c(0, color_bar_max))})
-        suppressMessages(if(slot=="scale.data") {color_bar_scale <- scale_color_viridis(option="F", limits = c(color_bar_min, color_bar_max))})
+        suppressMessages(if(slot=="counts") {color_bar_scale <- scale_color_viridis(option="F", limits=c(0, color_bar_max))})
+        suppressMessages(if(slot=="data") {color_bar_scale <- scale_color_viridis(option="F", limits=c(0, color_bar_max))})
+        suppressMessages(if(slot=="scale.data") {color_bar_scale <- scale_color_viridis(option="F", limits=c(color_bar_min, color_bar_max))})
         
     }
     
@@ -168,7 +223,7 @@ fplot <- function(so, subset=NULL, reduction="umap", features=NULL, legend_posit
         color_bar_min <- min(na.omit(so[[features]]))
         color_bar_max <- max(na.omit(so[[features]]))
         
-        color_bar_scale <- scale_color_viridis(option="F", limits = c(color_bar_min, color_bar_max))
+        color_bar_scale <- scale_color_viridis(option="F", limits=c(color_bar_min, color_bar_max))
         
     }
     
@@ -179,7 +234,7 @@ fplot <- function(so, subset=NULL, reduction="umap", features=NULL, legend_posit
     fplot <- FeaturePlot(so, reduction=reduction, order=TRUE, features=features, pt.size=pt_size, min.cutoff=min_cutoff, slot=slot) 
     
     # Aesthetics 
-    fplot <- fplot & fplot_theme
+    fplot <- fplot & theme_set_text(size_select=size_select) & fplot_theme 
     
     if(legend_position!="none") {fplot <- fplot + theme(legend.position=legend_position)}
     
@@ -188,7 +243,7 @@ fplot <- function(so, subset=NULL, reduction="umap", features=NULL, legend_posit
     
     suppressMessages(fplot <- fplot + color_bar_scale)
     
-    fplot <- fplot + guides(color=guide_colourbar(barwidth=0.75,barheight=5.5))
+    fplot <- fplot + guides(color=guide_colourbar(barwidth=0.75,barheight=5.5)) + xlab("") + ylab("")
     
     return(fplot)
     
@@ -232,5 +287,73 @@ vjplot <- function(so, group_by, split_by, genes) {
     plot_list <- lapply(data, plot)
     
     return(plot_list)
+    
+}
+
+##################
+### dp_feature ###
+##################
+dp_feature <- function(so, features, split=NULL, group_by, title=NULL, scale=TRUE, assay="RNA", range_min=0, range_max=5) {
+    
+    # Extract counts 
+    mat <- GetAssayData(so, assay=assay, slot="data")[features, ] %>% as.data.frame() %>% add_rownames(var="gene")
+    mat <- reshape2::melt(mat, id.vars="gene", value.name="expression", variable.name="cell_id")
+    
+    # Combine counts with grouping var and compute variables for plotting 
+    mat <- dplyr::left_join(mat, so@meta.data[c("cell_id", group_by)], by="cell_id") %>%    
+        dplyr::group_by_at(c(group_by, "gene")) %>% 
+        dplyr::summarise(mean_expression=mean(expression, na.rm=TRUE), ratio=sum(expression>0)/n(), cell_count=n()) %>%
+        dplyr::ungroup() %>% 
+        dplyr::mutate(mean_expression=ifelse(is.nan(mean_expression), 0, mean_expression), ratio=ifelse(ratio==0, NA, ratio))
+    
+    if(scale) {
+        
+        mat <- dplyr::group_by_at(mat, "gene") %>% dplyr::mutate(mean_expression=scale(mean_expression)) %>% dplyr::ungroup()
+        mat <- na.omit(mat)
+        
+    }
+    
+    # Add gene split if available 
+    if(!is.null(split)) {
+        
+        mat <- dplyr::left_join(mat, data.frame(gene=features, split=split), by="gene")
+        
+    }
+    
+    # Order genes for plotting 
+    mat$gene <- factor(mat$gene, levels=features)
+    
+    # Order group for plotting 
+    if(is.numeric(so@meta.data[[group_by]])) {
+        
+        mat[[group_by]] <- as.numeric(mat[[group_by]])
+        mat[[group_by]] <- factor(mat[[group_by]], levels=sort(unique(mat[[group_by]])))
+    
+    }
+    
+    dp <- ggplot(mat, aes_string(x="gene", y=group_by)) + 
+        geom_point(aes(size=ratio, fill=mean_expression), alpha=1, shape=21, stroke=0.2) + 
+        xlab("") + ylab("") + ggtitle(title) + 
+        scale_size_continuous(name="Fraction", limits=c(0, 1), breaks=c(0, 0.25, 0.5, 0.75, 1.0), range=c(range_min, range_max)) + 
+        scale_fill_continuous(name="log10(CPT)", low="white", high=rev(brewer.pal(11,"RdBu"))[11]) + 
+        theme(axis.text.x=element_text(angle=45, vjust=1, hjust=1)) + 
+        theme_global_set()
+    
+    if(scale) {
+        
+        limit_scale <- ceiling(max(abs(mat$mean_expression)))
+        
+        dp <- dp + scale_fill_gradient2(name="z-score", low=rev(brewer.pal(11,"RdBu"))[1], high=rev(brewer.pal(11,"RdBu"))[11], breaks=seq(-limit_scale, limit_scale, 2), limits = c(-limit_scale, limit_scale))
+        
+    }
+    
+    if(!is.null(split)) {
+        
+        dp <- dp + facet_grid(~split, scales="free", space="free")
+        
+        
+    }
+
+    return(dp)
     
 }

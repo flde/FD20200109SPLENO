@@ -26,22 +26,26 @@ hm_net <- function(cellchat, slot, title, color_max=RColorBrewer::brewer.pal(9, 
         matrix=mat,
         name=name, 
         col=colorRamp2(breaks, color), 
-        column_title_gp=gpar(fontsize=10, fontface="bold"), 
-        column_names_gp =grid::gpar(fontsize=6), 
-        row_names_gp=grid::gpar(fontsize=6),
+        
+        column_title_gp=gpar(fontsize=18, fontface="bold"), 
+        column_names_gp=grid::gpar(fontsize=16), 
+        row_names_gp=grid::gpar(fontsize=16),
+        
         border=TRUE, 
         cluster_rows=FALSE, 
         cluster_columns=FALSE,
         show_row_names=TRUE,
         show_column_names=TRUE, 
+        
         row_gap=unit(1, "mm"), 
         column_gap=unit(1, "mm"), 
         column_title=title, 
         row_title_rot=90, 
-        width=ncol(mat)*unit(2.5, "mm"), 
-        height=ncol(mat)*unit(2.5, "mm"), 
+        width=ncol(mat)*unit(5, "mm"), 
+        height=ncol(mat)*unit(5, "mm"), 
         rect_gp=gpar(col="black", lwd=0.5), 
-        heatmap_legend_param=list(title_gp=gpar(fontsize=8, fontface="bold"), labels_gp=gpar(fontsize=6))
+        
+        heatmap_legend_param=list(title_gp=gpar(fontsize=16, fontface="bold"), labels_gp=gpar(fontsize=16))
 
     ) %>% as.ggplot() + theme(
 
