@@ -1,4 +1,0 @@
-Usage: velocyto run [OPTIONS] BAMFILE... GTFFILE
-Try 'velocyto run --help' for help.
-
-Error: Invalid value for 'BAMFILE...': File 'velocyto' does not exist.

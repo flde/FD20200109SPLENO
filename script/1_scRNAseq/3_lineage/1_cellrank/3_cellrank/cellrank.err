@@ -1,0 +1,9 @@
+[NbConvertApp] Converting notebook cellrank.p.ipynb to html
+--------------------------------------------------------------------------
+WARNING: There was an error initializing an OpenFabrics device.
+
+  Local host:   d028
+  Local device: mlx5_1
+--------------------------------------------------------------------------
+[NbConvertApp] WARNING | Alternative text is missing on 24 image(s).
+[NbConvertApp] Writing 14211520 bytes to cellrank.p.html

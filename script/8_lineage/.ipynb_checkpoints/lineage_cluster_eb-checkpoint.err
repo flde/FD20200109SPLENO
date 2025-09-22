@@ -1,8 +1,0 @@
-Traceback (most recent call last):
-  File "/home/fdeckert/bin/miniconda3/envs/r.4.1.0-FD20200109SPLENO/bin/jupyter", line 11, in <module>
-    sys.exit(main())
-  File "/home/fdeckert/bin/miniconda3/envs/r.4.1.0-FD20200109SPLENO/lib/python3.8/site-packages/jupyter_core/command.py", line 285, in main
-    command = _jupyter_abspath(subcommand)
-  File "/home/fdeckert/bin/miniconda3/envs/r.4.1.0-FD20200109SPLENO/lib/python3.8/site-packages/jupyter_core/command.py", line 124, in _jupyter_abspath
-    raise Exception(
-Exception: Jupyter command `jupyter-nbconvert` not found.

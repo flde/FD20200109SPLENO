@@ -1,0 +1,530 @@
+2025-04-14 18:46:33,954 - DEBUG - Using logic: Permissive10X
+2025-04-14 18:46:33,977 - INFO - Read 5636 cell barcodes from /nobackup/peer/fdeckert/FD20200109SPLENO/data/BSA_0355_SM01_10x_SPLENO/M8_control_Mac/outs/filtered_feature_bc_matrix/barcodes.tsv.gz
+2025-04-14 18:46:33,977 - DEBUG - Example of barcode: AAACCCAAGCCAGAGT and cell_id: velocyto:AAACCCAAGCCAGAGT-1
+2025-04-14 18:46:33,992 - DEBUG - Peeking into /nobackup/peer/fdeckert/FD20200109SPLENO/data/BSA_0355_SM01_10x_SPLENO/M8_control_Mac/outs/possorted_genome_bam.bam
+2025-04-14 18:46:34,213 - WARNING - Not found cell and umi barcode in entry 20 of the bam file
+2025-04-14 18:46:34,213 - WARNING - Not found cell and umi barcode in entry 140 of the bam file
+2025-04-14 18:46:34,213 - WARNING - Not found cell and umi barcode in entry 141 of the bam file
+2025-04-14 18:46:34,227 - WARNING - Not found cell and umi barcode in entry 206 of the bam file
+2025-04-14 18:46:34,227 - WARNING - Not found cell and umi barcode in entry 256 of the bam file
+2025-04-14 18:46:34,227 - WARNING - Not found cell and umi barcode in entry 264 of the bam file
+2025-04-14 18:46:34,227 - WARNING - Not found cell and umi barcode in entry 365 of the bam file
+2025-04-14 18:46:34,227 - WARNING - Not found cell and umi barcode in entry 424 of the bam file
+2025-04-14 18:46:34,291 - WARNING - Not found cell and umi barcode in entry 873 of the bam file
+2025-04-14 18:46:34,291 - WARNING - Not found cell and umi barcode in entry 944 of the bam file
+2025-04-14 18:46:34,291 - WARNING - Not found cell and umi barcode in entry 958 of the bam file
+2025-04-14 18:46:34,292 - WARNING - Not found cell and umi barcode in entry 959 of the bam file
+2025-04-14 18:46:34,295 - INFO - Starting the sorting process of /nobackup/peer/fdeckert/FD20200109SPLENO/data/BSA_0355_SM01_10x_SPLENO/M8_control_Mac/outs/possorted_genome_bam.bam the output will be at: /nobackup/peer/fdeckert/FD20200109SPLENO/data/BSA_0355_SM01_10x_SPLENO/M8_control_Mac/outs/cellsorted_possorted_genome_bam.bam
+2025-04-14 18:46:34,295 - INFO - Command being run is: samtools sort -l 7 -m 100M -t CB -O BAM -@ 32 -o /nobackup/peer/fdeckert/FD20200109SPLENO/data/BSA_0355_SM01_10x_SPLENO/M8_control_Mac/outs/cellsorted_possorted_genome_bam.bam /nobackup/peer/fdeckert/FD20200109SPLENO/data/BSA_0355_SM01_10x_SPLENO/M8_control_Mac/outs/possorted_genome_bam.bam
+2025-04-14 18:46:34,295 - INFO - While the bam sorting happens do other things...
+2025-04-14 18:46:34,295 - INFO - Load the annotation from /nobackup/peer/fdeckert/cellranger/mm10-2020-A/mm10/genes/genes.gtf
+2025-04-14 18:46:37,511 - DEBUG - Parsing Chromosome GL456210.1 strand - [line 0]
+2025-04-14 18:46:37,512 - DEBUG - Done with GL456210.1- [line 27]
+2025-04-14 18:46:37,512 - DEBUG - Assigning indexes to genes
+2025-04-14 18:46:37,512 - DEBUG - Seen 3 genes until now
+2025-04-14 18:46:37,512 - DEBUG - Parsing Chromosome GL456210.1 strand + [line 28]
+2025-04-14 18:46:37,512 - DEBUG - Done with GL456210.1+ [line 43]
+2025-04-14 18:46:37,512 - DEBUG - Assigning indexes to genes
+2025-04-14 18:46:37,512 - DEBUG - Seen 5 genes until now
+2025-04-14 18:46:37,512 - DEBUG - Parsing Chromosome GL456211.1 strand - [line 44]
+2025-04-14 18:46:37,512 - DEBUG - Done with GL456211.1- [line 74]
+2025-04-14 18:46:37,512 - DEBUG - Assigning indexes to genes
+2025-04-14 18:46:37,512 - DEBUG - Seen 9 genes until now
+2025-04-14 18:46:37,512 - DEBUG - Parsing Chromosome GL456211.1 strand + [line 75]
+2025-04-14 18:46:37,512 - DEBUG - Done with GL456211.1+ [line 101]
+2025-04-14 18:46:37,512 - DEBUG - Assigning indexes to genes
+2025-04-14 18:46:37,512 - DEBUG - Seen 11 genes until now
+2025-04-14 18:46:37,512 - DEBUG - Parsing Chromosome GL456212.1 strand - [line 102]
+2025-04-14 18:46:37,512 - DEBUG - Done with GL456212.1- [line 137]
+2025-04-14 18:46:37,512 - DEBUG - Assigning indexes to genes
+2025-04-14 18:46:37,512 - DEBUG - Seen 13 genes until now
+2025-04-14 18:46:37,513 - DEBUG - Parsing Chromosome GL456216.1 strand + [line 138]
+2025-04-14 18:46:37,513 - DEBUG - Done with GL456216.1+ [line 157]
+2025-04-14 18:46:37,513 - DEBUG - Assigning indexes to genes
+2025-04-14 18:46:37,513 - DEBUG - Seen 14 genes until now
+2025-04-14 18:46:37,513 - DEBUG - Parsing Chromosome GL456219.1 strand - [line 158]
+2025-04-14 18:46:37,513 - DEBUG - Done with GL456219.1- [line 171]
+2025-04-14 18:46:37,513 - DEBUG - Assigning indexes to genes
+2025-04-14 18:46:37,513 - DEBUG - Seen 16 genes until now
+2025-04-14 18:46:37,513 - DEBUG - Parsing Chromosome GL456221.1 strand - [line 172]
+2025-04-14 18:46:37,513 - DEBUG - Done with GL456221.1- [line 217]
+2025-04-14 18:46:37,513 - DEBUG - Assigning indexes to genes
+2025-04-14 18:46:37,513 - DEBUG - Seen 20 genes until now
+2025-04-14 18:46:37,513 - DEBUG - Parsing Chromosome GL456221.1 strand + [line 218]
+2025-04-14 18:46:37,513 - DEBUG - Done with GL456221.1+ [line 237]
+2025-04-14 18:46:37,513 - DEBUG - Assigning indexes to genes
+2025-04-14 18:46:37,513 - DEBUG - Seen 23 genes until now
+2025-04-14 18:46:37,513 - DEBUG - Parsing Chromosome GL456233.1 strand - [line 238]
+2025-04-14 18:46:37,513 - DEBUG - Done with GL456233.1- [line 269]
+2025-04-14 18:46:37,513 - DEBUG - Assigning indexes to genes
+2025-04-14 18:46:37,513 - DEBUG - Seen 25 genes until now
+2025-04-14 18:46:37,513 - DEBUG - Parsing Chromosome GL456233.1 strand + [line 270]
+2025-04-14 18:46:37,513 - DEBUG - Done with GL456233.1+ [line 300]
+2025-04-14 18:46:37,513 - DEBUG - Assigning indexes to genes
+2025-04-14 18:46:37,513 - DEBUG - Seen 27 genes until now
+2025-04-14 18:46:37,513 - DEBUG - Parsing Chromosome GL456350.1 strand - [line 301]
+2025-04-14 18:46:37,514 - DEBUG - Done with GL456350.1- [line 362]
+2025-04-14 18:46:37,514 - DEBUG - Assigning indexes to genes
+2025-04-14 18:46:37,514 - DEBUG - Seen 32 genes until now
+2025-04-14 18:46:37,514 - DEBUG - Parsing Chromosome GL456354.1 strand - [line 363]
+2025-04-14 18:46:37,514 - DEBUG - Done with GL456354.1- [line 398]
+2025-04-14 18:46:37,514 - DEBUG - Assigning indexes to genes
+2025-04-14 18:46:37,514 - DEBUG - Seen 35 genes until now
+2025-04-14 18:46:37,514 - DEBUG - Parsing Chromosome GL456354.1 strand + [line 399]
+2025-04-14 18:46:37,514 - DEBUG - Done with GL456354.1+ [line 420]
+2025-04-14 18:46:37,514 - DEBUG - Assigning indexes to genes
+2025-04-14 18:46:37,514 - DEBUG - Seen 37 genes until now
+2025-04-14 18:46:37,514 - DEBUG - Parsing Chromosome JH584292.1 strand + [line 421]
+2025-04-14 18:46:37,514 - DEBUG - Done with JH584292.1+ [line 496]
+2025-04-14 18:46:37,514 - DEBUG - Assigning indexes to genes
+2025-04-14 18:46:37,514 - DEBUG - Seen 38 genes until now
+2025-04-14 18:46:37,514 - DEBUG - Parsing Chromosome JH584293.1 strand - [line 497]
+2025-04-14 18:46:37,514 - DEBUG - Done with JH584293.1- [line 569]
+2025-04-14 18:46:37,514 - DEBUG - Assigning indexes to genes
+2025-04-14 18:46:37,514 - DEBUG - Seen 44 genes until now
+2025-04-14 18:46:37,514 - DEBUG - Parsing Chromosome JH584293.1 strand + [line 570]
+2025-04-14 18:46:37,514 - DEBUG - Done with JH584293.1+ [line 613]
+2025-04-14 18:46:37,514 - DEBUG - Assigning indexes to genes
+2025-04-14 18:46:37,514 - DEBUG - Seen 47 genes until now
+2025-04-14 18:46:37,515 - DEBUG - Parsing Chromosome JH584294.1 strand - [line 614]
+2025-04-14 18:46:37,515 - DEBUG - Done with JH584294.1- [line 681]
+2025-04-14 18:46:37,515 - DEBUG - Assigning indexes to genes
+2025-04-14 18:46:37,515 - DEBUG - Seen 51 genes until now
+2025-04-14 18:46:37,515 - DEBUG - Parsing Chromosome JH584294.1 strand + [line 682]
+2025-04-14 18:46:37,515 - DEBUG - Done with JH584294.1+ [line 708]
+2025-04-14 18:46:37,515 - DEBUG - Assigning indexes to genes
+2025-04-14 18:46:37,515 - DEBUG - Seen 53 genes until now
+2025-04-14 18:46:37,515 - DEBUG - Parsing Chromosome JH584295.1 strand - [line 709]
+2025-04-14 18:46:37,515 - DEBUG - Done with JH584295.1- [line 724]
+2025-04-14 18:46:37,515 - DEBUG - Assigning indexes to genes
+2025-04-14 18:46:37,515 - DEBUG - Seen 54 genes until now
+2025-04-14 18:46:37,515 - DEBUG - Parsing Chromosome JH584296.1 strand - [line 725]
+2025-04-14 18:46:37,515 - DEBUG - Done with JH584296.1- [line 755]
+2025-04-14 18:46:37,515 - DEBUG - Assigning indexes to genes
+2025-04-14 18:46:37,515 - DEBUG - Seen 57 genes until now
+2025-04-14 18:46:37,515 - DEBUG - Parsing Chromosome JH584297.1 strand - [line 756]
+2025-04-14 18:46:37,515 - DEBUG - Done with JH584297.1- [line 775]
+2025-04-14 18:46:37,515 - DEBUG - Assigning indexes to genes
+2025-04-14 18:46:37,515 - DEBUG - Seen 59 genes until now
+2025-04-14 18:46:37,515 - DEBUG - Parsing Chromosome JH584297.1 strand + [line 776]
+2025-04-14 18:46:37,515 - DEBUG - Done with JH584297.1+ [line 784]
+2025-04-14 18:46:37,515 - DEBUG - Assigning indexes to genes
+2025-04-14 18:46:37,515 - DEBUG - Seen 60 genes until now
+2025-04-14 18:46:37,515 - DEBUG - Parsing Chromosome JH584298.1 strand - [line 785]
+2025-04-14 18:46:37,515 - DEBUG - Done with JH584298.1- [line 795]
+2025-04-14 18:46:37,515 - DEBUG - Assigning indexes to genes
+2025-04-14 18:46:37,516 - DEBUG - Seen 61 genes until now
+2025-04-14 18:46:37,516 - DEBUG - Parsing Chromosome JH584298.1 strand + [line 796]
+2025-04-14 18:46:37,516 - DEBUG - Done with JH584298.1+ [line 817]
+2025-04-14 18:46:37,516 - DEBUG - Assigning indexes to genes
+2025-04-14 18:46:37,516 - DEBUG - Seen 63 genes until now
+2025-04-14 18:46:37,516 - DEBUG - Parsing Chromosome JH584299.1 strand - [line 818]
+2025-04-14 18:46:37,516 - DEBUG - Done with JH584299.1- [line 828]
+2025-04-14 18:46:37,516 - DEBUG - Assigning indexes to genes
+2025-04-14 18:46:37,516 - DEBUG - Seen 64 genes until now
+2025-04-14 18:46:37,516 - DEBUG - Parsing Chromosome JH584299.1 strand + [line 829]
+2025-04-14 18:46:37,516 - DEBUG - Done with JH584299.1+ [line 950]
+2025-04-14 18:46:37,516 - DEBUG - Assigning indexes to genes
+2025-04-14 18:46:37,516 - DEBUG - Seen 75 genes until now
+2025-04-14 18:46:37,516 - DEBUG - Parsing Chromosome JH584303.1 strand + [line 951]
+2025-04-14 18:46:37,516 - DEBUG - Done with JH584303.1+ [line 955]
+2025-04-14 18:46:37,516 - DEBUG - Assigning indexes to genes
+2025-04-14 18:46:37,516 - DEBUG - Seen 76 genes until now
+2025-04-14 18:46:37,516 - DEBUG - Parsing Chromosome JH584304.1 strand - [line 956]
+2025-04-14 18:46:37,516 - DEBUG - Done with JH584304.1- [line 988]
+2025-04-14 18:46:37,516 - DEBUG - Assigning indexes to genes
+2025-04-14 18:46:37,516 - DEBUG - Seen 77 genes until now
+2025-04-14 18:46:37,516 - DEBUG - Parsing Chromosome 1 strand - [line 989]
+2025-04-14 18:46:37,818 - DEBUG - Done with 1- [line 57063]
+2025-04-14 18:46:37,819 - DEBUG - Assigning indexes to genes
+2025-04-14 18:46:37,821 - DEBUG - Seen 966 genes until now
+2025-04-14 18:46:37,821 - DEBUG - Parsing Chromosome 1 strand + [line 57064]
+2025-04-14 18:46:37,956 - DEBUG - Done with 1+ [line 111842]
+2025-04-14 18:46:37,956 - DEBUG - Assigning indexes to genes
+2025-04-14 18:46:37,959 - DEBUG - Seen 1876 genes until now
+2025-04-14 18:46:37,959 - DEBUG - Parsing Chromosome 10 strand - [line 111843]
+2025-04-14 18:46:38,226 - DEBUG - Done with 10- [line 152030]
+2025-04-14 18:46:38,226 - DEBUG - Assigning indexes to genes
+2025-04-14 18:46:38,228 - DEBUG - Seen 2638 genes until now
+2025-04-14 18:46:38,228 - DEBUG - Parsing Chromosome 10 strand + [line 152031]
+2025-04-14 18:46:38,336 - DEBUG - Done with 10+ [line 194968]
+2025-04-14 18:46:38,336 - DEBUG - Assigning indexes to genes
+2025-04-14 18:46:38,338 - DEBUG - Seen 3448 genes until now
+2025-04-14 18:46:38,338 - DEBUG - Parsing Chromosome 11 strand - [line 194969]
+2025-04-14 18:46:38,646 - DEBUG - Done with 11- [line 257480]
+2025-04-14 18:46:38,646 - DEBUG - Assigning indexes to genes
+2025-04-14 18:46:38,649 - DEBUG - Seen 4518 genes until now
+2025-04-14 18:46:38,649 - DEBUG - Parsing Chromosome 11 strand + [line 257481]
+2025-04-14 18:46:38,805 - DEBUG - Done with 11+ [line 320172]
+2025-04-14 18:46:38,805 - DEBUG - Assigning indexes to genes
+2025-04-14 18:46:38,808 - DEBUG - Seen 5535 genes until now
+2025-04-14 18:46:38,808 - DEBUG - Parsing Chromosome 12 strand - [line 320173]
+2025-04-14 18:46:38,871 - DEBUG - Done with 12- [line 345502]
+2025-04-14 18:46:38,871 - DEBUG - Assigning indexes to genes
+2025-04-14 18:46:38,872 - DEBUG - Seen 6300 genes until now
+2025-04-14 18:46:38,873 - DEBUG - Parsing Chromosome 12 strand + [line 345503]
+2025-04-14 18:46:39,124 - DEBUG - Done with 12+ [line 380229]
+2025-04-14 18:46:39,124 - DEBUG - Assigning indexes to genes
+2025-04-14 18:46:39,126 - DEBUG - Seen 6877 genes until now
+2025-04-14 18:46:39,126 - DEBUG - Parsing Chromosome 13 strand - [line 380230]
+2025-04-14 18:46:39,211 - DEBUG - Done with 13- [line 414645]
+2025-04-14 18:46:39,212 - DEBUG - Assigning indexes to genes
+2025-04-14 18:46:39,213 - DEBUG - Seen 7611 genes until now
+2025-04-14 18:46:39,213 - DEBUG - Parsing Chromosome 13 strand + [line 414646]
+2025-04-14 18:46:39,279 - DEBUG - Done with 13+ [line 441742]
+2025-04-14 18:46:39,279 - DEBUG - Assigning indexes to genes
+2025-04-14 18:46:39,281 - DEBUG - Seen 8318 genes until now
+2025-04-14 18:46:39,281 - DEBUG - Parsing Chromosome 14 strand - [line 441743]
+2025-04-14 18:46:39,373 - DEBUG - Done with 14- [line 478634]
+2025-04-14 18:46:39,373 - DEBUG - Assigning indexes to genes
+2025-04-14 18:46:39,375 - DEBUG - Seen 9014 genes until now
+2025-04-14 18:46:39,375 - DEBUG - Parsing Chromosome 14 strand + [line 478635]
+2025-04-14 18:46:39,457 - DEBUG - Done with 14+ [line 512401]
+2025-04-14 18:46:39,458 - DEBUG - Assigning indexes to genes
+2025-04-14 18:46:39,459 - DEBUG - Seen 9849 genes until now
+2025-04-14 18:46:39,459 - DEBUG - Parsing Chromosome 15 strand - [line 512402]
+2025-04-14 18:46:39,739 - DEBUG - Done with 15- [line 549004]
+2025-04-14 18:46:39,739 - DEBUG - Assigning indexes to genes
+2025-04-14 18:46:39,741 - DEBUG - Seen 10439 genes until now
+2025-04-14 18:46:39,741 - DEBUG - Parsing Chromosome 15 strand + [line 549005]
+2025-04-14 18:46:39,817 - DEBUG - Done with 15+ [line 580047]
+2025-04-14 18:46:39,818 - DEBUG - Assigning indexes to genes
+2025-04-14 18:46:39,820 - DEBUG - Seen 10983 genes until now
+2025-04-14 18:46:39,820 - DEBUG - Parsing Chromosome 16 strand - [line 580048]
+2025-04-14 18:46:39,888 - DEBUG - Done with 16- [line 607192]
+2025-04-14 18:46:39,888 - DEBUG - Assigning indexes to genes
+2025-04-14 18:46:39,889 - DEBUG - Seen 11469 genes until now
+2025-04-14 18:46:39,890 - DEBUG - Parsing Chromosome 16 strand + [line 607193]
+2025-04-14 18:46:39,966 - DEBUG - Done with 16+ [line 637997]
+2025-04-14 18:46:39,966 - DEBUG - Assigning indexes to genes
+2025-04-14 18:46:39,967 - DEBUG - Seen 11933 genes until now
+2025-04-14 18:46:39,967 - DEBUG - Parsing Chromosome 17 strand - [line 637998]
+2025-04-14 18:46:40,076 - DEBUG - Done with 17- [line 681830]
+2025-04-14 18:46:40,076 - DEBUG - Assigning indexes to genes
+2025-04-14 18:46:40,079 - DEBUG - Seen 12652 genes until now
+2025-04-14 18:46:40,079 - DEBUG - Parsing Chromosome 17 strand + [line 681831]
+2025-04-14 18:46:40,195 - DEBUG - Done with 17+ [line 729330]
+2025-04-14 18:46:40,195 - DEBUG - Assigning indexes to genes
+2025-04-14 18:46:40,198 - DEBUG - Seen 13379 genes until now
+2025-04-14 18:46:40,198 - DEBUG - Parsing Chromosome 18 strand - [line 729331]
+2025-04-14 18:46:40,245 - DEBUG - Done with 18- [line 748063]
+2025-04-14 18:46:40,245 - DEBUG - Assigning indexes to genes
+2025-04-14 18:46:40,246 - DEBUG - Seen 13744 genes until now
+2025-04-14 18:46:40,246 - DEBUG - Parsing Chromosome 18 strand + [line 748064]
+2025-04-14 18:46:40,521 - DEBUG - Done with 18+ [line 774053]
+2025-04-14 18:46:40,522 - DEBUG - Assigning indexes to genes
+2025-04-14 18:46:40,523 - DEBUG - Seen 14196 genes until now
+2025-04-14 18:46:40,523 - DEBUG - Parsing Chromosome 19 strand - [line 774054]
+2025-04-14 18:46:40,603 - DEBUG - Done with 19- [line 806361]
+2025-04-14 18:46:40,603 - DEBUG - Assigning indexes to genes
+2025-04-14 18:46:40,605 - DEBUG - Seen 14666 genes until now
+2025-04-14 18:46:40,605 - DEBUG - Parsing Chromosome 19 strand + [line 806362]
+2025-04-14 18:46:40,674 - DEBUG - Done with 19+ [line 834536]
+2025-04-14 18:46:40,674 - DEBUG - Assigning indexes to genes
+2025-04-14 18:46:40,676 - DEBUG - Seen 15155 genes until now
+2025-04-14 18:46:40,676 - DEBUG - Parsing Chromosome 2 strand - [line 834537]
+2025-04-14 18:46:40,880 - DEBUG - Done with 2- [line 911094]
+2025-04-14 18:46:40,881 - DEBUG - Assigning indexes to genes
+2025-04-14 18:46:40,885 - DEBUG - Seen 16361 genes until now
+2025-04-14 18:46:40,886 - DEBUG - Parsing Chromosome 2 strand + [line 911095]
+2025-04-14 18:46:41,112 - DEBUG - Done with 2+ [line 982171]
+2025-04-14 18:46:41,112 - DEBUG - Assigning indexes to genes
+2025-04-14 18:46:41,116 - DEBUG - Seen 17581 genes until now
+2025-04-14 18:46:41,116 - DEBUG - Parsing Chromosome 3 strand - [line 982172]
+2025-04-14 18:46:41,211 - DEBUG - Done with 3- [line 1021471]
+2025-04-14 18:46:41,211 - DEBUG - Assigning indexes to genes
+2025-04-14 18:46:41,213 - DEBUG - Seen 18356 genes until now
+2025-04-14 18:46:41,213 - DEBUG - Parsing Chromosome 3 strand + [line 1021472]
+2025-04-14 18:46:41,594 - DEBUG - Done with 3+ [line 1065065]
+2025-04-14 18:46:41,594 - DEBUG - Assigning indexes to genes
+2025-04-14 18:46:41,595 - DEBUG - Seen 19102 genes until now
+2025-04-14 18:46:41,595 - DEBUG - Parsing Chromosome 4 strand - [line 1065066]
+2025-04-14 18:46:41,723 - DEBUG - Done with 4- [line 1117209]
+2025-04-14 18:46:41,723 - DEBUG - Assigning indexes to genes
+2025-04-14 18:46:41,725 - DEBUG - Seen 19972 genes until now
+2025-04-14 18:46:41,725 - DEBUG - Parsing Chromosome 4 strand + [line 1117210]
+2025-04-14 18:46:41,848 - DEBUG - Done with 4+ [line 1167049]
+2025-04-14 18:46:41,848 - DEBUG - Assigning indexes to genes
+2025-04-14 18:46:41,851 - DEBUG - Seen 20848 genes until now
+2025-04-14 18:46:41,851 - DEBUG - Parsing Chromosome 5 strand - [line 1167050]
+2025-04-14 18:46:41,999 - DEBUG - Done with 5- [line 1225395]
+2025-04-14 18:46:42,000 - DEBUG - Assigning indexes to genes
+2025-04-14 18:46:42,003 - DEBUG - Seen 21762 genes until now
+2025-04-14 18:46:42,003 - DEBUG - Parsing Chromosome 5 strand + [line 1225396]
+2025-04-14 18:46:42,150 - DEBUG - Done with 5+ [line 1284505]
+2025-04-14 18:46:42,150 - DEBUG - Assigning indexes to genes
+2025-04-14 18:46:42,154 - DEBUG - Seen 22701 genes until now
+2025-04-14 18:46:42,154 - DEBUG - Parsing Chromosome 6 strand - [line 1284506]
+2025-04-14 18:46:42,267 - DEBUG - Done with 6- [line 1330066]
+2025-04-14 18:46:42,268 - DEBUG - Assigning indexes to genes
+2025-04-14 18:46:42,270 - DEBUG - Seen 23564 genes until now
+2025-04-14 18:46:42,270 - DEBUG - Parsing Chromosome 6 strand + [line 1330067]
+2025-04-14 18:46:42,768 - DEBUG - Done with 6+ [line 1378331]
+2025-04-14 18:46:42,768 - DEBUG - Assigning indexes to genes
+2025-04-14 18:46:42,771 - DEBUG - Seen 24493 genes until now
+2025-04-14 18:46:42,771 - DEBUG - Parsing Chromosome 7 strand - [line 1378332]
+2025-04-14 18:46:42,952 - DEBUG - Done with 7- [line 1452549]
+2025-04-14 18:46:42,952 - DEBUG - Assigning indexes to genes
+2025-04-14 18:46:42,957 - DEBUG - Seen 25855 genes until now
+2025-04-14 18:46:42,958 - DEBUG - Parsing Chromosome 7 strand + [line 1452550]
+2025-04-14 18:46:43,127 - DEBUG - Done with 7+ [line 1523678]
+2025-04-14 18:46:43,128 - DEBUG - Assigning indexes to genes
+2025-04-14 18:46:43,132 - DEBUG - Seen 27096 genes until now
+2025-04-14 18:46:43,132 - DEBUG - Parsing Chromosome 8 strand - [line 1523679]
+2025-04-14 18:46:43,222 - DEBUG - Done with 8- [line 1559719]
+2025-04-14 18:46:43,222 - DEBUG - Assigning indexes to genes
+2025-04-14 18:46:43,225 - DEBUG - Seen 27820 genes until now
+2025-04-14 18:46:43,225 - DEBUG - Parsing Chromosome 8 strand + [line 1559720]
+2025-04-14 18:46:43,340 - DEBUG - Done with 8+ [line 1606795]
+2025-04-14 18:46:43,340 - DEBUG - Assigning indexes to genes
+2025-04-14 18:46:43,343 - DEBUG - Seen 28656 genes until now
+2025-04-14 18:46:43,343 - DEBUG - Parsing Chromosome 9 strand - [line 1606796]
+2025-04-14 18:46:43,474 - DEBUG - Done with 9- [line 1658478]
+2025-04-14 18:46:43,474 - DEBUG - Assigning indexes to genes
+2025-04-14 18:46:43,477 - DEBUG - Seen 29510 genes until now
+2025-04-14 18:46:43,477 - DEBUG - Parsing Chromosome 9 strand + [line 1658479]
+2025-04-14 18:46:43,610 - DEBUG - Done with 9+ [line 1712094]
+2025-04-14 18:46:43,610 - DEBUG - Assigning indexes to genes
+2025-04-14 18:46:43,613 - DEBUG - Seen 30441 genes until now
+2025-04-14 18:46:43,613 - DEBUG - Parsing Chromosome M strand - [line 1712095]
+2025-04-14 18:46:43,613 - DEBUG - Done with M- [line 1712101]
+2025-04-14 18:46:43,613 - DEBUG - Assigning indexes to genes
+2025-04-14 18:46:43,613 - DEBUG - Seen 30442 genes until now
+2025-04-14 18:46:43,613 - DEBUG - Parsing Chromosome M strand + [line 1712102]
+2025-04-14 18:46:43,613 - DEBUG - Done with M+ [line 1712175]
+2025-04-14 18:46:43,613 - DEBUG - Assigning indexes to genes
+2025-04-14 18:46:43,613 - DEBUG - Seen 30454 genes until now
+2025-04-14 18:46:43,613 - DEBUG - Parsing Chromosome X strand - [line 1712176]
+2025-04-14 18:46:43,681 - DEBUG - Done with X- [line 1739781]
+2025-04-14 18:46:43,681 - DEBUG - Assigning indexes to genes
+2025-04-14 18:46:43,682 - DEBUG - Seen 30981 genes until now
+2025-04-14 18:46:43,682 - DEBUG - Parsing Chromosome X strand + [line 1739782]
+2025-04-14 18:46:43,757 - DEBUG - Done with X+ [line 1770751]
+2025-04-14 18:46:43,757 - DEBUG - Assigning indexes to genes
+2025-04-14 18:46:43,759 - DEBUG - Seen 31560 genes until now
+2025-04-14 18:46:43,759 - DEBUG - Parsing Chromosome Y strand - [line 1770752]
+2025-04-14 18:46:43,770 - DEBUG - Done with Y- [line 1775246]
+2025-04-14 18:46:43,770 - DEBUG - Assigning indexes to genes
+2025-04-14 18:46:43,771 - DEBUG - Seen 31897 genes until now
+2025-04-14 18:46:43,771 - DEBUG - Parsing Chromosome Y strand + [line 1775247]
+2025-04-14 18:46:44,132 - DEBUG - Assigning indexes to genes
+2025-04-14 18:46:44,133 - DEBUG - Done with Y+ [line 1780453]
+2025-04-14 18:46:44,133 - DEBUG - Fixing corner cases of transcript models containg intron longer than 1000Kbp
+2025-04-14 18:46:44,686 - DEBUG - Generated 1492231 features corresponding to 118153 transcript models from /nobackup/peer/fdeckert/cellranger/mm10-2020-A/mm10/genes/genes.gtf
+2025-04-14 18:46:44,702 - INFO - Scan /nobackup/peer/fdeckert/FD20200109SPLENO/data/BSA_0355_SM01_10x_SPLENO/M8_control_Mac/outs/possorted_genome_bam.bam to validate intron intervals
+2025-04-14 18:46:45,458 - DEBUG - Reading /nobackup/peer/fdeckert/FD20200109SPLENO/data/BSA_0355_SM01_10x_SPLENO/M8_control_Mac/outs/possorted_genome_bam.bam
+2025-04-14 18:46:45,472 - DEBUG - Read first 0 million reads
+2025-04-14 18:46:45,473 - DEBUG - Marking up chromosome 1
+2025-04-14 18:46:52,430 - DEBUG - Marking up chromosome 10
+2025-04-14 18:46:57,831 - DEBUG - Marking up chromosome 11
+2025-04-14 18:47:07,656 - DEBUG - Marking up chromosome 12
+2025-04-14 18:47:11,716 - DEBUG - Marking up chromosome 13
+2025-04-14 18:47:15,528 - DEBUG - Marking up chromosome 14
+2025-04-14 18:47:19,736 - DEBUG - Marking up chromosome 15
+2025-04-14 18:47:23,851 - DEBUG - Marking up chromosome 16
+2025-04-14 18:47:27,049 - DEBUG - Marking up chromosome 17
+2025-04-14 18:47:34,782 - DEBUG - Marking up chromosome 18
+2025-04-14 18:47:38,357 - DEBUG - Marking up chromosome 19
+2025-04-14 18:47:44,065 - DEBUG - Marking up chromosome 2
+2025-04-14 18:47:52,321 - DEBUG - Marking up chromosome 3
+2025-04-14 18:47:57,101 - DEBUG - Marking up chromosome 4
+2025-04-14 18:47:57,528 - DEBUG - Read first 10 million reads
+2025-04-14 18:48:02,680 - DEBUG - Marking up chromosome 5
+2025-04-14 18:48:09,294 - DEBUG - Marking up chromosome 6
+2025-04-14 18:48:14,420 - DEBUG - Marking up chromosome 7
+2025-04-14 18:48:24,034 - DEBUG - Marking up chromosome 8
+2025-04-14 18:48:28,465 - DEBUG - Marking up chromosome 9
+2025-04-14 18:48:33,844 - DEBUG - Marking up chromosome MT
+2025-04-14 18:48:33,844 - WARNING - The .bam file refers to a chromosome 'MT+' not present in the annotation (.gtf) file
+2025-04-14 18:48:33,844 - WARNING - The .bam file refers to a chromosome 'MT-' not present in the annotation (.gtf) file
+2025-04-14 18:48:34,870 - DEBUG - Marking up chromosome X
+2025-04-14 18:48:39,017 - DEBUG - Marking up chromosome Y
+2025-04-14 18:48:39,076 - DEBUG - Marking up chromosome JH584299.1
+2025-04-14 18:48:39,076 - DEBUG - Marking up chromosome GL456233.1
+2025-04-14 18:48:39,079 - DEBUG - Marking up chromosome GL456211.1
+2025-04-14 18:48:39,079 - DEBUG - Marking up chromosome GL456221.1
+2025-04-14 18:48:39,080 - DEBUG - Marking up chromosome JH584298.1
+2025-04-14 18:48:39,080 - DEBUG - Marking up chromosome JH584300.1
+2025-04-14 18:48:39,080 - WARNING - The .bam file refers to a chromosome 'JH584300.1+' not present in the annotation (.gtf) file
+2025-04-14 18:48:39,080 - WARNING - The .bam file refers to a chromosome 'JH584300.1-' not present in the annotation (.gtf) file
+2025-04-14 18:48:39,081 - DEBUG - Marking up chromosome GL456219.1
+2025-04-14 18:48:39,081 - WARNING - The .bam file refers to a chromosome 'GL456219.1+' not present in the annotation (.gtf) file
+2025-04-14 18:48:39,081 - DEBUG - Marking up chromosome GL456210.1
+2025-04-14 18:48:39,082 - DEBUG - Marking up chromosome GL456212.1
+2025-04-14 18:48:39,082 - WARNING - The .bam file refers to a chromosome 'GL456212.1+' not present in the annotation (.gtf) file
+2025-04-14 18:48:39,082 - DEBUG - Marking up chromosome JH584304.1
+2025-04-14 18:48:39,082 - WARNING - The .bam file refers to a chromosome 'JH584304.1+' not present in the annotation (.gtf) file
+2025-04-14 18:48:39,115 - DEBUG - Marking up chromosome GL456379.1
+2025-04-14 18:48:39,115 - WARNING - The .bam file refers to a chromosome 'GL456379.1+' not present in the annotation (.gtf) file
+2025-04-14 18:48:39,115 - WARNING - The .bam file refers to a chromosome 'GL456379.1-' not present in the annotation (.gtf) file
+2025-04-14 18:48:39,116 - DEBUG - Marking up chromosome GL456216.1
+2025-04-14 18:48:39,116 - WARNING - The .bam file refers to a chromosome 'GL456216.1-' not present in the annotation (.gtf) file
+2025-04-14 18:48:39,120 - DEBUG - Marking up chromosome GL456393.1
+2025-04-14 18:48:39,120 - WARNING - The .bam file refers to a chromosome 'GL456393.1+' not present in the annotation (.gtf) file
+2025-04-14 18:48:39,120 - WARNING - The .bam file refers to a chromosome 'GL456393.1-' not present in the annotation (.gtf) file
+2025-04-14 18:48:39,120 - DEBUG - Marking up chromosome GL456366.1
+2025-04-14 18:48:39,120 - WARNING - The .bam file refers to a chromosome 'GL456366.1+' not present in the annotation (.gtf) file
+2025-04-14 18:48:39,120 - WARNING - The .bam file refers to a chromosome 'GL456366.1-' not present in the annotation (.gtf) file
+2025-04-14 18:48:39,120 - DEBUG - Marking up chromosome GL456367.1
+2025-04-14 18:48:39,120 - WARNING - The .bam file refers to a chromosome 'GL456367.1+' not present in the annotation (.gtf) file
+2025-04-14 18:48:39,120 - WARNING - The .bam file refers to a chromosome 'GL456367.1-' not present in the annotation (.gtf) file
+2025-04-14 18:48:39,120 - DEBUG - Marking up chromosome GL456239.1
+2025-04-14 18:48:39,120 - WARNING - The .bam file refers to a chromosome 'GL456239.1+' not present in the annotation (.gtf) file
+2025-04-14 18:48:39,120 - WARNING - The .bam file refers to a chromosome 'GL456239.1-' not present in the annotation (.gtf) file
+2025-04-14 18:48:39,121 - DEBUG - Marking up chromosome GL456378.1
+2025-04-14 18:48:39,121 - WARNING - The .bam file refers to a chromosome 'GL456378.1+' not present in the annotation (.gtf) file
+2025-04-14 18:48:39,121 - WARNING - The .bam file refers to a chromosome 'GL456378.1-' not present in the annotation (.gtf) file
+2025-04-14 18:48:39,121 - DEBUG - Marking up chromosome GL456372.1
+2025-04-14 18:48:39,121 - WARNING - The .bam file refers to a chromosome 'GL456372.1+' not present in the annotation (.gtf) file
+2025-04-14 18:48:39,121 - WARNING - The .bam file refers to a chromosome 'GL456372.1-' not present in the annotation (.gtf) file
+2025-04-14 18:48:39,122 - DEBUG - Marking up chromosome GL456370.1
+2025-04-14 18:48:39,122 - WARNING - The .bam file refers to a chromosome 'GL456370.1+' not present in the annotation (.gtf) file
+2025-04-14 18:48:39,122 - WARNING - The .bam file refers to a chromosome 'GL456370.1-' not present in the annotation (.gtf) file
+2025-04-14 18:48:39,123 - DEBUG - Marking up chromosome GL456390.1
+2025-04-14 18:48:39,123 - WARNING - The .bam file refers to a chromosome 'GL456390.1+' not present in the annotation (.gtf) file
+2025-04-14 18:48:39,123 - WARNING - The .bam file refers to a chromosome 'GL456390.1-' not present in the annotation (.gtf) file
+2025-04-14 18:48:39,123 - DEBUG - Marking up chromosome GL456392.1
+2025-04-14 18:48:39,123 - WARNING - The .bam file refers to a chromosome 'GL456392.1+' not present in the annotation (.gtf) file
+2025-04-14 18:48:39,123 - WARNING - The .bam file refers to a chromosome 'GL456392.1-' not present in the annotation (.gtf) file
+2025-04-14 18:48:39,123 - DEBUG - Marking up chromosome GL456382.1
+2025-04-14 18:48:39,123 - WARNING - The .bam file refers to a chromosome 'GL456382.1+' not present in the annotation (.gtf) file
+2025-04-14 18:48:39,123 - WARNING - The .bam file refers to a chromosome 'GL456382.1-' not present in the annotation (.gtf) file
+2025-04-14 18:48:39,124 - DEBUG - Marking up chromosome JH584295.1
+2025-04-14 18:48:39,124 - WARNING - The .bam file refers to a chromosome 'JH584295.1+' not present in the annotation (.gtf) file
+2025-04-14 18:48:42,626 - DEBUG - Read first 20 million reads
+2025-04-14 18:48:44,172 - DEBUG - End of file. Reset index: start scanning from initial position.
+2025-04-14 18:48:44,172 - DEBUG - 468193 reads were skipped because no apropiate cell or umi barcode was found
+2025-04-14 18:48:44,173 - INFO - Now just waiting that the bam sorting process terminates
+2025-04-14 18:48:44,173 - INFO - bam file #0 has been sorted
+2025-04-14 18:48:44,173 - DEBUG - Start molecule counting!
+2025-04-14 18:48:44,905 - DEBUG - Features available for chromosomes : ['GL456210.1-', 'GL456210.1+', 'GL456211.1-', 'GL456211.1+', 'GL456212.1-', 'GL456216.1+', 'GL456219.1-', 'GL456221.1-', 'GL456221.1+', 'GL456233.1-', 'GL456233.1+', 'GL456350.1-', 'GL456354.1-', 'GL456354.1+', 'JH584292.1+', 'JH584293.1-', 'JH584293.1+', 'JH584294.1-', 'JH584294.1+', 'JH584295.1-', 'JH584296.1-', 'JH584297.1-', 'JH584297.1+', 'JH584298.1-', 'JH584298.1+', 'JH584299.1-', 'JH584299.1+', 'JH584303.1+', 'JH584304.1-', '1-', '1+', '10-', '10+', '11-', '11+', '12-', '12+', '13-', '13+', '14-', '14+', '15-', '15+', '16-', '16+', '17-', '17+', '18-', '18+', '19-', '19+', '2-', '2+', '3-', '3+', '4-', '4+', '5-', '5+', '6-', '6+', '7-', '7+', '8-', '8+', '9-', '9+', 'M-', 'M+', 'X-', 'X+', 'Y-', 'Y+']
+2025-04-14 18:48:44,905 - DEBUG - Mask available for chromosomes : []
+2025-04-14 18:48:44,905 - DEBUG - Summarizing the results of intron validation.
+2025-04-14 18:48:45,074 - DEBUG - Validated 118609 introns (of which unique intervals 44193) out of 687039 total possible introns (considering each possible transcript models).
+2025-04-14 18:48:45,075 - DEBUG - Reading /nobackup/peer/fdeckert/FD20200109SPLENO/data/BSA_0355_SM01_10x_SPLENO/M8_control_Mac/outs/cellsorted_possorted_genome_bam.bam
+2025-04-14 18:48:45,086 - DEBUG - Read first 0 million reads
+2025-04-14 18:48:49,406 - DEBUG - Counting for batch 1, containing 100 cells and 248263 reads
+2025-04-14 18:48:53,548 - DEBUG - 0 reads not considered because fully enclosed in repeat masked regions
+2025-04-14 18:48:56,365 - DEBUG - Counting for batch 2, containing 100 cells and 227688 reads
+2025-04-14 18:49:00,342 - DEBUG - 0 reads not considered because fully enclosed in repeat masked regions
+2025-04-14 18:49:03,180 - DEBUG - Counting for batch 3, containing 100 cells and 237595 reads
+2025-04-14 18:49:06,609 - DEBUG - 0 reads not considered because fully enclosed in repeat masked regions
+2025-04-14 18:49:10,058 - DEBUG - Counting for batch 4, containing 100 cells and 254311 reads
+2025-04-14 18:49:13,640 - DEBUG - 0 reads not considered because fully enclosed in repeat masked regions
+2025-04-14 18:49:16,954 - DEBUG - Counting for batch 5, containing 100 cells and 236150 reads
+2025-04-14 18:49:20,963 - DEBUG - 0 reads not considered because fully enclosed in repeat masked regions
+2025-04-14 18:49:23,736 - DEBUG - Counting for batch 6, containing 100 cells and 228858 reads
+2025-04-14 18:49:27,064 - DEBUG - 0 reads not considered because fully enclosed in repeat masked regions
+2025-04-14 18:49:30,211 - DEBUG - Counting for batch 7, containing 100 cells and 218971 reads
+2025-04-14 18:49:33,450 - DEBUG - 0 reads not considered because fully enclosed in repeat masked regions
+2025-04-14 18:49:36,809 - DEBUG - Counting for batch 8, containing 100 cells and 245629 reads
+2025-04-14 18:49:40,338 - DEBUG - 0 reads not considered because fully enclosed in repeat masked regions
+2025-04-14 18:49:43,578 - DEBUG - Counting for batch 9, containing 100 cells and 226635 reads
+2025-04-14 18:49:46,939 - DEBUG - 0 reads not considered because fully enclosed in repeat masked regions
+2025-04-14 18:49:50,009 - DEBUG - Counting for batch 10, containing 100 cells and 214644 reads
+2025-04-14 18:49:53,243 - DEBUG - 0 reads not considered because fully enclosed in repeat masked regions
+2025-04-14 18:49:56,417 - DEBUG - Counting for batch 11, containing 100 cells and 228227 reads
+2025-04-14 18:49:59,749 - DEBUG - 0 reads not considered because fully enclosed in repeat masked regions
+2025-04-14 18:50:02,886 - DEBUG - Counting for batch 12, containing 100 cells and 212804 reads
+2025-04-14 18:50:06,056 - DEBUG - 0 reads not considered because fully enclosed in repeat masked regions
+2025-04-14 18:50:09,126 - DEBUG - Counting for batch 13, containing 100 cells and 220888 reads
+2025-04-14 18:50:12,369 - DEBUG - 0 reads not considered because fully enclosed in repeat masked regions
+2025-04-14 18:50:15,430 - DEBUG - Counting for batch 14, containing 100 cells and 210008 reads
+2025-04-14 18:50:18,798 - DEBUG - 0 reads not considered because fully enclosed in repeat masked regions
+2025-04-14 18:50:22,413 - DEBUG - Counting for batch 15, containing 100 cells and 285000 reads
+2025-04-14 18:50:27,038 - DEBUG - 0 reads not considered because fully enclosed in repeat masked regions
+2025-04-14 18:50:30,023 - DEBUG - Counting for batch 16, containing 100 cells and 227493 reads
+2025-04-14 18:50:33,354 - DEBUG - 0 reads not considered because fully enclosed in repeat masked regions
+2025-04-14 18:50:36,583 - DEBUG - Counting for batch 17, containing 100 cells and 223346 reads
+2025-04-14 18:50:39,886 - DEBUG - 0 reads not considered because fully enclosed in repeat masked regions
+2025-04-14 18:50:42,906 - DEBUG - Counting for batch 18, containing 100 cells and 197140 reads
+2025-04-14 18:50:46,033 - DEBUG - 0 reads not considered because fully enclosed in repeat masked regions
+2025-04-14 18:50:49,029 - DEBUG - Counting for batch 19, containing 100 cells and 278361 reads
+2025-04-14 18:50:53,570 - DEBUG - 0 reads not considered because fully enclosed in repeat masked regions
+2025-04-14 18:50:56,606 - DEBUG - Counting for batch 20, containing 100 cells and 235415 reads
+2025-04-14 18:51:00,656 - DEBUG - 0 reads not considered because fully enclosed in repeat masked regions
+2025-04-14 18:51:03,530 - DEBUG - Counting for batch 21, containing 100 cells and 238923 reads
+2025-04-14 18:51:07,016 - DEBUG - 0 reads not considered because fully enclosed in repeat masked regions
+2025-04-14 18:51:10,171 - DEBUG - Counting for batch 22, containing 100 cells and 211806 reads
+2025-04-14 18:51:13,389 - DEBUG - 0 reads not considered because fully enclosed in repeat masked regions
+2025-04-14 18:51:16,372 - DEBUG - Counting for batch 23, containing 100 cells and 197853 reads
+2025-04-14 18:51:19,518 - DEBUG - 0 reads not considered because fully enclosed in repeat masked regions
+2025-04-14 18:51:22,031 - DEBUG - Counting for batch 24, containing 100 cells and 215984 reads
+2025-04-14 18:51:25,253 - DEBUG - 0 reads not considered because fully enclosed in repeat masked regions
+2025-04-14 18:51:26,406 - DEBUG - Read first 10 million reads
+2025-04-14 18:51:28,451 - DEBUG - Counting for batch 25, containing 100 cells and 224339 reads
+2025-04-14 18:51:31,858 - DEBUG - 0 reads not considered because fully enclosed in repeat masked regions
+2025-04-14 18:51:34,625 - DEBUG - Counting for batch 26, containing 100 cells and 231152 reads
+2025-04-14 18:51:38,674 - DEBUG - 0 reads not considered because fully enclosed in repeat masked regions
+2025-04-14 18:51:41,178 - DEBUG - Counting for batch 27, containing 100 cells and 194354 reads
+2025-04-14 18:51:44,590 - DEBUG - 0 reads not considered because fully enclosed in repeat masked regions
+2025-04-14 18:51:47,470 - DEBUG - Counting for batch 28, containing 100 cells and 243394 reads
+2025-04-14 18:51:51,014 - DEBUG - 0 reads not considered because fully enclosed in repeat masked regions
+2025-04-14 18:51:54,444 - DEBUG - Counting for batch 29, containing 100 cells and 246861 reads
+2025-04-14 18:51:58,718 - DEBUG - 0 reads not considered because fully enclosed in repeat masked regions
+2025-04-14 18:52:01,458 - DEBUG - Counting for batch 30, containing 100 cells and 215943 reads
+2025-04-14 18:52:04,782 - DEBUG - 0 reads not considered because fully enclosed in repeat masked regions
+2025-04-14 18:52:07,608 - DEBUG - Counting for batch 31, containing 100 cells and 239647 reads
+2025-04-14 18:52:11,824 - DEBUG - 0 reads not considered because fully enclosed in repeat masked regions
+2025-04-14 18:52:14,796 - DEBUG - Counting for batch 32, containing 100 cells and 253785 reads
+2025-04-14 18:52:18,496 - DEBUG - 0 reads not considered because fully enclosed in repeat masked regions
+2025-04-14 18:52:21,697 - DEBUG - Counting for batch 33, containing 100 cells and 204298 reads
+2025-04-14 18:52:24,860 - DEBUG - 0 reads not considered because fully enclosed in repeat masked regions
+2025-04-14 18:52:27,358 - DEBUG - Counting for batch 34, containing 100 cells and 208891 reads
+2025-04-14 18:52:30,550 - DEBUG - 0 reads not considered because fully enclosed in repeat masked regions
+2025-04-14 18:52:33,654 - DEBUG - Counting for batch 35, containing 100 cells and 220316 reads
+2025-04-14 18:52:36,982 - DEBUG - 0 reads not considered because fully enclosed in repeat masked regions
+2025-04-14 18:52:40,293 - DEBUG - Counting for batch 36, containing 100 cells and 242667 reads
+2025-04-14 18:52:43,874 - DEBUG - 0 reads not considered because fully enclosed in repeat masked regions
+2025-04-14 18:52:47,046 - DEBUG - Counting for batch 37, containing 100 cells and 208739 reads
+2025-04-14 18:52:50,241 - DEBUG - 0 reads not considered because fully enclosed in repeat masked regions
+2025-04-14 18:52:52,748 - DEBUG - Counting for batch 38, containing 100 cells and 207157 reads
+2025-04-14 18:52:55,870 - DEBUG - 0 reads not considered because fully enclosed in repeat masked regions
+2025-04-14 18:52:59,001 - DEBUG - Counting for batch 39, containing 100 cells and 226645 reads
+2025-04-14 18:53:02,335 - DEBUG - 0 reads not considered because fully enclosed in repeat masked regions
+2025-04-14 18:53:05,634 - DEBUG - Counting for batch 40, containing 100 cells and 243019 reads
+2025-04-14 18:53:09,827 - DEBUG - 0 reads not considered because fully enclosed in repeat masked regions
+2025-04-14 18:53:12,605 - DEBUG - Counting for batch 41, containing 100 cells and 222960 reads
+2025-04-14 18:53:16,006 - DEBUG - 0 reads not considered because fully enclosed in repeat masked regions
+2025-04-14 18:53:19,337 - DEBUG - Counting for batch 42, containing 100 cells and 239472 reads
+2025-04-14 18:53:22,943 - DEBUG - 0 reads not considered because fully enclosed in repeat masked regions
+2025-04-14 18:53:25,573 - DEBUG - Counting for batch 43, containing 100 cells and 206191 reads
+2025-04-14 18:53:29,514 - DEBUG - 0 reads not considered because fully enclosed in repeat masked regions
+2025-04-14 18:53:32,098 - DEBUG - Counting for batch 44, containing 100 cells and 215299 reads
+2025-04-14 18:53:35,377 - DEBUG - 0 reads not considered because fully enclosed in repeat masked regions
+2025-04-14 18:53:38,592 - DEBUG - Counting for batch 45, containing 100 cells and 231219 reads
+2025-04-14 18:53:42,086 - DEBUG - 0 reads not considered because fully enclosed in repeat masked regions
+2025-04-14 18:53:45,015 - DEBUG - Counting for batch 46, containing 100 cells and 245444 reads
+2025-04-14 18:53:49,206 - DEBUG - 0 reads not considered because fully enclosed in repeat masked regions
+2025-04-14 18:53:51,863 - DEBUG - Counting for batch 47, containing 100 cells and 203222 reads
+2025-04-14 18:53:55,006 - DEBUG - 0 reads not considered because fully enclosed in repeat masked regions
+2025-04-14 18:53:57,920 - DEBUG - Counting for batch 48, containing 100 cells and 196434 reads
+2025-04-14 18:54:01,056 - DEBUG - 0 reads not considered because fully enclosed in repeat masked regions
+2025-04-14 18:54:03,662 - DEBUG - Counting for batch 49, containing 100 cells and 220299 reads
+2025-04-14 18:54:07,638 - DEBUG - 0 reads not considered because fully enclosed in repeat masked regions
+2025-04-14 18:54:10,204 - DEBUG - Counting for batch 50, containing 100 cells and 205020 reads
+2025-04-14 18:54:13,481 - DEBUG - 0 reads not considered because fully enclosed in repeat masked regions
+2025-04-14 18:54:16,056 - DEBUG - Counting for batch 51, containing 100 cells and 213135 reads
+2025-04-14 18:54:19,295 - DEBUG - 0 reads not considered because fully enclosed in repeat masked regions
+2025-04-14 18:54:21,553 - DEBUG - Read first 20 million reads
+2025-04-14 18:54:22,268 - DEBUG - Counting for batch 52, containing 100 cells and 193912 reads
+2025-04-14 18:54:25,343 - DEBUG - 0 reads not considered because fully enclosed in repeat masked regions
+2025-04-14 18:54:28,011 - DEBUG - Counting for batch 53, containing 100 cells and 237624 reads
+2025-04-14 18:54:32,178 - DEBUG - 0 reads not considered because fully enclosed in repeat masked regions
+2025-04-14 18:54:34,876 - DEBUG - Counting for batch 54, containing 100 cells and 213786 reads
+2025-04-14 18:54:38,125 - DEBUG - 0 reads not considered because fully enclosed in repeat masked regions
+2025-04-14 18:54:41,212 - DEBUG - Counting for batch 55, containing 100 cells and 218605 reads
+2025-04-14 18:54:44,507 - DEBUG - 0 reads not considered because fully enclosed in repeat masked regions
+2025-04-14 18:54:47,539 - DEBUG - Counting for batch 56, containing 100 cells and 209086 reads
+2025-04-14 18:54:50,757 - DEBUG - 0 reads not considered because fully enclosed in repeat masked regions
+2025-04-14 18:54:52,133 - DEBUG - Counting for batch 57, containing 36 cells and 66299 reads
+2025-04-14 18:54:53,319 - DEBUG - 0 reads not considered because fully enclosed in repeat masked regions
+2025-04-14 18:54:53,597 - DEBUG - 468193 reads were skipped because no apropiate cell or umi barcode was found
+2025-04-14 18:54:53,597 - DEBUG - Counting done!
+2025-04-14 18:54:53,603 - DEBUG - Generating output file /nobackup/peer/fdeckert/FD20200109SPLENO/data/BSA_0355_SM01_10x_SPLENO/M8_control_Mac/outs/velocyto.loom
+2025-04-14 18:54:53,603 - DEBUG - Collecting row attributes
+2025-04-14 18:54:53,660 - DEBUG - Generating data table
+2025-04-14 18:54:54,403 - DEBUG - Writing loom file
+2025-04-14 18:54:55,569 - DEBUG - Creating converter from 5 to 3
+2025-04-14 18:54:55,601 - DEBUG - Creating converter from 3 to 5
+2025-04-14 18:55:01,381 - DEBUG - Terminated Succesfully!
