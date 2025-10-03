@@ -247,7 +247,7 @@ fplot <- function(so, reduction="umap", features=NULL, restrict=NULL, legend_pos
 
     # Restrict
     if(!is.null(restrict)) {
-        
+
         so@meta.data[["features"]][!so@meta.data[[restrict[1]]] %in% restrict[2]] <- NA
     
     }

@@ -87,7 +87,7 @@ gsea_pl <- function(gsea_res, adj_pval_thr=0.05, title=NULL, color=c(RColorBrewe
 ##############################
 ### GSEA heat map dot plot ###
 ##############################
-gsea_hm <- function(mat_1, mat_2, col_label, col_split, pathway_suffix=NULL, row_split=NULL, row_genes=NULL, width=1.2, height=1.2, use_raster=FALSE, fontsize_select=1){
+gsea_hm <- function(mat_1, mat_2, col_label, col_split, pathway_suffix=NULL, row_split=NULL, row_genes=NULL, width=1.2, height=1.2, color_neg=rev(RColorBrewer::brewer.pal(11,"RdBu"))[1], color_pos=rev(RColorBrewer::brewer.pal(11,"RdBu"))[11], use_raster=FALSE, fontsize_select=1){
 
     # Fontsize select
     fontsize <- list(c(16,18), c(6,8))[[fontsize_select]]
@@ -130,7 +130,7 @@ gsea_hm <- function(mat_1, mat_2, col_label, col_split, pathway_suffix=NULL, row
     max_abs <- max(abs(mat_2), na.rm=TRUE)
     if(!is.finite(max_abs) || max_abs==0) max_abs <- 1
     
-    nes_col_fun <- circlize::colorRamp2(c(-max_abs, 0, max_abs), c(rev(RColorBrewer::brewer.pal(11,"RdBu"))[1], "#FFFFFF", rev(RColorBrewer::brewer.pal(11,"RdBu"))[11]))
+    nes_col_fun <- circlize::colorRamp2(c(-max_abs, 0, max_abs), c(color_neg, "#FFFFFF", color_pos))
 
 
     star_levels <- c("ns","*","**","***")
@@ -214,8 +214,6 @@ gsea_hm <- function(mat_1, mat_2, col_label, col_split, pathway_suffix=NULL, row
         }
     
     )
-
-    draw(hm)
     
     nes_lgd <- Legend(
         
