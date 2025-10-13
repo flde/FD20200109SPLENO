@@ -96,7 +96,7 @@ v_pl <- function(dea_res, log2_thr=1, adj_pval_thr=0.05, point_size=4, top_label
 #################################
 ### Plot heatmap DEA results ####
 #################################
-dea_res_count_hm <- function(mat, col_split=NULL, use_raster=FALSE, fontsize_select=1) {
+dea_res_hm <- function(mat, col_split=NULL, use_raster=FALSE, fontsize_select=1) {
 
     # Set font size 
     fontsize <- list(size_1=c(16, 18), size_2=c(6, 8))[[fontsize_select]]
@@ -151,112 +151,4 @@ dea_res_count_hm <- function(mat, col_split=NULL, use_raster=FALSE, fontsize_sel
     )
 
     return(hm)
-}
-
-#################################
-### Plot heatmap DEA results ####
-#################################
-dea_res_hm <- function(mat, row_split, col_label, col_split, celltype, row_genes=NULL, width=1.2, height=0.15, use_raster=TRUE, fontsize_select=1) {
-    
-    # Set font size 
-    fontsize <- list(size_1=c(16, 18), size_2=c(6, 8))[[fontsize_select]]
-    fontsize_scale <- c(1, 0.5)[[fontsize_select]]
-    
-    # Column annotation     
-    top_annotation <- HeatmapAnnotation(
-
-        df=data.frame(celltype=rep(celltype, ncol(mat))), 
-        col=list(celltype=color$celltype_low), 
-        simple_anno_size=unit(fontsize_scale*5, "mm"), 
-        show_annotation_name=FALSE, 
-        show_legend=FALSE, 
-        border=TRUE
-
-    )
-
-    # Color mat 
-    color <- c(rev(RColorBrewer::brewer.pal(11,"RdBu"))[1], "#FFFFFF", rev(RColorBrewer::brewer.pal(11,"RdBu"))[11])
-    breaks <- seq(-2, 2, length.out=3)
-    color_function_mat <- circlize::colorRamp2(breaks, color)
-
-    colnames(mat) <- col_label
-
-    if(!is.null(row_genes)) {
-
-        row_genes <- row_genes[row_genes %in% rownames(mat)]
-
-        row_anno <- rowAnnotation(
-    
-            labels=anno_mark(
-                
-                at=which(rownames(mat) %in% row_genes),
-                labels=rownames(mat)[which(rownames(mat) %in% row_genes)],
-                side="left", 
-                labels_gp=gpar(fontsize=fontsize[1]), 
-                link_width=unit(3, "mm")
-            
-            )
-        )
-
-    } else {
-
-        row_anno <- NULL
-    }
-    
-    # TF heatmap 
-    hm <- Heatmap(
-
-        matrix=mat, 
-
-        col=color_function_mat, 
-        
-        width=fontsize_scale*5*ncol(mat)*unit(width, "mm"),
-        height=fontsize_scale*5*nrow(mat)*unit(height, "mm"), 
-
-        row_title_gp=gpar(fontsize=fontsize[1], fontface="bold"), 
-
-        # column_title=col_label, 
-        column_title_gp=gpar(fontsize=fontsize[1], fontface="bold"), 
-
-        row_names_gp=gpar(fontsize=fontsize[1], fontface="italic"), 
-        column_names_gp=gpar(fontsize=fontsize[1], fontface="plain"), 
-        
-        cluster_rows=TRUE, 
-        # row_labels=row_labels, 
-        cluster_row_slices=FALSE, 
-        show_row_dend=FALSE,   
-        row_split=row_split, 
-        row_title=NULL, 
-        row_title_rot=0, 
-        row_gap=unit(fontsize_scale*2, "mm"),
-        show_row_names=FALSE,
-        # row_names_side=ifelse(lr_type=="Ligand", "left", "right"),
-
-        cluster_columns=FALSE,
-        clustering_distance_columns="pearson", 
-        cluster_column_slices=FALSE, 
-        show_column_dend=TRUE, 
-        column_split=col_split,
-        column_gap=unit(fontsize_scale*2, "mm"), 
-        column_dend_height=unit(fontsize_scale*3, "mm"), 
-        show_column_names=TRUE, 
-
-        top_annotation=top_annotation, 
-        left_annotation=row_anno, 
-
-        heatmap_legend_param=list(title="z-score", at=c(min(breaks), 0, max(breaks)), title_gp=gpar(fontsize=fontsize[1], fontface="plain"), labels_gp=gpar(fontsize=fontsize[1]), legend_height=unit(fontsize_scale*15, "mm"), grid_width=unit(fontsize_scale*3, "mm")), 
-
-        border=TRUE, 
-        rect_gp=gpar(col=NA, lwd=unit(fontsize_scale*2*0.6667, "pt")), 
-        border_gp=gpar(col="black", lwd=unit(fontsize_scale*3*0.6667, "pt")),
-
-        use_raster=use_raster, raster_by_magick=TRUE, raster_resize_mat=mean
-              
-    )
-
-
-
-
-    return(hm)
-    
 }

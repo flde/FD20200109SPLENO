@@ -2,9 +2,14 @@
 
 #SBATCH --partition=tinyq
 #SBATCH --qos=tinyq
-#SBATCH --cpus-per-task 8
+#SBATCH --mem=200G
+#SBATCH --nodes=1
+#SBATCH --ntasks-per-node=1
+#SBATCH --cpus-per-task=8
 #SBATCH --job-name ptpg_1
 #SBATCH -o %x.out
 #SBATCH -e %x.err
+
+export MC_CORES=1
 
 jupyter nbconvert --to html --execute ptpg_1.r.ipynb

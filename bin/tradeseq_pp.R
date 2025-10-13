@@ -324,7 +324,7 @@ wilcox <- function(so, ident, ident_1=NULL, ident_2=NULL, only_pos=FALSE, avg_lo
 
     if(check_1 & check_2) {
         
-        so <- suppressMessages(NormalizeData(so))
+        # so <- suppressMessages(NormalizeData(so))
         so <- SetIdent(so, value=ident)
         res <- RunPresto(so, ident.1=ident_1, ident.2=ident_2, logfc.threshold=avg_log2FC_threshold, min.pct=min_pct, only.pos=only_pos, test.use=test_use)
 
@@ -352,7 +352,7 @@ wilcox <- function(so, ident, ident_1=NULL, ident_2=NULL, only_pos=FALSE, avg_lo
 ##############################################
 ### Select top hits by Wilcox in time bins ###
 ##############################################
-pt_diff_wilcox <- function(fitgam, genes, condition_qry, condition_ref) {
+pt_diff_wilcox <- function(fitgam, genes, condition_qry, condition_ref, B, mc_cores=1) {
 
     # Get dp bins for testing 
     pt_bins <- seq(0, 1, length.out=11)
@@ -370,6 +370,7 @@ pt_diff_wilcox <- function(fitgam, genes, condition_qry, condition_ref) {
     
     # Create Seurat object
     so <- CreateSeuratObject(counts=counts, meta.data=meta, assay="RNA")
+    so <- suppressMessages(NormalizeData(so))
     
     # Get pt bins 
     so$pt_bin <- cut(so$dpt, breaks=pt_bins, labels=pt_knots, include.lowest=TRUE) 
@@ -377,57 +378,79 @@ pt_diff_wilcox <- function(fitgam, genes, condition_qry, condition_ref) {
     # Split by bins
     so <- SplitObject(so, split.by="pt_bin")
 
-    so <- lapply(so, function(x) {
-        
-        # Split by condition
-        x_1 <- x[, x$condition == condition_qry]
-        x_2 <- x[, x$condition == condition_ref]
-        
-        # Get minimal cell count
-        min_n <- min(ncol(x_1), ncol(x_2))
-        
-        # Subsample each
-        set.seed(42)
-        x_1_sub <- x_1[, sample(colnames(x_1), min_n)]
-        x_2_sub <- x_2[, sample(colnames(x_2), min_n)]
-        
-        # Merge back
-        x <- merge(x_1_sub, x_2_sub)
-        x <- JoinLayers(x)
+    # Subsample 
+    res <- lapply(so, function(x) {
 
-        return(x)
+        # Store current bin 
+        pt_bin <- unique(x$pt_bin)
+
+        # Get condition index
+        cell_idx_1 <- which(x$condition==condition_qry)
+        cell_idx_2 <- which(x$condition==condition_ref)
+
+        # Get minimal cell count
+        min_n <- min(length(cell_idx_1), length(cell_idx_2))
+        min_n <- floor(0.95 * min_n)
+
+        x <- lapply(seq_len(B), function(i) {
+        
+            set.seed(i)
+            
+            # Sample cell id index per condition
+            cell_idx_1_i <- sample(cell_idx_1, min_n, replace=FALSE)
+            cell_idx_2_i <- sample(cell_idx_2, min_n, replace=FALSE)
+            
+            # Return subset
+            x <- x[, c(cell_idx_1_i, cell_idx_2_i)]
+            
+            return(x)
+            
+        }
+                            )
+
+        res <- parallel::mclapply(seq_len(B), function(i) {
+
+            # Run Wilcox
+            res <- wilcox(
+                
+                so=x[[i]], 
+                ident="condition", 
+                ident_1=condition_qry, 
+                ident_2=condition_ref, 
+                only_pos=FALSE, 
+                avg_log2FC_threshold=0, 
+                min_pct=0, 
+                test_use="wilcox"
+            
+            )
+
+            # Add bin and iteration
+            res$pt_bin <- pt_bin
+            res$rep_id <- i
+
+            # Set rownames to gene column for merging results
+            res$gene <- rownames(res)
+
+            # Return result list
+            return(res)
+        
+        }, mc.cores=mc_cores
+                                 )
+
+        # Combine results per iteration 
+        res <- do.call("rbind", res)
+        rownames(res) <- NULL
+
+        return(res)
+        
     }
                 )
 
-    # Run Wilcox 
-    res_dea <- lapply(so, function(so) {
-        
-        dea_res_i <- wilcox(
-            
-            so=so, 
-            ident="condition", 
-            ident_1=condition_qry, 
-            ident_2=condition_ref, 
-            only_pos=FALSE, 
-            avg_log2FC_threshold=0, 
-            min_pct=0, 
-            test_use="wilcox"
-        
-        )
+    # Combine pseudotime bin results 
+    res <- do.call("rbind", res)
+    rownames(res) <- NULL
 
-        dea_res_i$pt_bin <- so$pt_bin[1]
-        dea_res_i$gene <- rownames(dea_res_i)
-
-        dea_res_i <- dea_res_i %>% dplyr::rename(log2FC_wilcox=avg_log2FC, p_val_adj_wilcox=p_val_adj)
-
-        return(dea_res_i)
-    
-    }
-                     )
-
-    res_dea <- do.call(rbind, res_dea)
-
-    return(res_dea)
+    return(res)
     
 }
 
