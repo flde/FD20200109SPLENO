@@ -8,4 +8,4 @@
 #SBATCH -o %x.out
 #SBATCH -e %x.err
 
-jupyter nbconvert --to html --execute figure_5.r.ipynb
+jupyter nbconvert --to html --execute panel_5.r.ipynb

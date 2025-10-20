@@ -4,8 +4,8 @@
 #SBATCH --qos=tinyq
 #SBATCH --mem=200G
 #SBATCH --cpus-per-task 8
-#SBATCH --job-name figure_1
+#SBATCH --job-name panel_2
 #SBATCH -o %x.out
 #SBATCH -e %x.err
 
-jupyter nbconvert --to html --execute figure_1.r.ipynb
+jupyter nbconvert --to html --execute panel_2.r.ipynb

@@ -92,24 +92,154 @@ v_pl <- function(dea_res, log2_thr=1, adj_pval_thr=0.05, point_size=4, top_label
     
 }
 
-
-#################################
-### Plot heatmap DEA results ####
-#################################
-dea_res_hm <- function(mat, col_split=NULL, use_raster=FALSE, fontsize_select=1) {
+################################
+### Plot heatmap DEG counts ####
+################################
+dea_count_hm <- function(mat, row_split=NULL, col_split=NULL, col_label=NULL, use_raster=FALSE, color_min="#ffffff", color_max=rev(RColorBrewer::brewer.pal(11,"RdBu"))[11], fontsize_select=1) {
 
     # Set font size 
     fontsize <- list(size_1=c(16, 18), size_2=c(6, 8))[[fontsize_select]]
     fontsize_scale <- c(1, 0.5)[[fontsize_select]]
     
-    color_ramp_mat <- c("white", rev(RColorBrewer::brewer.pal(11,"RdBu"))[11])
-    breaks_mat <- seq(0,  max(mat, na.rm=TRUE), length.out=length(color_ramp_mat))
+    color_ramp_mat <- c(color_min, color_max)
+    breaks_mat <- seq(0, max(mat), na.rm=TRUE, length.out=length(color_ramp_mat))
     color_function_mat <- circlize::colorRamp2(breaks_mat, color_ramp_mat) 
-    
-    row_labels <- parse(text = rownames(mat))
 
-    breaks <- round(max(breaks_mat))
-    if (breaks %% 2 != 0) breaks <- breaks + 1
+    hm <- Heatmap(
+        
+        mat,
+    
+        col=color_function_mat, 
+        na_col="#d3d3d3", 
+        
+        width=fontsize_scale*5*ncol(mat)*unit(1, "mm"),
+        height=fontsize_scale*5*nrow(mat)*unit(1, "mm"), 
+    
+        row_title_gp=gpar(fontsize=fontsize[1], fontface="bold"), 
+
+        # column_title=col_label, 
+        column_title_gp=gpar(fontsize=fontsize[1], fontface="bold"), 
+
+        row_names_gp=gpar(fontsize=fontsize[1], fontface="plain"), 
+        column_names_gp=gpar(fontsize=fontsize[1], fontface="plain"), 
+        
+        cluster_rows=FALSE,
+        show_row_names=TRUE,
+        row_names_side="left",
+        row_split=row_split, 
+        
+        cluster_columns=FALSE,
+        column_split=col_split, 
+        show_column_names=TRUE, 
+    
+        show_heatmap_legend=TRUE, 
+
+        heatmap_legend_param=list(title="Count", at=breaks_mat, title_gp=gpar(fontsize=fontsize[1], fontface="plain"), labels_gp=gpar(fontsize=fontsize[1]), legend_height=unit(fontsize_scale*15, "mm"), grid_width=unit(fontsize_scale*3, "mm")), 
+        
+        border=TRUE, 
+        rect_gp=gpar(col="black", lwd=unit(fontsize_scale*2*0.6667, "pt")), 
+        border_gp=gpar(col="black", lwd=unit(fontsize_scale*3*0.6667, "pt")), 
+
+        use_raster=use_raster, raster_by_magick=TRUE, raster_resize_mat=mean
+        
+
+    )
+
+    return(hm)
+}
+
+
+#################################
+### Plot heatmap DEA results ####
+#################################
+dea_res_hm <- function(mat_1, mat_2, p_val_adj_thr=0.05, row_split=NULL, col_split=NULL, col_label=NULL, use_raster=FALSE, color_pos=rev(RColorBrewer::brewer.pal(11,"RdBu"))[11], color_neg=rev(RColorBrewer::brewer.pal(11,"RdBu"))[2],  breaks_limit=NULL, fontsize_select=1) {
+
+    # Set font size 
+    fontsize <- list(size_1=c(16, 18), size_2=c(6, 8))[[fontsize_select]]
+    fontsize_scale <- c(1, 0.5)[[fontsize_select]]
+
+    if(is.null(breaks_limit)) {
+        
+        breaks_limit <- ceiling(max(abs(mat_1), na.rm=TRUE))
+    
+    }
+    
+    color_ramp_mat <- c(color_neg, "white", color_pos)
+    breaks_mat <- seq(-breaks_limit, breaks_limit, na.rm=TRUE, length.out=length(color_ramp_mat))
+    color_function_mat <- circlize::colorRamp2(breaks_mat, color_ramp_mat) 
+
+    hm <- Heatmap(
+        
+        mat_1,
+    
+        col=color_function_mat, 
+        na_col="#d3d3d3", 
+        
+        width=fontsize_scale*5*ncol(mat_1)*unit(1, "mm"),
+        height=fontsize_scale*5*nrow(mat_1)*unit(1, "mm"), 
+    
+        row_title_gp=gpar(fontsize=fontsize[1], fontface="bold"), 
+
+        # column_title=col_label, 
+        column_title_gp=gpar(fontsize=fontsize[1], fontface="bold"), 
+
+        row_names_gp=gpar(fontsize=fontsize[1], fontface="italic"), 
+        column_names_gp=gpar(fontsize=fontsize[1], fontface="plain"), 
+        
+        cluster_rows=FALSE,
+        show_row_names=TRUE,
+        row_names_side="left",
+        row_split=row_split, 
+        
+        cluster_columns=TRUE,
+        column_split=col_split, 
+        show_column_names=TRUE, 
+    
+        show_heatmap_legend=TRUE, 
+
+        heatmap_legend_param=list(title="Log2FC", at=breaks_mat, title_gp=gpar(fontsize=fontsize[1], fontface="plain"), labels_gp=gpar(fontsize=fontsize[1]), legend_height=unit(fontsize_scale*15, "mm"), grid_width=unit(fontsize_scale*3, "mm")), 
+        
+        border=TRUE, 
+        rect_gp=gpar(col="black", lwd=unit(fontsize_scale*2*0.6667, "pt")), 
+        border_gp=gpar(col="black", lwd=unit(fontsize_scale*3*0.6667, "pt")), 
+
+        use_raster=use_raster, raster_by_magick=TRUE, raster_resize_mat=mean, 
+        
+        cell_fun=function(j, i, x, y, w, h, fill) {
+            
+            if(mat_2[i, j] <= p_val_adj_thr) {
+                
+                grid.text("*", x, y-unit(fontsize_scale*1, "mm"), gp=gpar(fontsize=fontsize[1]))
+            
+            }
+        
+        }
+        
+
+    )
+
+    return(hm)
+}
+
+################################
+### Plot expression results ####
+################################
+dea_exp_hm <- function(mat, row_split=NULL, col_split=NULL, col_label=NULL, use_raster=FALSE, color_pos=rev(RColorBrewer::brewer.pal(11,"RdBu"))[11], color_neg=rev(RColorBrewer::brewer.pal(11,"RdBu"))[2],  breaks_limit=NULL, fontsize_select=1) {
+
+    # Set font size 
+    fontsize <- list(size_1=c(16, 18), size_2=c(6, 8))[[fontsize_select]]
+    fontsize_scale <- c(1, 0.5)[[fontsize_select]]
+
+    if(is.null(breaks_limit)) {
+        
+        breaks_limit <- ceiling(max(abs(mat), na.rm=TRUE))
+    
+    }
+    
+    color_ramp_mat <- c(color_neg, "white", color_pos)
+    breaks_mat <- seq(-breaks_limit, breaks_limit, na.rm=TRUE, length.out=length(color_ramp_mat))
+    color_function_mat <- circlize::colorRamp2(breaks_mat, color_ramp_mat) 
+
     
     hm <- Heatmap(
         
@@ -132,7 +262,7 @@ dea_res_hm <- function(mat, col_split=NULL, use_raster=FALSE, fontsize_select=1)
         cluster_rows=FALSE,
         show_row_names=TRUE,
         row_names_side="left",
-        row_labels=row_labels, 
+        row_split=row_split, 
         
         cluster_columns=FALSE,
         column_split=col_split, 
@@ -140,7 +270,7 @@ dea_res_hm <- function(mat, col_split=NULL, use_raster=FALSE, fontsize_select=1)
     
         show_heatmap_legend=TRUE, 
 
-        heatmap_legend_param=list(title="log10(DEG)", at=c(0, breaks/2, breaks), title_gp=gpar(fontsize=fontsize[1], fontface="plain"), labels_gp=gpar(fontsize=fontsize[1]), legend_height=unit(fontsize_scale*15, "mm"), grid_width=unit(fontsize_scale*3, "mm")), 
+        heatmap_legend_param=list(title="Log2FC", at=breaks_mat, title_gp=gpar(fontsize=fontsize[1], fontface="plain"), labels_gp=gpar(fontsize=fontsize[1]), legend_height=unit(fontsize_scale*15, "mm"), grid_width=unit(fontsize_scale*3, "mm")), 
         
         border=TRUE, 
         rect_gp=gpar(col="black", lwd=unit(fontsize_scale*2*0.6667, "pt")), 
