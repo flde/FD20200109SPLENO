@@ -1,0 +1,18 @@
+[NbConvertApp] Converting notebook panel_1.r.ipynb to html
+Performing log-normalization
+0%   10   20   30   40   50   60   70   80   90   100%
+[----|----|----|----|----|----|----|----|----|----|
+**************************************************|
+Warning: Data is of class data.frame. Coercing to dgCMatrix.
+Performing relative-counts-normalization
+Warning: Data is of class data.frame. Coercing to dgCMatrix.
+Performing relative-counts-normalization
+Warning: Data is of class data.frame. Coercing to dgCMatrix.
+Performing relative-counts-normalization
+Warning: Data is of class data.frame. Coercing to dgCMatrix.
+Performing relative-counts-normalization
+Warning: Data is of class data.frame. Coercing to dgCMatrix.
+Performing relative-counts-normalization
+Warning: Data is of class data.frame. Coercing to dgCMatrix.
+Performing relative-counts-normalization
+[NbConvertApp] Writing 477110 bytes to panel_1.r.html

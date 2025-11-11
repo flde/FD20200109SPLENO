@@ -87,7 +87,7 @@ gsea_pl <- function(gsea_res, adj_pval_thr=0.05, title=NULL, color=c(RColorBrewe
 ##############################
 ### GSEA heat map dot plot ###
 ##############################
-gsea_hm <- function(mat_1, mat_2, col_label, col_split, pathway_suffix=NULL, row_split=NULL, row_genes=NULL, width=1.2, height=1.2, color_neg=rev(RColorBrewer::brewer.pal(11,"RdBu"))[1], color_pos=rev(RColorBrewer::brewer.pal(11,"RdBu"))[11], use_raster=FALSE, fontsize_select=1){
+gsea_hm <- function(mat_1, mat_2, col_label, col_split, pathway_suffix=NULL, row_split=NULL, row_genes=NULL, cluster_rows=FALSE, width=1.2, height=1.2, color_neg=rev(RColorBrewer::brewer.pal(11,"RdBu"))[1], color_pos=rev(RColorBrewer::brewer.pal(11,"RdBu"))[11], use_raster=FALSE, fontsize_select=1){
 
     # Fontsize select
     fontsize <- list(c(16,18), c(6,8))[[fontsize_select]]
@@ -103,7 +103,7 @@ gsea_hm <- function(mat_1, mat_2, col_label, col_split, pathway_suffix=NULL, row
     }
 
     # Row split 
-    if(!is.null(row_split)) {row_split <- row_split[rownames(mat_1), ]$row_split_label}
+    if(!is.null(row_split)) {row_split <- row_split[rownames(mat_1), , drop=FALSE]$row_split_label}
 
     # Pathway suffix 
     if(!is.null(pathway_suffix)) {
@@ -118,7 +118,7 @@ gsea_hm <- function(mat_1, mat_2, col_label, col_split, pathway_suffix=NULL, row
     bottom_annotation <- HeatmapAnnotation(
         
         df=data.frame(col_label=col_label),
-        col=list(col_label=color$celltype_low),
+        # col=list(col_label=color$celltype_low),
         simple_anno_size=unit(fontsize_scale*5, "mm"),
         show_annotation_name=FALSE, show_legend=FALSE, border=TRUE
     
@@ -163,7 +163,7 @@ gsea_hm <- function(mat_1, mat_2, col_label, col_split, pathway_suffix=NULL, row
         row_names_gp=gpar(fontsize=fontsize[1], fontface="italic"),
         column_names_gp=gpar(fontsize=fontsize[1], fontface="plain"),
         
-        cluster_rows=FALSE, 
+        cluster_rows=cluster_rows, 
         cluster_row_slices=FALSE, 
         show_row_dend=FALSE,
         row_split=row_split, 

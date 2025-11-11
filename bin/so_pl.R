@@ -194,7 +194,7 @@ fplot_theme <- theme(
     
 )
 
-fplot <- function(so, reduction="umap", features=NULL, restrict=NULL, legend_position="right", pt_size=2, alpha=1, shape=16, slot="scale.data", min_cutoff=NA, max_cutoff=NA, min_set=NA, max_set=NA, bar_breaks=waiver(), size_select=1, assay="RNA", option="G") {
+fplot <- function(so, reduction="umap", features=NULL, restrict=NULL, order=TRUE, legend_position="right", pt_size=2, alpha=1, shape=16, slot="scale.data", min_cutoff=NA, max_cutoff=NA, min_set=NA, max_set=NA, bar_breaks=waiver(), size_select=1, assay="RNA", option="G") {
     
     DefaultAssay(so)=assay
 
@@ -253,7 +253,15 @@ fplot <- function(so, reduction="umap", features=NULL, restrict=NULL, legend_pos
     }
     
     # Feature plot
-    fplot <- FeaturePlot(so, reduction=reduction, order=TRUE, features="features", pt.size=pt_size, min.cutoff=min_cutoff, max.cutoff=max_cutoff, slot=slot) 
+    fplot <- FeaturePlot(so, reduction=reduction, order=order, features="features", pt.size=pt_size, min.cutoff=min_cutoff, max.cutoff=max_cutoff, slot=slot) 
+
+    # Always set NA to the back 
+    fplot[[1]]$data <- rbind(
+    
+        fplot[[1]]$data[is.na(fplot[[1]]$data$features), ], 
+        fplot[[1]]$data[!is.na(fplot[[1]]$data$features), ] 
+        
+    )
     
     # Aesthetics 
     fplot <- fplot & theme_set_text(size_select=size_select) & fplot_theme 
