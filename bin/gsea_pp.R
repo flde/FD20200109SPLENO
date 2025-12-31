@@ -59,10 +59,39 @@ gsea <- function(dea_res, category="H", subcategory=NULL, gene_set=NULL) {
     
 }
 
+#########################
+### ORA using msigdbr ###
+#########################
+ora <- function(genes, universe, category="MH", subcategory=NULL, gene_set=NULL, min_size=15, max_size=500) {
+    
+    if(is.null(gene_set)) {
+
+        gene_set <- msigdbr::msigdbr(species="mouse", db_species="MM", category=category, subcategory=subcategory)
+        
+    }
+
+    print(gene_set %>% dplyr::group_by(gs_name) %>% dplyr::summarise(n=n()) %>% pull(n) %>% summary())
+    
+    gene_set <- split(gene_set, x=gene_set$gene_symbol, f=gene_set$gs_name)
+
+    gsea_res <- fgsea::fora(
+        
+        pathways=gene_set,
+        genes=genes,
+        universe=universe, 
+        minSize=min_size,
+        maxSize=max_size
+        
+    )
+    
+    return(gsea_res)
+    
+}
+
 ##################################
 ### GSEA using clusterProfiler ###
 ##################################
-gsea_cp <- function(dea_res) {
+gsea_cp <- function(dea_res, ont="BP", pval_thr=0.05) {
 
     # Set mgi symbols
     dea_res$mgi_symbol <- rownames(dea_res)
@@ -81,7 +110,7 @@ gsea_cp <- function(dea_res) {
     ranks <- ranks[conv$SYMBOL]
     names(ranks) <- conv$ENTREZID
 
-    gsea_res <- clusterProfiler::gseGO(geneList=ranks, OrgDb=org.Mm.eg.db::org.Mm.eg.db, ont="BP", keyType="ENTREZID", minGSSize=15, maxGSSize=500, pAdjustMethod="BH", pvalueCutoff=0.05, verbose=FALSE)
+    gsea_res <- clusterProfiler::gseGO(geneList=ranks, OrgDb=org.Mm.eg.db::org.Mm.eg.db, ont=ont, keyType="ENTREZID", minGSSize=10, maxGSSize=500, pAdjustMethod="BH", pvalueCutoff=pval_thr, verbose=FALSE)
 
     gsea_res <- as.data.frame(gsea_res)
 
@@ -89,15 +118,31 @@ gsea_cp <- function(dea_res) {
     
 }
 
+#################################
+### ORA using clusterProfiler ###
+#################################
+ora_cp <- function(gene, universe, ont="BP", pval_thr=0.05, qval_thr=0.2) {
+
+    ora_res <- clusterProfiler::enrichGO(gene=gene, OrgDb=org.Mm.eg.db::org.Mm.eg.db, ont=ont, pvalueCutoff=pval_thr, pAdjustMethod="BH", universe=universe, qvalueCutoff=qval_thr, minGSSize=15, maxGSSize=500, readable=FALSE)
+    ora_res <- as.data.frame(ora_res)
+
+    return(ora_res)
+    
+}
+
 #############################
 ### GSEA GO term simplify ###
 #############################
-gsea_cp_reduce <- function(gsea_res) {
+gsea_cp_reduce <- function(gsea_res, ont="BP", reduce_mtx_thr=0.7) {
     
-    sem_data <- GOSemSim::godata('org.Mm.eg.db', ont="BP")
-    sim_mat <- rrvgo::calculateSimMatrix(unique(gsea_res$ID), semdata=sem_data, orgdb="org.Mm.eg.db", ont="BP", method="Wang")
+    sem_data <- GOSemSim::godata('org.Mm.eg.db', ont=ont)
+    sim_mat <- rrvgo::calculateSimMatrix(unique(gsea_res$ID), semdata=sem_data, orgdb="org.Mm.eg.db", ont=ont, method="Wang")
     
     scores <- gsea_res %>% group_by(ID) %>% summarise(score=min(p.adjust, na.rm=TRUE)) %>% deframe()
-    gs_reduce <- rrvgo::reduceSimMatrix(sim_mat, scores, threshold=0.7, orgdb="org.Mm.eg.db")
+    scores <- -log10(scores)
+    
+    gs_reduce <- rrvgo::reduceSimMatrix(sim_mat, scores, threshold=reduce_mtx_thr, orgdb="org.Mm.eg.db")
+
+    return(gs_reduce)
         
 }

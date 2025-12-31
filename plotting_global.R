@@ -109,13 +109,13 @@ dpi <- c(RColorBrewer::brewer.pal(9, "Blues")[c(4, 6, 8, 9)])
 names(dpi) <- c("D0", "D1", "D3", "D6")
 
 # Cell cycle phase 
-msCC_class_RNA <- c(
+cc_phase <- c(
     
-    RColorBrewer::brewer.pal(8, "Accent")[1:3]
+    "#f2cc8f", "#81b29a", "#3d405b"
 
 )
 
-names(msCC_class_RNA) <- c(
+names(cc_phase) <- c(
 
     "G1", "S", "G2M"
     
@@ -194,7 +194,7 @@ color <- list(
     sample_group=sample_group, 
     genotype=genotype, 
     dpi=dpi, 
-    msCC_class_RNA=msCC_class_RNA, 
+    cc_phase=cc_phase, 
     celltype_low=celltype_low
 
 )

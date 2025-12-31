@@ -155,7 +155,7 @@ dea_count_hm <- function(mat, row_split=NULL, col_split=NULL, col_label=NULL, us
 #################################
 ### Plot heatmap DEA results ####
 #################################
-dea_exp_hm <- function(mat_1, row_split=NULL, col_split=NULL, col_label=NULL, cluster_columns=FALSE, cluster_rows=FALSE, use_raster=FALSE, scale_width=1, scale_height=1, rect_gp_col="black", legend_title="Log2FC", color_pos=rev(RColorBrewer::brewer.pal(11,"RdBu"))[11], color_neg=rev(RColorBrewer::brewer.pal(11,"RdBu"))[2],  breaks_limit=NULL, fontsize_select=1) {
+dea_exp_hm <- function(mat_1, row_split=NULL, col_split=NULL, col_label=NULL, cluster_columns=FALSE, cluster_rows=FALSE, use_raster=FALSE, scale_width=1, scale_height=1, rect_gp_col="black", legend_title="Log2FC", breaks_limit=NULL, fontsize_select=1) {
 
     # Set font size 
     fontsize <- list(size_1=c(16, 18), size_2=c(6, 8))[[fontsize_select]]

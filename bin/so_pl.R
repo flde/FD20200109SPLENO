@@ -162,14 +162,22 @@ dplot_theme <- theme(
 
 ) 
 
-dplot <- function(so, reduction="umap", group_by=NULL, split_by=NULL, label=FALSE, label_size=16, label_box=FALSE, label_color="white", ncol=NULL, legend_position="right", pt_size=2, alpha=1, shape=16, stroke=0, size_select=1, na_color="#7f7f7f", shuffle=TRUE, order=NULL) {
+dplot <- function(so, reduction="umap", group_by=NULL, group_color=NULL, split_by=NULL, label=FALSE, label_size=16, label_box=FALSE, label_color="white", ncol=NULL, legend_position="right", pt_size=2, alpha=1, shape=16, stroke=0, size_select=1, na_color="#7f7f7f", shuffle=TRUE, order=NULL) {
     
     dplot <- DimPlot(so, reduction=reduction, group.by=group_by, split.by=split_by, label=label, label.size=label_size*5/14, label.box=label_box, label.color=label_color, ncol=ncol, pt.size=pt_size, raster=FALSE, na.value=na_color, shuffle=shuffle, order=order) & theme_set_text(size_select=size_select) & dplot_theme 
     if(legend_position!="none") {dplot <- dplot + theme(legend.position=legend_position)}
     dplot[[1]]$layers[[1]]$aes_params$alpha <- alpha
     dplot[[1]]$layers[[1]]$aes_params$shape <- shape
+
+
     
     dplot <- dplot + guides(color=guide_legend(override.aes=list(alpha=1, size=4), ncol=ncol, keywidth=0, keyheight=0.75, default.unit="cm"))
+
+    if(!is.null(group_color)) {
+
+        dplot <- dplot + scale_color_manual(values=group_color)
+        
+    }
     
     
     return(dplot)

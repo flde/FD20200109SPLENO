@@ -5,7 +5,7 @@
 #SBATCH --mem=200G
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=1
-#SBATCH --cpus-per-task=8
+#SBATCH --cpus-per-task=32
 #SBATCH --job-name ptpg_2
 #SBATCH -o %x.out
 #SBATCH -e %x.err

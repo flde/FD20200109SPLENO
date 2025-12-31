@@ -9,6 +9,9 @@ library_load <- suppressMessages(
             library(clusterProfiler), # Symbol to ID
             library(org.Mm.eg.db),
 
+            library(AnnotationDbi),
+            library(reactome.db),
+
             # Data 
             library(dplyr), 
             library(tidyverse), 
@@ -96,6 +99,37 @@ parse_hierarchy <- function(enrichment_res, level=3) {
 
     return(enrichment_res)
     
+}
+######################################
+### Get Reactome gene set by level ###
+######################################
+reactome_gs <- function(rh_level=3) {
+
+    rh <- readRDS("data/reference/reactome/reactome_hierarchy.rds")
+
+    reactome <- rh[, c(paste0("ID_", rh_level), paste0("pathway_", rh_level))] %>% na.omit() %>% dplyr::distinct()
+    colnames(reactome) <- c("PATHID", "PATHNAME")
+    
+    map_1 <- AnnotationDbi::select(
+                
+        reactome.db,
+        keys=reactome$PATHID,
+        keytype="PATHID",
+        columns="ENTREZID"
+        
+    )
+    
+    map_2 <- AnnotationDbi::select(
+                
+        org.Mm.eg.db,
+        keys=map_1$ENTREZID,
+        keytype="ENTREZID",
+        columns="SYMBOL"
+        )
+    
+    gene_set <- dplyr::left_join(map_1, map_2, by=join_by(ENTREZID)) %>% dplyr::left_join(reactome, ., by=join_by(PATHID)) %>% dplyr::select(-ENTREZID, -PATHID) %>% na.omit() %>% dplyr::distinct() %>% dplyr::rename(gs_name=PATHNAME, gene_symbol=SYMBOL)
+
+    return(gene_set)
 }
                                                                                            
 ################################

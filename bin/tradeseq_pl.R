@@ -1,26 +1,25 @@
 library_load <- suppressMessages(
     
     list(
-
-            library(tradeSeq), 
-            library(SingleCellExperiment), 
-
-            # Data 
-            library(dplyr), 
-            library(tidyverse), 
-            library(data.table), 
-
-            library(ggplot2), 
-            library(ggforce)
         
+        library(tradeSeq), 
+        library(SingleCellExperiment), 
+
+        # Data 
+        library(dplyr), 
+        library(tidyverse), 
+        library(data.table), 
+
+        library(ggplot2), 
+        library(ggforce)
     )
-    
+
 )
 ###############################
 ### Plort smooth expression ###
 ###############################
 plot_smooth <- function(fitgam, gene, n_points=50, point=FALSE, line=TRUE, condition_color=NULL, condition_line_type=FALSE, line_size=3, label_size=2, label_parse=FALSE, y_scale_full=FALSE) {
-    
+
     cnt <- assays(fitgam)$counts[gene, , drop=FALSE]
     cnt <- as.data.frame(t(cnt))
     colnames(cnt) <- "exp"
@@ -44,7 +43,7 @@ plot_smooth <- function(fitgam, gene, n_points=50, point=FALSE, line=TRUE, condi
             max_break <- 0.1
             
         }
-        
+
         breaks <- c(0.0, max_break)
 
         cnt_smooth <- cnt_smooth[cnt_smooth$condition %in% names(condition_color), ]
@@ -70,16 +69,20 @@ plot_smooth <- function(fitgam, gene, n_points=50, point=FALSE, line=TRUE, condi
         
     }
     
-    if(condition_line_type) {
+    if(isTRUE(condition_line_type)) {
         
         if(length(condition_color)==3) {condition_line_type <- setNames(c("solid", "solid", "dashed"), names(condition_color))}
         if(length(condition_color)==4) {condition_line_type <- setNames(c("solid", "solid", "dashed", "dashed"), names(condition_color))}
         if(length(condition_color)==6) {condition_line_type <- setNames(c("solid", "solid", "dashed", "solid", "solid", "dashed"), names(condition_color))}
     
-    } else if (!condition_line_type) {
+    } else if (isFALSE(condition_line_type)) {
 
         condition_line_type <- setNames(rep("solid", length(condition_color)), names(condition_color))
         
+    } else {
+
+        condition_line_type <- condition_line_type
+
     }
     
     p <- ggplot(NULL, aes(x=pseudotime, y=log1p(exp), color=condition, linetype=condition)) +
@@ -96,6 +99,83 @@ plot_smooth <- function(fitgam, gene, n_points=50, point=FALSE, line=TRUE, condi
     return(p)
     
 }
+
+##############################
+### Plort smooth prototype ###
+##############################
+plot_prototype <- function(fitgam, genes, condition_vec, n_points=50, line=TRUE, condition_color=NULL, condition_line_type=FALSE, line_size=3,  y_scale_full=FALSE) {
+
+    cnt <- assays(fitgam)$counts[genes, , drop=FALSE]
+    cnt <- as.data.frame(t(cnt))
+    colnames(cnt) <- "exp"
+
+    cnt$pseudotime <- colData(fitgam)$crv$pseudotime
+    cnt$condition <- colData(fitgam)$tradeSeq$conditions
+    
+    cnt_smooth <- predictSmooth(fitgam, genes, nPoints=n_points, tidy=TRUE)
+    
+    # Get expression mat
+    mat <- cnt_smooth %>% dplyr::mutate(time=paste0(time, ":", condition)) %>% dplyr::select(-lineage, -condition) %>% pivot_wider(., names_from=time, values_from=yhat) %>% tibble::column_to_rownames("gene")
+
+    # Scale data 
+    mat <- t(apply(mat, 1, scales::rescale))
+
+    # Select plotting condition 
+    mat <- mat[, grepl(paste0(paste0(condition_vec, "$"), collapse = "|"), colnames(mat))]
+
+    # Compute prototype stats
+    mat <- t(mat) %>% as.data.frame() %>% tibble::rownames_to_column("sample_group") %>% 
+    
+        tidyr::pivot_longer(
+            
+            cols=-sample_group,
+            names_to="gene",
+            values_to="exp"
+            
+        ) %>% 
+    
+        dplyr::mutate(pseudotime=str_split(sample_group, ":", simplify = TRUE)[, 1], condition=str_split(sample_group, ":", simplify = TRUE)[, 2]) %>% 
+    
+        group_by(condition, pseudotime) %>%
+    
+        dplyr::summarise(
+            
+            mean_exp=mean(exp, na.rm=TRUE),
+            sd_exp=sd(exp, na.rm=TRUE),
+
+            median_exp=median(exp, na.rm=TRUE),
+            q25_exp=quantile(exp, 0.25, na.rm=TRUE),
+            q75_exp=quantile(exp, 0.75, na.rm=TRUE), 
+            .groups="drop"
+            
+        ) %>% 
+    
+        dplyr::ungroup() %>% 
+
+        dplyr::mutate(
+
+            ymin=mean_exp-sd_exp, 
+            ymax=mean_exp+sd_exp
+            
+        ) %>% 
+
+        dplyr::mutate(pseudotime=as.numeric(pseudotime))
+
+    # Plot
+    p <- ggplot(mat, aes(x=pseudotime, y=mean_exp, color=condition, fill=condition)) +
+        geom_line(size=1.5/2.141959, alpha=1) + 
+        geom_ribbon(aes(ymin=ymin, ymax=ymax), alpha=0.2, colour=NA) + 
+        scale_y_continuous(breaks=c(0.0, 1.0), labels=c(0.0, 1.0), limits=c(0, 1), expand=c(0, 0)) + 
+        scale_x_continuous(breaks=c(0.0, 0.5, 1.0), labels=c("0.0", "0.5", "1.0"), limits=c(0, 1), expand=c(0, 0)) + 
+        scale_color_manual(values=color_mat) + 
+        scale_fill_manual(values=color_mat) + 
+        annotate("text", x=0.5, y=0, label=paste0("N=", length(genes)), hjust=0.5, vjust=-1, size=2) + 
+        theme(legend.position="none")
+            
+    return(p)
+    
+}
+
 
 ####################################
 ### PT smooth expression heatmap ###
@@ -122,7 +202,7 @@ pt_hm <- function(fitgam, genes, condition_mat, condition_scale, n_points, color
     color_function_mat_exp <- circlize::colorRamp2(breaks_mat_exp, color_mat_exp)
 
     # Select plotting condition 
-    mat <- mat[, grepl(paste0(condition_mat, "$"), colnames(mat))]
+    mat <- mat[, grepl(paste0(condition_mat, "$"), colnames(mat))] # Be careful that only works for single sample names
 
     # Order mat by row split 
     if(!is.null(row_split)) {mat <- mat[names(row_split), ]}

@@ -4,7 +4,7 @@
 #SBATCH --qos=tinyq
 #SBATCH --mem=200G
 #SBATCH --cpus-per-task 8
-#SBATCH --job-name figure_6
+#SBATCH --job-name panel_6
 #SBATCH -o %x.out
 #SBATCH -e %x.err
 

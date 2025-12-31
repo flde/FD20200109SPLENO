@@ -33,7 +33,7 @@ dp_feature <- function(so, features, split=NULL, split_order=NULL, group_by, gro
     if(scale) {
         
         mat <- dplyr::group_by(mat, gene) %>% 
-            dplyr::mutate(mean_expression=(mean_expression-min(mean_expression))) %>% 
+            # dplyr::mutate(mean_expression=(mean_expression-min(mean_expression))) %>% 
             dplyr::mutate(mean_expression=mean_expression/max(mean_expression)) %>% 
             dplyr::ungroup() %>% na.omit()
         
