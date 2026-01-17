@@ -211,8 +211,8 @@ fplot <- function(so, reduction="umap", features=NULL, restrict=NULL, order=TRUE
     # Color bar limits 
     if(features %in% rownames(so)) {
         
-        color_bar_min <- min(GetAssayData(so, assay=assay, slot=slot)[features, ])
-        color_bar_max <- max(GetAssayData(so, assay=assay, slot=slot)[features, ])
+        color_bar_min <- min(GetAssayData(so, assay=assay, layer=slot)[features, ])
+        color_bar_max <- max(GetAssayData(so, assay=assay, layer=slot)[features, ])
         
         suppressMessages(if(slot=="counts") {
             
@@ -222,8 +222,8 @@ fplot <- function(so, reduction="umap", features=NULL, restrict=NULL, order=TRUE
         
         suppressMessages(if(slot=="data") {
 
-            color_bar_max <- max(GetAssayData(so, assay=assay, slot=slot)[features, ])
-            if(is.na(max_set)) {color_bar_max <- max(GetAssayData(so, assay=assay, slot=slot)[features, ])} else {color_bar_max <- max_set}
+            color_bar_max <- max(GetAssayData(so, assay=assay, layer=slot)[features, ])
+            if(is.na(max_set)) {color_bar_max <- max(GetAssayData(so, assay=assay, layer=slot)[features, ])} else {color_bar_max <- max_set}
             color_bar_max <- ceiling(color_bar_max)
             
             color_bar_scale <- scale_color_viridis(option=option, limits=c(0, color_bar_max), breaks=c(0, color_bar_max/2, color_bar_max), labels=c(0, "", color_bar_max))

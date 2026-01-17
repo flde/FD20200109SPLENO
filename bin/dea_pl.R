@@ -100,7 +100,7 @@ dea_count_hm <- function(mat, row_split=NULL, col_split=NULL, col_label=NULL, us
     # Set font size 
     fontsize <- list(size_1=c(16, 18), size_2=c(6, 8))[[fontsize_select]]
     fontsize_scale <- c(1, 0.5)[[fontsize_select]]
-    
+
     color_ramp_mat <- c(color_min, color_max)
     breaks_mat <- seq(0, max(mat), na.rm=TRUE, length.out=length(color_ramp_mat))
     color_function_mat <- circlize::colorRamp2(breaks_mat, color_ramp_mat) 
@@ -155,7 +155,7 @@ dea_count_hm <- function(mat, row_split=NULL, col_split=NULL, col_label=NULL, us
 #################################
 ### Plot heatmap DEA results ####
 #################################
-dea_exp_hm <- function(mat_1, row_split=NULL, col_split=NULL, col_label=NULL, cluster_columns=FALSE, cluster_rows=FALSE, use_raster=FALSE, scale_width=1, scale_height=1, rect_gp_col="black", legend_title="Log2FC", breaks_limit=NULL, fontsize_select=1) {
+dea_exp_hm <- function(mat_1, row_split=NULL, col_split=NULL, col_label=NULL, cluster_columns=FALSE, cluster_rows=FALSE, show_column_names=TRUE, use_raster=FALSE, border=TRUE, scale_mode="minmax", scale_width=1, scale_height=1, rect_gp_col="black", legend_title="Log2FC", breaks_limit=NULL, fontsize_select=1) {
 
     # Set font size 
     fontsize <- list(size_1=c(16, 18), size_2=c(6, 8))[[fontsize_select]]
@@ -168,9 +168,19 @@ dea_exp_hm <- function(mat_1, row_split=NULL, col_split=NULL, col_label=NULL, cl
     }
 
     # Set color
-    breaks_1 <- seq(0, max(mat_1), length.out=3)
-    color_1 <- viridis::mako(length(breaks_1))
-    color_function_1 <- circlize::colorRamp2(breaks_1, color_1)
+    if(scale_mode=="minmax") {
+
+        breaks_1 <- seq(0, max(mat_1), length.out=3)
+        color_1 <- viridis::mako(length(breaks_1))
+        color_function_1 <- circlize::colorRamp2(breaks_1, color_1)
+        
+    } else if(scale_mode=="z-score") {
+
+        breaks_1 <- seq(-2, 2, length.out=3)
+        color_1 <- viridis::mako(length(breaks_1))
+        color_function_1 <- circlize::colorRamp2(breaks_1, color_1)
+        
+    }
     
     # Set width and height 
     width <- scale_width*fontsize_scale*5*ncol(mat_1) + (length(unique(col_split))-1)
@@ -203,19 +213,21 @@ dea_exp_hm <- function(mat_1, row_split=NULL, col_split=NULL, col_label=NULL, cl
         row_gap=unit(1, "mm"),
         
         cluster_columns=cluster_columns,
+        cluster_column_slices=FALSE, 
         column_split=col_split, 
-        show_column_names=TRUE, 
+        show_column_dend=FALSE, 
+        show_column_names=show_column_names, 
         column_gap=unit(1, "mm"), 
     
         show_heatmap_legend=TRUE, 
 
         heatmap_legend_param=list(title=legend_title, at=breaks_1, title_gp=gpar(fontsize=fontsize[1], fontface="plain"), labels_gp=gpar(fontsize=fontsize[1]), legend_height=unit(fontsize_scale*15, "mm"), grid_width=unit(fontsize_scale*3, "mm")), 
         
-        border=TRUE, 
+        border=border, 
         rect_gp=gpar(col=rect_gp_col, lwd=unit(fontsize_scale*2*0.6667, "pt")), 
         border_gp=gpar(col="black", lwd=unit(fontsize_scale*3*0.6667, "pt")), 
 
-        use_raster=use_raster, raster_by_magick=TRUE, raster_resize_mat=mean
+        use_raster=use_raster, raster_by_magick=TRUE, raster_resize_mat=FALSE, raster_quality=5,
         
     )
 

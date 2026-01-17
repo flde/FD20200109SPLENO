@@ -20,7 +20,7 @@ library_load <- suppressMessages(
 dp_feature <- function(so, features, split=NULL, split_order=NULL, group_by, group_by_order=NULL, title=NULL, scale=TRUE, assay="RNA", range_min=0, range_max=5) {
     
     # Extract counts 
-    mat <- GetAssayData(so, assay=assay, slot="data")[features, ] %>% as.data.frame() %>% add_rownames(var="gene")
+    mat <- GetAssayData(so, assay=assay, layer="data")[features, ] %>% as.data.frame() %>% add_rownames(var="gene")
     mat <- reshape2::melt(mat, id.vars="gene", value.name="expression", variable.name="cell_id")
     
     # Combine counts with grouping var and compute variables for plotting 
