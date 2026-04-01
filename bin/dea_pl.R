@@ -1,18 +1,18 @@
 ####################
 ### Volcano plot ###
 ####################
-v_pl <- function(dea_res, log2FC_thr=1, adj_pval_thr=0.05, point_size=4, top_label=10, label=NULL, label_merge=TRUE, label_size=5, y_limit=NULL, title=NULL, color_pos=c("pos"="#0000ffff"), color_neg=c("neg"="#fd8008ff"), aspect_ratio=1) {
+v_pl <- function(dea_res, log2fc_thr=1, adj_pval_thr=0.05, point_size=4, top_label=10, label=NULL, label_merge=TRUE, label_size=5, y_limit=NULL, title=NULL, color_pos=c("pos"="#0000ffff"), color_neg=c("neg"="#fd8008ff"), aspect_ratio=1) {
     
     # Set rownames to genes
     if("gene" %in% colnames(dea_res)) {rownames(dea_res) <- dea_res$gene}
     
-    # Annotate entries significance by log2FC_thr and adj_pval_thr
+    # Annotate entries significance by log2fc_thr and adj_pval_thr
     dea_res$p_val_adj <- ifelse(dea_res$p_val_adj == 0, min(dea_res$p_val_adj), dea_res$p_val_adj)
-    dea_res$sig <- ifelse((abs(dea_res$avg_log2FC) >= log2FC_thr) & (dea_res$p_val_adj <= adj_pval_thr), "s", "ns")
+    dea_res$sig <- ifelse((abs(dea_res$avg_log2FC) >= log2fc_thr) & (dea_res$p_val_adj <= adj_pval_thr), "s", "n.s.")
     
     # Set color based on significance and direction of dea e.g. positive and negative 
-    dea_res$color <- ifelse(dea_res$sig == "s" & dea_res$avg_log2FC > +log2FC_thr, names(color_pos), "n.s.")
-    dea_res$color <- ifelse(dea_res$sig == "s" & dea_res$avg_log2FC < -log2FC_thr, names(color_neg), dea_res$color)
+    dea_res$color <- ifelse(dea_res$sig == "s" & dea_res$avg_log2FC > +log2fc_thr, names(color_pos), "n.s.")
+    dea_res$color <- ifelse(dea_res$sig == "s" & dea_res$avg_log2FC < -log2fc_thr, names(color_neg), dea_res$color)
 
     dea_res$color <- factor(dea_res$color, levels=c(names(color_pos), names(color_neg), "n.s."))
     
@@ -63,8 +63,8 @@ v_pl <- function(dea_res, log2FC_thr=1, adj_pval_thr=0.05, point_size=4, top_lab
     
         geom_point(data=dea_res[dea_res$color=="n.s.", ], size=point_size, shape=19) + 
         geom_point(data=dea_res[dea_res$color!="n.s.", ], size=point_size, shape=19) +
-        geom_hline(aes(yintercept=+log2FC_thr), linetype="dotted", colour="black") +
-        geom_hline(aes(yintercept=-log2FC_thr), linetype="dotted", colour="black") +
+        geom_hline(aes(yintercept=+log2fc_thr), linetype="dotted", colour="black") +
+        geom_hline(aes(yintercept=-log2fc_thr), linetype="dotted", colour="black") +
         ggrepel::geom_text_repel(segment.color="black", force=10, force_pull=1, max.overlaps=getOption("ggrepel.max.overlaps", default=100), size=label_size, alpha=1, guide="none", segment.size=0.1, color='black', min.segment.length=0.1, fontface="italic") + 
         ylim(-y_limit-1.0, y_limit+1.0) +  
         xlim(0, 1) + 

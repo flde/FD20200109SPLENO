@@ -69,8 +69,6 @@ ora <- function(genes, universe, category="MH", subcategory=NULL, gene_set=NULL,
         gene_set <- msigdbr::msigdbr(species="mouse", db_species="MM", category=category, subcategory=subcategory)
         
     }
-
-    print(gene_set %>% dplyr::group_by(gs_name) %>% dplyr::summarise(n=n()) %>% pull(n) %>% summary())
     
     gene_set <- split(gene_set, x=gene_set$gene_symbol, f=gene_set$gs_name)
 

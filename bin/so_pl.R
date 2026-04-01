@@ -202,7 +202,7 @@ fplot_theme <- theme(
     
 )
 
-fplot <- function(so, reduction="umap", features=NULL, restrict=NULL, order=TRUE, legend_position="right", pt_size=2, alpha=1, shape=16, slot="scale.data", min_cutoff=NA, max_cutoff=NA, min_set=NA, max_set=NA, bar_breaks=waiver(), size_select=1, assay="RNA", option="G") {
+fplot <- function(so, reduction="umap", features=NULL, restrict=NULL, order=TRUE, legend_position="right", pt_size=2, alpha=1, shape=16, slot="scale.data", min_cutoff=NA, max_cutoff=NA, min_set=NA, max_set=NA, bar_breaks=waiver(), size_select=1, assay="RNA", option="G", color_end=1) {
     
     DefaultAssay(so)=assay
 
@@ -216,7 +216,7 @@ fplot <- function(so, reduction="umap", features=NULL, restrict=NULL, order=TRUE
         
         suppressMessages(if(slot=="counts") {
             
-            color_bar_scale <- scale_color_viridis(option=option, limits=c(0, color_bar_max))
+            color_bar_scale <- scale_color_viridis(option=option, limits=c(0, color_bar_max), end=color_end)
         
         })
         
@@ -226,7 +226,7 @@ fplot <- function(so, reduction="umap", features=NULL, restrict=NULL, order=TRUE
             if(is.na(max_set)) {color_bar_max <- max(GetAssayData(so, assay=assay, layer=slot)[features, ])} else {color_bar_max <- max_set}
             color_bar_max <- ceiling(color_bar_max)
             
-            color_bar_scale <- scale_color_viridis(option=option, limits=c(0, color_bar_max), breaks=c(0, color_bar_max/2, color_bar_max), labels=c(0, "", color_bar_max))
+            color_bar_scale <- scale_color_viridis(option=option, limits=c(0, color_bar_max), breaks=c(0, color_bar_max/2, color_bar_max), labels=c(0, "", color_bar_max), end=color_end)
         
         }
                         
@@ -234,20 +234,19 @@ fplot <- function(so, reduction="umap", features=NULL, restrict=NULL, order=TRUE
         
         suppressMessages(if(slot=="scale.data") {
             
-            olor_bar_scale <- scale_color_viridis(option=option, limits=c(color_bar_min, color_bar_max))
+            olor_bar_scale <- scale_color_viridis(option=option, limits=c(color_bar_min, color_bar_max), end=color_end)
             
         })
 
         so$features <- so@assays[[assay]]@layers[[slot]][rownames(so)==features, ]
 
 
-        
     } else {
         
         color_bar_min <- ifelse(is.na(min_cutoff), min(na.omit(so[[features]])), min_cutoff)
         color_bar_max <- ifelse(is.na(max_cutoff), max(na.omit(so[[features]])), max_cutoff)
         
-        color_bar_scale <- scale_color_viridis(option=option, limits=c(color_bar_min, color_bar_max), breaks=bar_breaks)
+        color_bar_scale <- scale_color_viridis(option=option, limits=c(color_bar_min, color_bar_max), breaks=bar_breaks, end=color_end)
 
         so$features <- so@meta.data[[features]]
         
